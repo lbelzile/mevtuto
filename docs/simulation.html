@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 4 Simulation | mev package tutorial</title>
+  <title>4 Simulation | mev package tutorial</title>
   <meta name="description" content="This is a short tutorial on the use of the mev R package." />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 4 Simulation | mev package tutorial" />
+  <meta property="og:title" content="4 Simulation | mev package tutorial" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="lbelzile/mevdocu" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 4 Simulation | mev package tutorial" />
+  <meta name="twitter:title" content="4 Simulation | mev package tutorial" />
   
   <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
   
@@ -161,7 +161,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="simulation" class="section level1">
-<h1><span class="header-section-number">Section 4</span> Simulation</h1>
+<h1><span class="header-section-number">4</span> Simulation</h1>
 <p>The original goal of the <code>mev</code> package was to implement the algorithm of <span class="citation">(<span class="citeproc-not-found" data-reference-id="Dombry:2015"><strong>???</strong></span>)</span> in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard <span class="math inline">\(R\)</span>-Pareto processes and generalized <span class="math inline">\(R\)</span>-Pareto processes have been implemented. These are based on accept-reject method or composition sampling.</p>
 <p>Let’s start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)

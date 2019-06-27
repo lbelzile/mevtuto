@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 2 Penultimate approximation | mev package tutorial</title>
+  <title>2 Penultimate approximation | mev package tutorial</title>
   <meta name="description" content="This is a short tutorial on the use of the mev R package." />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 2 Penultimate approximation | mev package tutorial" />
+  <meta property="og:title" content="2 Penultimate approximation | mev package tutorial" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="lbelzile/mevdocu" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 2 Penultimate approximation | mev package tutorial" />
+  <meta name="twitter:title" content="2 Penultimate approximation | mev package tutorial" />
   
   <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
   
@@ -161,7 +161,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="penultimate-approximation" class="section level1">
-<h1><span class="header-section-number">Section 2</span> Penultimate approximation</h1>
+<h1><span class="header-section-number">2</span> Penultimate approximation</h1>
 <p>The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of <span class="math inline">\(T \in \mathbb{N}\)</span> is the same up to a location-scale transform: if <span class="math inline">\(F \sim \mathsf{GEV}\)</span>, then there exist location and scale constants <span class="math inline">\(b \in \mathbb{R}\)</span> and <span class="math inline">\(a&gt;0\)</span> such that <span class="math inline">\(F^T(ax+b) = F(x)\)</span>. The parameters of the new distribution are easily derived: if <span class="math inline">\(X_i \stackrel{\mathrm{iid}}{\sim}\mathsf{GEV}(\mu,\sigma, \xi)\)</span>, then <span class="math inline">\(\max\{X_1, \ldots, X_T\} \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)\)</span> with <span class="math inline">\(\mu_T = \mu - \sigma(1-T^\xi)/\xi\)</span> and <span class="math inline">\(\sigma_T = \sigma T^\xi\)</span> for <span class="math inline">\(\xi \neq 0\)</span>, or <span class="math inline">\(\mu_T = \mu +\sigma \log(T)\)</span> and <span class="math inline">\(\sigma_T = \sigma\)</span> if <span class="math inline">\(\xi=0\)</span>.</p>
 <p>In practice, the GEV is fitted to data that are partitioned into <span class="math inline">\(k\)</span> blocks of (potentially random) sizes <span class="math inline">\(m_i\)</span>. We shall assume that the block sizes are all the same, so that <span class="math inline">\(m_i=m\)</span> for <span class="math inline">\(i=1,\ldots, k\)</span> and <span class="math inline">\(n = km\)</span>. The quality of the generalized extreme value approximation increases with the block size <span class="math inline">\(m\)</span>. For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.</p>
 <p>Let <span class="math inline">\(F(x)\)</span> denote a thrice-differentiable distribution function with endpoint <span class="math inline">\(x^*\)</span> and density <span class="math inline">\(f(x)\)</span> and define <span class="math inline">\(s(x)=-F(x)\log\{F(x)\}/f(x)\)</span>. The existence of the limit <span class="math inline">\(\xi_{\infty} = \lim_{n \to \infty} s&#39;\{b_n\}\)</span> is necessary and sufficient for convergence to an extreme value distribution <span class="math inline">\(G\)</span>,
