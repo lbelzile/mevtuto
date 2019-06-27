@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 4 Simulation | mev package tutorial</title>
+  <meta name="description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 4 Simulation | mev package tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="github-repo" content="lbelzile/mevdocu" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 4 Simulation | mev package tutorial" />
+  
+  <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
+  
+
+<meta name="author" content="Léo Belzile" />
+
+
+<meta name="date" content="2019-06-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="threshold-selection.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tutorial for the mev R package</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
+<li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
+<li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
+<li class="chapter" data-level="3.2" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>3.2</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="3.3" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>3.3</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="3.4" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>3.4</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="3.5" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>3.5</b> Extended generalized Pareto</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><code>mev</code> package tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simulation" class="section level1">
+<h1><span class="header-section-number">Section 4</span> Simulation</h1>
+<p>The original goal of the <code>mev</code> package was to implement the algorithm of <span class="citation">(<span class="citeproc-not-found" data-reference-id="Dombry:2015"><strong>???</strong></span>)</span> in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard <span class="math inline">\(R\)</span>-Pareto processes and generalized <span class="math inline">\(R\)</span>-Pareto processes have been implemented. These are based on accept-reject method or composition sampling.</p>
+<p>Let’s start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
+<span class="kw">set.seed</span>(<span class="dv">1234</span>)
+samp &lt;-<span class="st"> </span><span class="kw">rmev</span>(<span class="dt">n =</span> <span class="dv">1000</span>, <span class="dt">d =</span> <span class="dv">5</span>, <span class="dt">param =</span> <span class="fl">0.1</span>, <span class="dt">model =</span> <span class="st">&quot;neglog&quot;</span>) 
+<span class="kw">fit.gev</span>(<span class="kw">c</span>(samp), <span class="dt">show =</span> <span class="ot">FALSE</span>)<span class="op">$</span>estimate</code></pre>
+<pre><code>##      loc    scale    shape 
+## 0.994592 1.001284 1.035500</code></pre>
+<p>We simulate a spatial generalized <span class="math inline">\(R\)</span>-Pareto process.</p>
+<pre class="sourceCode r"><code class="sourceCode r"> lon &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">650</span>, <span class="dv">720</span>, <span class="dt">length =</span> <span class="dv">50</span>)
+ lat &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">215</span>, <span class="dv">290</span>, <span class="dt">length =</span> <span class="dv">50</span>)
+ <span class="co"># Create a grid</span>
+ grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(lon,lat)
+ coord &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(grid)
+ dianiso &lt;-<span class="st"> </span><span class="kw">distg</span>(coord, <span class="fl">1.5</span>, <span class="fl">0.5</span>)
+ sgrid &lt;-<span class="st"> </span><span class="kw">scale</span>(grid, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+ <span class="co"># Specify marginal parameters `loc` and `scale` over grid</span>
+ eta &lt;-<span class="st"> </span><span class="dv">26</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span><span class="op">*</span>sgrid[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span><span class="fl">0.16</span><span class="op">*</span>sgrid[,<span class="dv">2</span>]
+ tau &lt;-<span class="st"> </span><span class="dv">9</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span><span class="op">*</span>sgrid[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span><span class="fl">0.04</span><span class="op">*</span>sgrid[,<span class="dv">2</span>]
+ <span class="co"># Parameter matrix of Huesler--Reiss</span>
+ <span class="co"># associated to power variogram</span>
+ Lambda &lt;-<span class="st"> </span>((dianiso<span class="op">/</span><span class="dv">30</span>)<span class="op">^</span><span class="fl">0.7</span>)<span class="op">/</span><span class="dv">4</span>
+ <span class="co"># Simulate generalized max-Pareto field above u=50</span>
+ <span class="kw">set.seed</span>(<span class="dv">345</span>)
+ simu1 &lt;-<span class="st"> </span><span class="kw">rgparp</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">thresh =</span> <span class="dv">50</span>, <span class="dt">shape =</span> <span class="fl">0.1</span>, <span class="dt">riskf =</span> <span class="st">&quot;max&quot;</span>,
+                 <span class="dt">scale =</span> tau, <span class="dt">loc =</span> eta, <span class="dt">sigma =</span> Lambda, <span class="dt">model =</span> <span class="st">&quot;hr&quot;</span>)
+<span class="co"># The same, but conditional on an exceedance at a site    </span>
+simu2 &lt;-<span class="st"> </span><span class="kw">rgparp</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">thresh =</span> <span class="dv">50</span>, <span class="dt">shape =</span> <span class="fl">0.1</span>, <span class="dt">riskf =</span> <span class="st">&quot;site&quot;</span>, 
+                <span class="dt">siteindex =</span> <span class="dv">1225</span>, <span class="dt">scale =</span> tau, <span class="dt">loc =</span> eta,
+                <span class="dt">sigma =</span> Lambda, <span class="dt">model =</span> <span class="st">&quot;hr&quot;</span>)
+<span class="co">#Plot the generalized max-Pareto field</span>
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+fields<span class="op">::</span><span class="kw">quilt.plot</span>(grid[,<span class="dv">1</span>], grid[,<span class="dv">2</span>], simu1, <span class="dt">nx =</span> <span class="dv">50</span>, <span class="dt">ny =</span> <span class="dv">50</span>)
+SpatialExtremes<span class="op">::</span><span class="kw">swiss</span>(<span class="dt">add =</span> <span class="ot">TRUE</span>)
+fields<span class="op">::</span><span class="kw">quilt.plot</span>(grid[,<span class="dv">1</span>], grid[,<span class="dv">2</span>], simu2, <span class="dt">nx =</span> <span class="dv">50</span>, <span class="dt">ny =</span> <span class="dv">50</span>)
+SpatialExtremes<span class="op">::</span><span class="kw">swiss</span>(<span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/simuRgpareto-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Value at conditioning coordinate should be greater than 50</span>
+simu2[<span class="dv">1225</span>]</code></pre>
+<pre><code>## [1] 84.81661</code></pre>
+<p>The code snippet below fits a Brown–Resnick model with power variogram to simulated data from the same model (based on more than one replicate). The parameters are estimated by minimizing the squared distance between empirical cloud of pairwise conditional probability of exceedance and the theoretical one. We include geometric anisotropy in the analysis.</p>
+<pre class="sourceCode r"><code class="sourceCode r"> lon &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">650</span>, <span class="dv">720</span>, <span class="dt">length =</span> <span class="dv">10</span>)
+ lat &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">215</span>, <span class="dv">290</span>, <span class="dt">length =</span> <span class="dv">10</span>)
+ <span class="co"># Create a grid</span>
+ grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(lon,lat)
+ coord &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(grid)
+ dianiso &lt;-<span class="st"> </span><span class="kw">distg</span>(coord, <span class="fl">1.5</span>, <span class="fl">0.5</span>)
+ sgrid &lt;-<span class="st"> </span><span class="kw">scale</span>(grid, <span class="dt">scale =</span> <span class="ot">FALSE</span>)
+ <span class="co"># Specify marginal parameters `loc` and `scale` over grid</span>
+ eta &lt;-<span class="st"> </span><span class="dv">26</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span><span class="op">*</span>sgrid[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span><span class="fl">0.16</span><span class="op">*</span>sgrid[,<span class="dv">2</span>]
+ tau &lt;-<span class="st"> </span><span class="dv">9</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.05</span><span class="op">*</span>sgrid[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span><span class="fl">0.04</span><span class="op">*</span>sgrid[,<span class="dv">2</span>]
+ <span class="co"># Parameter matrix of Huesler--Reiss</span>
+ <span class="co"># associated to power variogram</span>
+ Lambda &lt;-<span class="st"> </span>((dianiso<span class="op">/</span><span class="dv">30</span>)<span class="op">^</span><span class="fl">0.7</span>)<span class="op">/</span><span class="dv">4</span>
+ <span class="co"># Simulate generalized max-Pareto field above u=50</span>
+ <span class="kw">set.seed</span>(<span class="dv">345</span>)
+ simu1 &lt;-<span class="st"> </span><span class="kw">rgparp</span>(<span class="dt">n =</span> <span class="dv">1000</span>, <span class="dt">thresh =</span> <span class="dv">50</span>, <span class="dt">shape =</span> <span class="fl">0.1</span>, <span class="dt">riskf =</span> <span class="st">&quot;max&quot;</span>,
+                 <span class="dt">scale =</span> tau, <span class="dt">loc =</span> eta, <span class="dt">sigma =</span> Lambda, <span class="dt">model =</span> <span class="st">&quot;hr&quot;</span>)
+ extdat &lt;-<span class="st"> </span><span class="kw">extremo</span>(<span class="dt">dat =</span> simu1, <span class="dt">margp =</span> <span class="fl">0.9</span>, <span class="dt">coord =</span> coord,
+                   <span class="dt">scale =</span> <span class="fl">1.5</span>, <span class="dt">rho =</span> <span class="fl">0.5</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/fitvariocloud-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="co"># Constrained optimization</span>
+ <span class="co"># Minimize distance between extremal coefficient from fitted variogram</span>
+ mindistpvario &lt;-<span class="st"> </span><span class="cf">function</span>(par, emp, coord){
+ alpha &lt;-<span class="st"> </span>par[<span class="dv">1</span>]; <span class="cf">if</span>(<span class="op">!</span><span class="kw">isTRUE</span>(<span class="kw">all</span>(alpha <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, alpha <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>))){<span class="kw">return</span>(<span class="fl">1e10</span>)}
+ scale &lt;-<span class="st"> </span>par[<span class="dv">2</span>]; <span class="cf">if</span>(scale <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
+ a &lt;-<span class="st"> </span>par[<span class="dv">3</span>]; <span class="cf">if</span>(a<span class="op">&lt;</span><span class="dv">1</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
+ rho &lt;-<span class="st"> </span>par[<span class="dv">4</span>]; <span class="cf">if</span>(<span class="kw">abs</span>(rho) <span class="op">&gt;=</span><span class="st"> </span>pi<span class="op">/</span><span class="dv">2</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
+ semivariomat &lt;-<span class="st"> </span>mgp<span class="op">::</span><span class="kw">power.vario</span>(<span class="kw">distg</span>(coord, a, rho), <span class="dt">alpha =</span> alpha, <span class="dt">scale =</span> scale)
+   <span class="kw">sum</span>((<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">sqrt</span>(semivariomat[<span class="kw">lower.tri</span>(semivariomat)]<span class="op">/</span><span class="dv">2</span>))) <span class="op">-</span><span class="st"> </span>emp)<span class="op">^</span><span class="dv">2</span>)
+ }
+ <span class="co"># constrained optimization for the parameters</span>
+ hin &lt;-<span class="st"> </span><span class="cf">function</span>(par, ...){
+   <span class="kw">c</span>(<span class="fl">1.99</span><span class="op">-</span>par[<span class="dv">1</span>], <span class="fl">-1e-5</span> <span class="op">+</span><span class="st"> </span>par[<span class="dv">1</span>],
+     <span class="fl">-1e-5</span> <span class="op">+</span><span class="st"> </span>par[<span class="dv">2</span>],
+     par[<span class="dv">3</span>]<span class="op">-</span><span class="dv">1</span>,
+     pi<span class="op">/</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>par[<span class="dv">4</span>],
+     par[<span class="dv">4</span>]<span class="op">+</span>pi<span class="op">/</span><span class="dv">2</span>)
+   }
+ opt &lt;-<span class="st"> </span>alabama<span class="op">::</span><span class="kw">auglag</span>(<span class="dt">par =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">30</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span>),
+                        <span class="dt">hin =</span> hin, <span class="dt">control.optim =</span> <span class="kw">list</span>(<span class="dt">parscale =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">30</span>, <span class="fl">1.5</span>, <span class="fl">0.5</span>)),
+                         <span class="dt">fn =</span> <span class="cf">function</span>(par){
+                           <span class="kw">mindistpvario</span>(par, <span class="dt">emp =</span> extdat[,<span class="st">&#39;prob&#39;</span>], <span class="dt">coord =</span> coord)})</code></pre>
+<pre><code>## Min(hin):  0.49999 
+## Outer iteration:  1 
+## Min(hin):  0.49999 
+## par:  0.5 30 1.5 0.5 
+## fval =   77.37 
+##  
+## Outer iteration:  2 
+## Min(hin):  0.3992261 
+## par:  0.668296 74.8862 1.39923 0.556808 
+## fval =   6.52 
+##  
+## Outer iteration:  3 
+## Min(hin):  0.3992502 
+## par:  0.668285 74.8855 1.39925 0.556807 
+## fval =   6.52 
+## </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">stopifnot</span>(opt<span class="op">$</span>kkt1, opt<span class="op">$</span>kkt2)
+ <span class="co"># Plotting the extremogram in the deformed space</span>
+ distfa &lt;-<span class="st"> </span><span class="kw">distg</span>(<span class="dt">loc =</span> coord, opt<span class="op">$</span>par[<span class="dv">3</span>], opt<span class="op">$</span>par[<span class="dv">4</span>])
+ <span class="kw">plot</span>(<span class="kw">c</span>(distfa[<span class="kw">lower.tri</span>(distfa)]), extdat[,<span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">20</span>,
+ <span class="dt">col =</span> scales<span class="op">::</span><span class="kw">alpha</span>(<span class="dv">1</span>,<span class="fl">0.1</span>), <span class="dt">yaxs =</span> <span class="st">&quot;i&quot;</span>, <span class="dt">xaxs =</span> <span class="st">&quot;i&quot;</span>, <span class="dt">bty =</span> <span class="st">&#39;l&#39;</span>,
+      <span class="dt">xlab =</span> <span class="st">&quot;distance&quot;</span>, <span class="dt">ylab=</span> <span class="st">&quot;cond. prob. of exceedance&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))
+ <span class="kw">lines</span>(<span class="dt">x =</span> (distvec &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>, <span class="dt">length =</span> <span class="dv">1000</span>)), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">lwd =</span> <span class="dv">2</span>,
+       <span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">sqrt</span>(<span class="kw">power.vario</span>(distvec, <span class="dt">alpha =</span> opt<span class="op">$</span>par[<span class="dv">1</span>], <span class="dt">scale =</span> opt<span class="op">$</span>par[<span class="dv">2</span>])<span class="op">/</span><span class="dv">2</span>))))</code></pre>
+<p><img src="mevtuto_files/figure-html/fitvariocloud-2.png" width="672" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="threshold-selection.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["mevtuto.pdf", "mevtuto.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 Penultimate approximation | mev package tutorial</title>
+  <meta name="description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 Penultimate approximation | mev package tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="github-repo" content="lbelzile/mevdocu" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 Penultimate approximation | mev package tutorial" />
+  
+  <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
+  
+
+<meta name="author" content="Léo Belzile" />
+
+
+<meta name="date" content="2019-06-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="univariate-peaks-over-threshold-analysis.html">
+<link rel="next" href="threshold-selection.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tutorial for the mev R package</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
+<li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
+<li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
+<li class="chapter" data-level="3.2" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>3.2</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="3.3" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>3.3</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="3.4" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>3.4</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="3.5" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>3.5</b> Extended generalized Pareto</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><code>mev</code> package tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="penultimate-approximation" class="section level1">
+<h1><span class="header-section-number">Section 2</span> Penultimate approximation</h1>
+<p>The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of <span class="math inline">\(T \in \mathbb{N}\)</span> is the same up to a location-scale transform: if <span class="math inline">\(F \sim \mathsf{GEV}\)</span>, then there exist location and scale constants <span class="math inline">\(b \in \mathbb{R}\)</span> and <span class="math inline">\(a&gt;0\)</span> such that <span class="math inline">\(F^T(ax+b) = F(x)\)</span>. The parameters of the new distribution are easily derived: if <span class="math inline">\(X_i \stackrel{\mathrm{iid}}{\sim}\mathsf{GEV}(\mu,\sigma, \xi)\)</span>, then <span class="math inline">\(\max\{X_1, \ldots, X_T\} \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)\)</span> with <span class="math inline">\(\mu_T = \mu - \sigma(1-T^\xi)/\xi\)</span> and <span class="math inline">\(\sigma_T = \sigma T^\xi\)</span> for <span class="math inline">\(\xi \neq 0\)</span>, or <span class="math inline">\(\mu_T = \mu +\sigma \log(T)\)</span> and <span class="math inline">\(\sigma_T = \sigma\)</span> if <span class="math inline">\(\xi=0\)</span>.</p>
+<p>In practice, the GEV is fitted to data that are partitioned into <span class="math inline">\(k\)</span> blocks of (potentially random) sizes <span class="math inline">\(m_i\)</span>. We shall assume that the block sizes are all the same, so that <span class="math inline">\(m_i=m\)</span> for <span class="math inline">\(i=1,\ldots, k\)</span> and <span class="math inline">\(n = km\)</span>. The quality of the generalized extreme value approximation increases with the block size <span class="math inline">\(m\)</span>. For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.</p>
+<p>Let <span class="math inline">\(F(x)\)</span> denote a thrice-differentiable distribution function with endpoint <span class="math inline">\(x^*\)</span> and density <span class="math inline">\(f(x)\)</span> and define <span class="math inline">\(s(x)=-F(x)\log\{F(x)\}/f(x)\)</span>. The existence of the limit <span class="math inline">\(\xi_{\infty} = \lim_{n \to \infty} s&#39;\{b_n\}\)</span> is necessary and sufficient for convergence to an extreme value distribution <span class="math inline">\(G\)</span>,
+<span class="math display">\[\begin{align*}
+ \lim_{n \to \infty} F^n(a_nx+b_n) = \exp\left\{-(1+\xi_\infty x)^{-1/\xi_\infty}\right\}=G(x).
+\end{align*}\]</span></p>
+<p> shows that, for any <span class="math inline">\(x \in \{y:1+\xi_\infty y &gt;0\}\)</span>, there exists <span class="math inline">\(z\)</span> such that
+<span class="math display">\[\begin{align*}
+   \frac{-\log[F\{v+xs(v)\}]}{-\log\{F(v)\}} = \left\{1+xs&#39;(z)\right\}^{-1/s&#39;(z)}, \qquad v &lt; z &lt; v+xs(v).
+\end{align*}\]</span>
+For each <span class="math inline">\(n \geq 1\)</span>, setting <span class="math inline">\(v=b_n\)</span> and <span class="math inline">\(a_n=s(b_n)\)</span> yields
+<span class="math display">\[\begin{align*}
+   F^n(a_nx+b_n)=\exp\left[-\left\{1+s&#39;(z)x\right\}^{-1/s&#39;(z)}\right] + \bigO(n^{-1})
+\end{align*}\]</span>
+for <span class="math inline">\(z \in [\min(a_nx+b_n, b_n), \max(a_nx+b_n, b_n)]\)</span>, depending on the support of <span class="math inline">\(F\)</span>. The ultimate approximation replaces <span class="math inline">\(s&#39;(z)\)</span> by <span class="math inline">\(s&#39;(x^*)=\xi_{\infty}\)</span>, whereas  suggests instead suggests taking <span class="math inline">\(s&#39;(b_n)\)</span>, which is closer to <span class="math inline">\(s&#39;(a_nx+b_n)\)</span> than is <span class="math inline">\(s&#39;(x^*)\)</span>.</p>
+<p>The maximum likelihood estimate of the shape should change as the threshold or the block size increases. Consider for simplicity yearly maxima arising from blocking <span class="math inline">\(m=n_y\)</span> observations per year. We are interested in the distribution of the maximum of <span class="math inline">\(N\)</span> years and thus the target has roughly shape <span class="math inline">\(\xi_{Nn_y}\)</span>, but our estimates will instead give approximately <span class="math inline">\(\xi_{n_y}\)</span>; an extrapolation error arises from this mismatch between the shape values, which would be constant if the observations were truly max-stable. The curvature of <span class="math inline">\(s&#39;\)</span> determines how stable the estimates of <span class="math inline">\(\xi_t\)</span> are when the extrapolation window increases.</p>
+<p>We illustrate the previous discussion by looking at block maximum from a log-normal distribution.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+x  &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dt">length=</span><span class="dv">200</span>)
+fitted &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">replicate</span>(<span class="dt">n =</span> <span class="dv">1000</span>, 
+                      <span class="kw">fit.gev</span>(<span class="kw">apply</span>(<span class="kw">matrix</span>(<span class="kw">rlnorm</span>(<span class="dv">30</span><span class="op">*</span><span class="dv">100</span>), <span class="dt">ncol=</span> <span class="dv">30</span>), <span class="dv">1</span>, max),
+                                        <span class="dt">method =</span> <span class="st">&quot;BFGS&quot;</span>)<span class="op">$</span>est))
+penult.bm.lnorm &lt;-<span class="st"> </span>mev<span class="op">::</span><span class="kw">smith.penult</span>(<span class="dt">model =</span> <span class="st">&quot;bm&quot;</span>, <span class="dt">m =</span> (m &lt;-<span class="st"> </span><span class="dv">30</span>), <span class="dt">family =</span> <span class="st">&quot;lnorm&quot;</span>)
+
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>))
+<span class="kw">hist</span>(fitted[,<span class="dv">3</span>], <span class="dt">probability =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> <span class="dv">20</span>, 
+     <span class="dt">xlab =</span> <span class="st">&quot;Estimated shape&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)
+<span class="kw">segments</span>(<span class="dt">y0 =</span> <span class="fl">-0.5</span>, <span class="dt">y1 =</span> <span class="dv">0</span>, <span class="dt">x0 =</span> penult.bm.lnorm<span class="op">$</span>shape, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+<span class="kw">segments</span>(<span class="dt">y0 =</span> <span class="fl">-0.5</span>, <span class="dt">y1 =</span> <span class="dv">0</span>, <span class="dt">x0 =</span> <span class="dv">0</span>, <span class="dt">col =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)
+
+p30 &lt;-<span class="st"> </span>penult.bm.lnorm
+x =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>, <span class="dt">length =</span> <span class="dv">400</span>)
+N &lt;-<span class="st"> </span><span class="dv">1000</span>; N30 =<span class="st"> </span>N<span class="op">/</span><span class="dv">30</span>
+<span class="kw">plot</span>(x, N<span class="op">*</span><span class="kw">exp</span>((N<span class="dv">-1</span>)<span class="op">*</span><span class="kw">plnorm</span>(x, <span class="dt">log.p=</span><span class="ot">TRUE</span>))<span class="op">*</span>
+<span class="st">       </span><span class="kw">dlnorm</span>(x), 
+     <span class="dt">type=</span><span class="st">&quot;l&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.1</span>),
+     <span class="dt">xlab=</span><span class="st">&quot;x&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Density&quot;</span>)
+<span class="co"># Get parameters of maximum of N GEV</span>
+maxstabp &lt;-<span class="st"> </span><span class="cf">function</span>(loc, scale, shape, N){
+   <span class="cf">if</span>(<span class="op">!</span><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(shape, <span class="dv">0</span>, <span class="dt">check.attributes =</span> <span class="ot">FALSE</span>))){
+      mut &lt;-<span class="st"> </span>loc <span class="op">-</span><span class="st"> </span>scale<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>N<span class="op">^</span>shape)<span class="op">/</span>shape
+      sigmat =<span class="st"> </span>scale<span class="op">*</span>N<span class="op">^</span>shape
+      <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">loc =</span> mut, <span class="dt">scale =</span> sigmat, <span class="dt">shape =</span> shape))
+   } <span class="cf">else</span>{
+      mut &lt;-<span class="st"> </span>loc <span class="op">+</span><span class="st"> </span>scale<span class="op">*</span><span class="kw">log</span>(N)
+       <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">loc =</span> mut, <span class="dt">scale =</span> scale, <span class="dt">shape =</span> shape))
+   }
+ }
+p30e &lt;-<span class="st"> </span><span class="kw">maxstabp</span>(<span class="dt">loc =</span> p30<span class="op">$</span>loc, <span class="dt">scale =</span> p30<span class="op">$</span>scale, <span class="dt">shape =</span> p30<span class="op">$</span>shape, <span class="dt">N =</span> N30)
+<span class="kw">lines</span>(x, evd<span class="op">::</span><span class="kw">dgev</span>(x, <span class="dt">loc =</span> p30e[<span class="st">&#39;loc&#39;</span>],
+              <span class="dt">scale =</span> p30e[<span class="st">&#39;scale&#39;</span>], 
+              <span class="dt">shape =</span> p30e[<span class="st">&#39;shape&#39;</span>]), 
+      <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)
+p30l &lt;-<span class="st"> </span><span class="kw">maxstabp</span>(<span class="dt">loc =</span> p30<span class="op">$</span>loc, <span class="dt">scale =</span> p30<span class="op">$</span>scale, <span class="dt">shape =</span> <span class="dv">0</span>, <span class="dt">N =</span> N30)
+<span class="kw">lines</span>(x, evd<span class="op">::</span><span class="kw">dgev</span>(x, 
+                   <span class="dt">loc =</span> p30e[<span class="st">&#39;loc&#39;</span>], 
+                   <span class="dt">scale =</span> p30l[<span class="st">&#39;scale&#39;</span>], 
+                   <span class="dt">shape =</span> <span class="dv">0</span>), <span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">3</span>, <span class="dt">lwd=</span><span class="dv">1</span>)
+<span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topright&quot;</span>, 
+       <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;exact&quot;</span>,<span class="st">&quot;ultimate&quot;</span>, <span class="st">&quot;penultimate&quot;</span>), 
+       <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>), 
+       <span class="dt">lwd =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, 
+       <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>))</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The left panel illustrates how maximum likelihood estimates of the parameters for repeated samples from a log-normal distribution are closer to the penultimate approximation than to the limiting tail index <span class="math inline">\(\xi_{\infty}=0\)</span>. Using max-stability, we could get an estimate of the distribution of the maximum of <span class="math inline">\(Nn_y\)</span> observations. In this case, the penultimate shape for <span class="math inline">\(m=1000\)</span> is approximately <span class="math inline">\(\xi_{1000}=0.215\)</span>, compared to <span class="math inline">\(\xi_{30} \approx 0.284\)</span>, which is far from the limiting value <span class="math inline">\(\xi_{\infty}=0\)</span>. The extrapolated density estimate is based on <span class="math inline">\(F_1^{1000/30}\)</span>, the generalized extreme value density associated to the distribution function of the penultimate approximation <span class="math inline">\(F_1^{1000/30}\)</span>, with <span class="math inline">\(F_1 \sim\mathsf{GEV}(a_{30}, b_{30}, \xi_{30})\)</span>. The penultimate approximation <span class="math inline">\(F_2\)</span> is more accurate than the ultimate approximation <span class="math inline">\(\mathsf{GEV}(a_{30}, b_{30}, \xi_\infty)\)</span>, which is too short tailed.</p>
+<p>The function <code>smith.penult</code> computes the penultimate approximation for parameter models in <strong>R</strong> for the distribution assuming a model <code>family</code> with arguments <code>dfamily</code>, <code>qfamily</code> and <code>pfamily</code> exist. It returns the penultimate parameters for a given block size or quantile in case of threshold models. These functions are particularly useful for simulation studies in which one wants to obtain an approximation for <span class="math inline">\(F^N\)</span> for large <span class="math inline">\(N\)</span>, to get an approximation to the asymptotic distribution of a test statistic for finite <span class="math inline">\(N\)</span>; the <span class="math inline">\(\mathsf{GEV}\)</span> penultimate approximation is more numerically stable for certain models and its moments and cumulants are easily derived.</p>
+<p>The following plot illustrates the penultimate shape parameter for the normal distribution based on threshold exceedances. In finite samples, the upper tail is bounded, but the quality of the approximation by the Gumbel distribution increases as <span class="math inline">\(u \to \infty\)</span>, albeit very slowly.</p>
+<pre class="sourceCode r"><code class="sourceCode r">penult &lt;-<span class="st"> </span><span class="kw">smith.penult</span>(<span class="dt">family =</span> <span class="st">&quot;norm&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;pot&quot;</span>, 
+                       <span class="dt">u =</span> <span class="kw">qnorm</span>(u &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.8</span>, <span class="fl">0.9999</span>, <span class="dt">by =</span> <span class="fl">0.0001</span>))) 
+<span class="kw">plot</span>(u, penult<span class="op">$</span>shape, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">xlab=</span><span class="st">&#39;Quantile&#39;</span>, <span class="dt">ylab=</span><span class="st">&#39;Penultimate shape&#39;</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="univariate-peaks-over-threshold-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="threshold-selection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["mevtuto.pdf", "mevtuto.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

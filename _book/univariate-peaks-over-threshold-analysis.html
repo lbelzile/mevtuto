@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 1 Univariate peaks-over-threshold analysis | mev package tutorial</title>
+  <meta name="description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 1 Univariate peaks-over-threshold analysis | mev package tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="github-repo" content="lbelzile/mevdocu" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 1 Univariate peaks-over-threshold analysis | mev package tutorial" />
+  
+  <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
+  
+
+<meta name="author" content="Léo Belzile" />
+
+
+<meta name="date" content="2019-06-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="penultimate-approximation.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tutorial for the mev R package</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
+<li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
+<li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
+<li class="chapter" data-level="3.2" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>3.2</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="3.3" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>3.3</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="3.4" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>3.4</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="3.5" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>3.5</b> Extended generalized Pareto</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><code>mev</code> package tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="univariate-peaks-over-threshold-analysis" class="section level1">
+<h1><span class="header-section-number">Section 1</span> Univariate peaks-over-threshold analysis</h1>
+<p>This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
+<span class="kw">library</span>(lubridate, <span class="dt">quietly =</span> <span class="ot">TRUE</span>, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
+
+<span class="kw">data</span>(<span class="st">&quot;maiquetia&quot;</span>)
+day &lt;-<span class="st"> </span><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1961-01-01&quot;</span>), 
+                <span class="dt">to =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1999-12-31&quot;</span>), <span class="dt">by =</span> <span class="st">&quot;day&quot;</span>)
+<span class="co"># Keep non-zero rainfall, exclude 1999 observations</span>
+nzrain &lt;-<span class="st"> </span>maiquetia[<span class="kw">year</span>(day) <span class="op">&lt;</span><span class="st"> </span><span class="dv">1999</span> <span class="op">&amp;</span><span class="st"> </span>maiquetia <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]</code></pre>
+<p>We will ignore temporal dependence and stationarity, but these should be considered.
+The first step in our analysis is to choose a threshold. We select candidates based on quantiles and test whether they lead to stable inference.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ths &lt;-<span class="st"> </span><span class="kw">quantile</span>(nzrain, <span class="kw">seq</span>(<span class="fl">0.9</span>, <span class="fl">0.99</span>, <span class="dt">length.out =</span> <span class="dv">15</span>))
+<span class="co"># Threshold selection diagnostics</span>
+<span class="kw">W.diag</span>(<span class="dt">xdat =</span> nzrain, <span class="dt">model =</span> <span class="st">&quot;nhpp&quot;</span>, <span class="dt">plots =</span> <span class="kw">c</span>(<span class="st">&quot;WN&quot;</span>,<span class="st">&quot;PS&quot;</span>), <span class="dt">u =</span> ths)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">NC.diag</span>(nzrain, <span class="dt">u =</span> ths)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p>Threshold selection diagnostics indicate that the shape is more or less constant over the range of threshold considered. Wadsworth’s white noise sequence yields a very large residual around <span class="math inline">\(u=20\)</span>, but the Northrop–Coleman score test yields <span class="math inline">\(P\)</span>-value path above 0.2 for every threshold under consideration.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fit using maximum likelihood estimation</span>
+gpdf &lt;-<span class="st"> </span><span class="kw">fit.gpd</span>(nzrain, <span class="dt">threshold =</span> <span class="dv">20</span>, <span class="dt">show =</span> <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## Method: Grimshaw 
+## Log-likelihood: -832.629 
+## 
+## Threshold: 20 
+## Number Above: 216 
+## Proportion Above: 0.0604 
+## 
+## Estimates
+##   scale    shape  
+## 15.5800   0.1088  
+## 
+## Standard Errors
+##   scale    shape  
+## 1.60673  0.07785  
+## 
+## Optimization Information
+##   Convergence: successful</code></pre>
+<p>The default optimization routine for the generalized Pareto distribution is
+Grimshaw’s method, which profiles out the likelihood. The method is almost guaranteed to converge. Because of non-regularity, the maximum likelihood estimator for <span class="math inline">\(\xi &lt; -1\)</span> does not solve the score equation and leads to infinite log-likelihood, hence the maximum returned lies on the boundary. The standard errors are based on the inverse observed information matrix and provided only if <span class="math inline">\(\xi&gt;-1/2\)</span>. We can verify that our maximum likelihood estimate is indeed a maximum by checking if it solves the score equation if <span class="math inline">\(\hat{\xi}&gt;-1\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(
+  <span class="kw">gpd.score</span>(gpdf<span class="op">$</span>estimate, <span class="dt">dat =</span> gpdf<span class="op">$</span>exceedances),
+  <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">tolerance =</span> <span class="fl">1e-5</span>))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>If the sample is small, maximum likelihood estimators are biased for the generalized Pareto distribution (the shape parameter is negatively biased, regardless of the true value for <span class="math inline">\(\xi\)</span>). Bias correction methods includes the modified score of Firth, but the default method is the implicit correction (<code>subtract</code>), which solves the
+implicit equation
+<span class="math display">\[\begin{align}
+   \boldsymbol{\tilde{\theta}}=\hat{\boldsymbol{\theta}}-\boldsymbol{b}(\tilde{\boldsymbol{\theta}}). \label{eq:implbias}
+\end{align}\]</span>
+The point estimate <span class="math inline">\(\boldsymbol{\tilde{\theta}}\)</span> is obtained numerically as the root of this nonlinear system of
+equations. In the present case, the sample size is large and hence the first-order correction, derived through asymptotic arguments from the generalized Pareto distribution likelihood, is small. Note that the bias correction requires <span class="math inline">\(\xi &gt; -1/3\)</span>, since it is based on third-order cumulants of the distribution.</p>
+<pre class="sourceCode r"><code class="sourceCode r">gpdbcor &lt;-<span class="st"> </span><span class="kw">gpd.bcor</span>(<span class="dt">dat =</span> gpdf<span class="op">$</span>exceedances, <span class="dt">par =</span> gpdf<span class="op">$</span>estimate)
+<span class="co">#print the differences between MLE and bias-corrected estimates</span>
+gpdf<span class="op">$</span>estimate <span class="op">-</span><span class="st"> </span>gpdbcor</code></pre>
+<pre><code>##      scale      shape 
+##  0.1915284 -0.0118876</code></pre>
+<p>The package includes some default diagnostic plots (probability-probability plots and quantile-quantile plots), which include approximate confidence intervals based on order statistics. We can also get profile likelihood and profile-based confidence intervals for most quantities of interest (parameters of the generalized Pareto distribution, excepted shortfall, return levels, <span class="math inline">\(N\)</span>-observation maxima mean and quantiles). The example below gives the estimated profile for the median of the centenial maximum distribution conditional on exceeding 15, along with 95% confidence intervals.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gpdf, <span class="dt">which =</span> <span class="dv">2</span>) <span class="co">#Q-Q plot</span></code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Profile of median of maxima of 100 years</span>
+profile &lt;-<span class="st"> </span><span class="kw">gpd.pll</span>(<span class="dt">param =</span> <span class="st">&quot;Nquant&quot;</span>, <span class="dt">dat =</span> nzrain, <span class="dt">threshold =</span> <span class="dv">15</span>, 
+        <span class="dt">N =</span> <span class="kw">length</span>(nzrain)<span class="op">/</span>(<span class="dv">1998-1961</span>)<span class="op">*</span><span class="dv">100</span>, <span class="dt">q =</span> <span class="fl">0.5</span>)
+<span class="co"># 95% confidence intervals</span>
+conf &lt;-<span class="st"> </span><span class="kw">confint</span>(profile, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre><code>## Point estimate for the parameter of interest psi:
+## Maximum likelihood          : 320.622 
+## 
+## Confidence intervals, levels : 0.025 0.975 
+## Wald intervals               : 118.72 522.524 
+## Profile likelihood           : 177.214 741.869</code></pre>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="penultimate-approximation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["mevtuto.pdf", "mevtuto.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

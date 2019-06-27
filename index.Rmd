@@ -1,0 +1,59 @@
+--- 
+title: "`mev` package tutorial"
+author: "Léo Belzile"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook:
+    highlight: tango
+  bookdown::pdf_book:
+    includes:
+      in_header: preamble.tex
+documentclass: book
+header-includes:
+  - \usepackage{amsmath,amssymb,mathtools,enumerate,booktabs}
+bibliography: [biblio.bib]
+biblio-style: apalike2
+link-citations: yes
+github-repo: lbelzile/mevdocu
+always_allow_html: yes
+description: "This is a short tutorial on the use of the `mev` R package."
+---
+# Preliminary remarks {-}
+
+The `mev` package bundles routine for 
+- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and $r$-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many recent threshold selection diagnostics that have appeared in the literature are implemented. 
+
+The second includes multivaraite diagnostics (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.
+
+Last, but not least, the package includes functions to simulate from multivariate max-stable vectors in dimension $d\geq 2$, including extensions of most of the families in the `evd` package. The package also includes simulation algorithms for $R$-Pareto processes using accept-reject and composition sampling, and accept-reject for generalized $R$-Pareto processes.
+
+
+You can install the latest version of the package (`v.1.12`) directly from CRAN via
+
+```{r, eval = FALSE}
+install.packages("mev")
+```
+
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\Hmat}{\mathbf{H}}
+\newcommand{\Mmat}{\mathbf{M}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\bX}{{\mathbf{X}}}
+\newcommand{\bx}{{\mathbf{x}}}
+\newcommand{\by}{{\boldsymbol{y}}}
+\newcommand{\bY}{{\boldsymbol{Y}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\hbb}{\hat{\boldsymbol{\beta}}}
+\newcommand{\limni}{\lim_{n \ra \infty}}
+\newcommand{\Sp}{\mathscr{S}}
+\newcommand{\E}[2][]{{\mathsf E}_{#1}\left(#2\right)}
+\newcommand{\Va}[2][]{{\mathsf{Var}_{#1}}\left(#2\right)}
+\newcommand{\I}[1]{{\mathbf 1}_{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Cn}{\textsf{No}}
+\newcommand{\simiid}{\stackrel{\mathrm{iid}}{\sim}}
