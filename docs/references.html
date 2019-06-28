@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-27" />
+<meta name="date" content="2019-06-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,7 +67,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -129,7 +129,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
+<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
 <li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
 <li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
@@ -163,6 +165,41 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
 
+<div id="refs" class="references">
+<div>
+<p>Coles, Stuart. 2001. <em>An Introduction to Statistical Modeling of Extreme Values</em>. London: Springer–Verlag.</p>
+</div>
+<div>
+<p>Davison, A. C., and R. L. Smith. 1990. “Models for Exceedances over High Thresholds (with Discussion).” <em>Journal of the Royal Statistical Society. Series B. (Methodological)</em> 52 (3): 393–442. <a href="http://www.jstor.org/stable/2345667">http://www.jstor.org/stable/2345667</a>.</p>
+</div>
+<div>
+<p>Dombry, Clément, Sebastian Engelke, and Marco Oesting. 2016. “Exact Simulation of Max-Stable Processes.” <em>Biometrika</em> 103 (2): 303–17. <a href="https://doi.org/10.1093/biomet/asw008">https://doi.org/10.1093/biomet/asw008</a>.</p>
+</div>
+<div>
+<p>Dupuis, D. J. 1999. “Exceedances over High Thresholds: A Guide to Threshold Selection.” <em>Extremes</em> 1 (3): 251–61. <a href="https://doi.org/10.1023/A:1009914915709">https://doi.org/10.1023/A:1009914915709</a>.</p>
+</div>
+<div>
+<p>Northrop, Paul J., and Claire L. Coleman. 2014. “Improved Threshold Diagnostic Plots for Extreme Value Analyses.” <em>Extremes</em> 17 (2): 289–303. <a href="https://doi.org/10.1007/s10687-014-0183-z">https://doi.org/10.1007/s10687-014-0183-z</a>.</p>
+</div>
+<div>
+<p>Papastathopoulos, Ioannis, and Jonathan A. Tawn. 2013. “Extended Generalised Pareto Models for Tail Estimation.” <em>Journal of Statistical Planning and Inference</em> 143 (1): 131–43. <a href="https://doi.org/http://dx.doi.org/10.1016/j.jspi.2012.07.001">https://doi.org/http://dx.doi.org/10.1016/j.jspi.2012.07.001</a>.</p>
+</div>
+<div>
+<p>Scarrott, Carl, and Anna MacDonald. 2012. “A Review of Extreme-Value Threshold Estimation and Uncertainty Quantification.” <em>REVSTAT – Statistical Journal</em> 10 (1): 33–60. <a href="#https://www.ine.pt/revstat/pdf/rs120102.pdf#">#https://www.ine.pt/revstat/pdf/rs120102.pdf#</a>.</p>
+</div>
+<div>
+<p>Smith, Richard L. 1987. “Approximations in Extreme Value Theory.” Edited by University of North Carolina Chapel Hill Center for Stochastic Processes. <a href="https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0">https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0</a>.</p>
+</div>
+<div>
+<p>Wadsworth, J. L. 2016. “Exploiting Structure of Maximum Likelihood Estimators for Extreme Value Threshold Selection.” <em>Technometrics</em> 58 (1): 116–26. <a href="https://doi.org/10.1080/00401706.2014.998345">https://doi.org/10.1080/00401706.2014.998345</a>.</p>
+</div>
+<div>
+<p>Wadsworth, J. L., and J. A. Tawn. 2012. “Likelihood-Based Procedures for Threshold Diagnostics and Uncertainty in Extreme Value Modelling.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 74 (3): 543–67. <a href="https://doi.org/10.1111/j.1467-9868.2011.01017.x">https://doi.org/10.1111/j.1467-9868.2011.01017.x</a>.</p>
+</div>
+<div>
+<p>White, Halbert. 1982. “Maximum Likelihood Estimation of Misspecified Models.” <em>Econometrica</em> 50 (1): 1–25. <a href="http://www.jstor.org/stable/1912526">http://www.jstor.org/stable/1912526</a>.</p>
+</div>
+</div>
 </div>
             </section>
 

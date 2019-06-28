@@ -24,7 +24,7 @@ description: "This is a short tutorial on the use of the `mev` R package."
 The `mev` package bundles routine for 
 - likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and $r$-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many recent threshold selection diagnostics that have appeared in the literature are implemented. 
 
-The second includes multivaraite diagnostics (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.
+The second includes multivariate goodness-of-fit diagnostics and tests (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.
 
 Last, but not least, the package includes functions to simulate from multivariate max-stable vectors in dimension $d\geq 2$, including extensions of most of the families in the `evd` package. The package also includes simulation algorithms for $R$-Pareto processes using accept-reject and composition sampling, and accept-reject for generalized $R$-Pareto processes.
 
@@ -57,3 +57,5 @@ install.packages("mev")
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Cn}{\textsf{No}}
 \newcommand{\simiid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\bigO}{\mathrm{O}}
+\newcommand{\rp}{\mathrm{p}}

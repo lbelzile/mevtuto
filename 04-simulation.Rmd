@@ -1,6 +1,6 @@
 # Simulation
 
-The original goal of the `mev` package was to implement the algorithm of @Dombry:2015 in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard $R$-Pareto processes and generalized $R$-Pareto processes have been implemented. These are based on accept-reject method or composition sampling. 
+The original goal of the `mev` package was to implement the algorithm of @Dombry:2016 in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard $R$-Pareto processes and generalized $R$-Pareto processes have been implemented. These are based on accept-reject method or composition sampling. 
 
 Let's start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.
 
@@ -13,7 +13,7 @@ fit.gev(c(samp), show = FALSE)$estimate
 
 We simulate a spatial generalized $R$-Pareto process.
 
-```{r simuRgpareto,cache = TRUE} 
+```{r simuRgpareto, cache = TRUE} 
  lon <- seq(650, 720, length = 50)
  lat <- seq(215, 290, length = 50)
  # Create a grid

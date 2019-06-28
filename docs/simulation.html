@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-27" />
+<meta name="date" content="2019-06-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,7 +67,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -129,7 +129,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
+<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
 <li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
 <li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
@@ -162,7 +164,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="simulation" class="section level1">
 <h1><span class="header-section-number">4</span> Simulation</h1>
-<p>The original goal of the <code>mev</code> package was to implement the algorithm of <span class="citation">(<span class="citeproc-not-found" data-reference-id="Dombry:2015"><strong>???</strong></span>)</span> in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard <span class="math inline">\(R\)</span>-Pareto processes and generalized <span class="math inline">\(R\)</span>-Pareto processes have been implemented. These are based on accept-reject method or composition sampling.</p>
+<p>The original goal of the <code>mev</code> package was to implement the algorithm of <span class="citation">Dombry, Engelke, and Oesting (<a href="#ref-Dombry:2016" role="doc-biblioref">2016</a>)</span> in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard <span class="math inline">\(R\)</span>-Pareto processes and generalized <span class="math inline">\(R\)</span>-Pareto processes have been implemented. These are based on accept-reject method or composition sampling.</p>
 <p>Let’s start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
 <span class="kw">set.seed</span>(<span class="dv">1234</span>)
@@ -271,6 +273,12 @@ simu2[<span class="dv">1225</span>]</code></pre>
        <span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">sqrt</span>(<span class="kw">power.vario</span>(distvec, <span class="dt">alpha =</span> opt<span class="op">$</span>par[<span class="dv">1</span>], <span class="dt">scale =</span> opt<span class="op">$</span>par[<span class="dv">2</span>])<span class="op">/</span><span class="dv">2</span>))))</code></pre>
 <p><img src="mevtuto_files/figure-html/fitvariocloud-2.png" width="672" /></p>
 
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Dombry:2016">
+<p>Dombry, Clément, Sebastian Engelke, and Marco Oesting. 2016. “Exact Simulation of Max-Stable Processes.” <em>Biometrika</em> 103 (2): 303–17. <a href="https://doi.org/10.1093/biomet/asw008">https://doi.org/10.1093/biomet/asw008</a>.</p>
+</div>
 </div>
             </section>
 

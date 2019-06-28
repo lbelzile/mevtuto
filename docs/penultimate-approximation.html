@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-27" />
+<meta name="date" content="2019-06-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,7 +67,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -129,7 +129,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
+<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
 <li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
 <li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
@@ -168,15 +170,15 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[\begin{align*}
  \lim_{n \to \infty} F^n(a_nx+b_n) = \exp\left\{-(1+\xi_\infty x)^{-1/\xi_\infty}\right\}=G(x).
 \end{align*}\]</span></p>
-<p> shows that, for any <span class="math inline">\(x \in \{y:1+\xi_\infty y &gt;0\}\)</span>, there exists <span class="math inline">\(z\)</span> such that
+<p><span class="citation">Smith (<a href="#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> shows that, for any <span class="math inline">\(x \in \{y:1+\xi_\infty y &gt;0\}\)</span>, there exists <span class="math inline">\(z\)</span> such that
 <span class="math display">\[\begin{align*}
    \frac{-\log[F\{v+xs(v)\}]}{-\log\{F(v)\}} = \left\{1+xs&#39;(z)\right\}^{-1/s&#39;(z)}, \qquad v &lt; z &lt; v+xs(v).
 \end{align*}\]</span>
 For each <span class="math inline">\(n \geq 1\)</span>, setting <span class="math inline">\(v=b_n\)</span> and <span class="math inline">\(a_n=s(b_n)\)</span> yields
 <span class="math display">\[\begin{align*}
-   F^n(a_nx+b_n)=\exp\left[-\left\{1+s&#39;(z)x\right\}^{-1/s&#39;(z)}\right] + \bigO(n^{-1})
+   F^n(a_nx+b_n)=\exp\left[-\left\{1+s&#39;(z)x\right\}^{-1/s&#39;(z)}\right] + \mathrm{O}(n^{-1})
 \end{align*}\]</span>
-for <span class="math inline">\(z \in [\min(a_nx+b_n, b_n), \max(a_nx+b_n, b_n)]\)</span>, depending on the support of <span class="math inline">\(F\)</span>. The ultimate approximation replaces <span class="math inline">\(s&#39;(z)\)</span> by <span class="math inline">\(s&#39;(x^*)=\xi_{\infty}\)</span>, whereas  suggests instead suggests taking <span class="math inline">\(s&#39;(b_n)\)</span>, which is closer to <span class="math inline">\(s&#39;(a_nx+b_n)\)</span> than is <span class="math inline">\(s&#39;(x^*)\)</span>.</p>
+for <span class="math inline">\(z \in [\min(a_nx+b_n, b_n), \max(a_nx+b_n, b_n)]\)</span>, depending on the support of <span class="math inline">\(F\)</span>. The ultimate approximation replaces <span class="math inline">\(s&#39;(z)\)</span> by <span class="math inline">\(s&#39;(x^*)=\xi_{\infty}\)</span>, whereas <span class="citation">Smith (<a href="#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> suggests instead suggests taking <span class="math inline">\(s&#39;(b_n)\)</span>, which is closer to <span class="math inline">\(s&#39;(a_nx+b_n)\)</span> than is <span class="math inline">\(s&#39;(x^*)\)</span>.</p>
 <p>The maximum likelihood estimate of the shape should change as the threshold or the block size increases. Consider for simplicity yearly maxima arising from blocking <span class="math inline">\(m=n_y\)</span> observations per year. We are interested in the distribution of the maximum of <span class="math inline">\(N\)</span> years and thus the target has roughly shape <span class="math inline">\(\xi_{Nn_y}\)</span>, but our estimates will instead give approximately <span class="math inline">\(\xi_{n_y}\)</span>; an extrapolation error arises from this mismatch between the shape values, which would be constant if the observations were truly max-stable. The curvature of <span class="math inline">\(s&#39;\)</span> determines how stable the estimates of <span class="math inline">\(\xi_t\)</span> are when the extrapolation window increases.</p>
 <p>We illustrate the previous discussion by looking at block maximum from a log-normal distribution.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
@@ -235,6 +237,12 @@ p30l &lt;-<span class="st"> </span><span class="kw">maxstabp</span>(<span class=
 <span class="kw">plot</span>(u, penult<span class="op">$</span>shape, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">xlab=</span><span class="st">&#39;Quantile&#39;</span>, <span class="dt">ylab=</span><span class="st">&#39;Penultimate shape&#39;</span>)</code></pre>
 <p><img src="mevtuto_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Smith:1987">
+<p>Smith, Richard L. 1987. “Approximations in Extreme Value Theory.” Edited by University of North Carolina Chapel Hill Center for Stochastic Processes. <a href="https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0">https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0</a>.</p>
+</div>
 </div>
             </section>
 

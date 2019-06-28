@@ -1,5 +1,65 @@
 # Univariate peaks-over-threshold analysis
 
+Let $\ell(\bs{y}; \bs{\theta})$ denotes the log-likelihood of an $n$ sample with a $p$-dimensional parameter $\bs{\theta}$. The score vector is $U(\bs{\theta})=\partial \ell / \partial \bs{\theta}$, while the Fisher information is $i(\bs{\theta})=\mathrm{E}\{U(\bs{\theta})U(\bs{\theta})^\top\}$. Under regularity conditions, we also have $i(\bs{\theta}) = - \mathrm{E}(\partial^2 \ell / \partial \bs{\theta}\partial \bs{\theta}^\top)$. The observed information is the Hessian $-\partial^2 \ell / \partial \bs{\theta}\partial \bs{\theta}^\top$, evaluated at the maximum likelihood estimator $\hat{\bs{\theta}}$. 
+
+
+By definition, the maximum likelihood estimator solves the score equation, i.e. $U(\hat{\bs{\theta}})=\bs{0}_p$. If the maximum likelihood estimator is not available in  closed-form, this can be used to verify that the optimization routine has converged. It can also be used for Newton methods.
+
+There are four basic likelihoods for univariate extremes: the likelihood of the generalized extreme value (GEV) distribution for block maxima, the likelihood for the generalized Pareto distribution and that of the non-homogeneous Poisson process (NHPP) for exceedances above a threshold $u$, the likelihood of the $r$-largest observations, which can be used to model the $r$-largest observations per block or threshold exceedances where the threshold is the $r$th order statistic. The NHPP likelihood includes a contribution for the fraction of points that exceeds the threshold, whereas the generalized Pareto is a conditional distribution, whose normalizing constant $\zeta_u=\Pr(Y>u)$ is the third parameter.
+
+ The generalized extreme value (GEV) distribution with location parameter $\mu \in \R$, scale parameter $\sigma \in \R_{+}$ and shape 
+parameter $\xi \in \R$  is 
+ \begin{align*}
+  G(x)  = 
+\begin{cases}
+\exp\left\{-\left(1+\xi \frac{x-\mu}{\sigma}\right)^{-1/\xi}\right\}, &  \xi \neq 0,\\
+\exp \left\{ -\exp \left(-\frac{x-\mu}{\sigma}\right)\right\},&  \xi = 0,
+\end{cases} 
+ \end{align*}
+defined on $\{x \in \R: \xi(x-\mu)/\sigma > -1\}$ where $x_{+} = \max\{0, x\}$. The case $\xi=0$ is commonly known as the Gumbel 
+distribution. 
+We denote the distribution by $\mathsf{GEV}(\mu, \sigma, \xi)$. 
+\end{defn} 
+
+ The generalized Pareto (GP) distribution with scale $\sigma \in \R_{+}$ and shape $\xi \in \R$ is 
+ \begin{align*}
+  G(x)  = 
+\begin{cases}
+1-\left(1+\xi \frac{x}{\sigma}\right)_{+}^{-1/\xi}, &  \xi \neq 0,\\ 1-
+\exp \left(-\frac{x}{\sigma}\right),&  \xi = 0.
+\end{cases}
+ \end{align*}
+The range of the generalized Pareto distribution is $[0, -\sigma/\xi)$ if $\xi < 0$ and is $\R_{+}$ otherwise. We denote the distribution 
+by $\mathsf{GP}(\sigma, \xi)$.
+
+ Let $Y_{(1)}  \geq \cdots \geq  Y_{(r)}$ denote the $r$ largest observations from a sample. The likelihood of the limiting distribution of the point process for the $r$-largest observations is  \[
+\ell(\mu,\sigma,\xi; \bs{y}) \equiv  -r\log(\sigma) - \left(1+\frac{1}{\xi}\right)\sum_{j=1}^r \log\left(1 + \xi\frac{y_{(j)}-\mu}{\sigma}\right)_{+} - \left(1 + \xi\frac{y_{(r)}-\mu}{\sigma}\right)^{-1/\xi}_+, \quad \mu,\xi\in\R, \sigma>0.
+\]
+ 
+Consider a sample of $N$ observations, of which $n_u$ exceed $u$ and which we denote by $y_1, \ldots, y_{n_u}$. The likelihood associated to the limiting distribution of threshold exceedances is 
+\begin{align}
+L(\mu, \sigma, \xi; \boldsymbol{y}) = \exp \left[ - c \left\{1+ \xi \left( \frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}_{+}\right] (c\sigma)^{-n_u}\prod_{i=1}^{n_u} \left\{1+\xi\left( \frac{y_i-\mu}{\sigma}\right)\right\}^{-1/\xi-1}_{+}, \qquad \mu, \xi \in \R, \sigma >0, \label{eq:ppp_lik}
+\end{align}
+where $(\cdot)_{+} = \max\{0, \cdot\}$. The quantity $c$ is a tuning parameter whose role is described in \S 7.5 of @Coles:2001. If we take $c=N/m$, the parameters of the point process likelihood correspond to those of the generalized extreme value distribution fitted to blocks of size $m$.
+
+### Profile likelihood
+
+
+The profile 
+likelihood $\ell_\rp$, a function of $\bs{\psi}$ alone, is obtained by maximizing the 
+likelihood pointwise at each fixed value $\bs{\psi}=\bs{\psi}_0$ over the nuisance vector 
+$\bs{\lambda}_{\psi_0}$, 
+\begin{align*}
+   \ell_\rp(\bs{\psi})=\max_{\bs{\lambda}}\ell(\bs{\psi}, \bs{\lambda})=\ell(\bs{\psi}, \hat{\bs{\lambda}}_{\bs{\psi}}).
+\end{align*}
+The observed profile information function is \index{information!observed (profile)}
+\[j_\rp(\bs{\psi})
+=-\frac{\partial \ell_\rp(\bs{\psi})}{\partial \bs{\psi}\partial \bs{\psi}^\top} 
+= \left\{j^{\bs{\psi\psi}}(\bs{\psi}, \hat{\bs{\lambda}}_{\bs{\psi}})\right\}^{-1}.
+\]
+The profile likelihood is not a 
+genuine likelihood in the sense that it is not based on the density of a random variable.
+
 
 This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.
 

@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-27" />
+<meta name="date" content="2019-06-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,7 +67,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -129,7 +129,9 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a></li>
+<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
+<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
 <li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
 <li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
@@ -162,6 +164,56 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="univariate-peaks-over-threshold-analysis" class="section level1">
 <h1><span class="header-section-number">1</span> Univariate peaks-over-threshold analysis</h1>
+<p>Let <span class="math inline">\(\ell(\boldsymbol{y}; \boldsymbol{\theta})\)</span> denotes the log-likelihood of an <span class="math inline">\(n\)</span> sample with a <span class="math inline">\(p\)</span>-dimensional parameter <span class="math inline">\(\boldsymbol{\theta}\)</span>. The score vector is <span class="math inline">\(U(\boldsymbol{\theta})=\partial \ell / \partial \boldsymbol{\theta}\)</span>, while the Fisher information is <span class="math inline">\(i(\boldsymbol{\theta})=\mathrm{E}\{U(\boldsymbol{\theta})U(\boldsymbol{\theta})^\top\}\)</span>. Under regularity conditions, we also have <span class="math inline">\(i(\boldsymbol{\theta}) = - \mathrm{E}(\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top)\)</span>. The observed information is the Hessian <span class="math inline">\(-\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top\)</span>, evaluated at the maximum likelihood estimator <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>.</p>
+<p>By definition, the maximum likelihood estimator solves the score equation, i.e. <span class="math inline">\(U(\hat{\boldsymbol{\theta}})=\boldsymbol{0}_p\)</span>. If the maximum likelihood estimator is not available in closed-form, this can be used to verify that the optimization routine has converged. It can also be used for Newton methods.</p>
+<p>There are four basic likelihoods for univariate extremes: the likelihood of the generalized extreme value (GEV) distribution for block maxima, the likelihood for the generalized Pareto distribution and that of the non-homogeneous Poisson process (NHPP) for exceedances above a threshold <span class="math inline">\(u\)</span>, the likelihood of the <span class="math inline">\(r\)</span>-largest observations, which can be used to model the <span class="math inline">\(r\)</span>-largest observations per block or threshold exceedances where the threshold is the <span class="math inline">\(r\)</span>th order statistic. The NHPP likelihood includes a contribution for the fraction of points that exceeds the threshold, whereas the generalized Pareto is a conditional distribution, whose normalizing constant <span class="math inline">\(\zeta_u=\Pr(Y&gt;u)\)</span> is the third parameter.</p>
+<p>The generalized extreme value (GEV) distribution with location parameter <span class="math inline">\(\mu \in \mathbb{R}\)</span>, scale parameter <span class="math inline">\(\sigma \in \mathbb{R}_{+}\)</span> and shape
+parameter <span class="math inline">\(\xi \in \mathbb{R}\)</span> is
+<span class="math display">\[\begin{align*}
+  G(x)  = 
+\begin{cases}
+\exp\left\{-\left(1+\xi \frac{x-\mu}{\sigma}\right)^{-1/\xi}\right\}, &amp;  \xi \neq 0,\\
+\exp \left\{ -\exp \left(-\frac{x-\mu}{\sigma}\right)\right\},&amp;  \xi = 0,
+\end{cases} 
+ \end{align*}\]</span>
+defined on <span class="math inline">\(\{x \in \mathbb{R}: \xi(x-\mu)/\sigma &gt; -1\}\)</span> where <span class="math inline">\(x_{+} = \max\{0, x\}\)</span>. The case <span class="math inline">\(\xi=0\)</span> is commonly known as the Gumbel
+distribution.
+We denote the distribution by <span class="math inline">\(\mathsf{GEV}(\mu, \sigma, \xi)\)</span>.
+\end{defn}</p>
+<p>The generalized Pareto (GP) distribution with scale <span class="math inline">\(\sigma \in \mathbb{R}_{+}\)</span> and shape <span class="math inline">\(\xi \in \mathbb{R}\)</span> is
+<span class="math display">\[\begin{align*}
+  G(x)  = 
+\begin{cases}
+1-\left(1+\xi \frac{x}{\sigma}\right)_{+}^{-1/\xi}, &amp;  \xi \neq 0,\\ 1-
+\exp \left(-\frac{x}{\sigma}\right),&amp;  \xi = 0.
+\end{cases}
+ \end{align*}\]</span>
+The range of the generalized Pareto distribution is <span class="math inline">\([0, -\sigma/\xi)\)</span> if <span class="math inline">\(\xi &lt; 0\)</span> and is <span class="math inline">\(\mathbb{R}_{+}\)</span> otherwise. We denote the distribution
+by <span class="math inline">\(\mathsf{GP}(\sigma, \xi)\)</span>.</p>
+<p>Let <span class="math inline">\(Y_{(1)} \geq \cdots \geq Y_{(r)}\)</span> denote the <span class="math inline">\(r\)</span> largest observations from a sample. The likelihood of the limiting distribution of the point process for the <span class="math inline">\(r\)</span>-largest observations is <span class="math display">\[
+\ell(\mu,\sigma,\xi; \boldsymbol{y}) \equiv  -r\log(\sigma) - \left(1+\frac{1}{\xi}\right)\sum_{j=1}^r \log\left(1 + \xi\frac{y_{(j)}-\mu}{\sigma}\right)_{+} - \left(1 + \xi\frac{y_{(r)}-\mu}{\sigma}\right)^{-1/\xi}_+, \quad \mu,\xi\in\mathbb{R}, \sigma&gt;0.
+\]</span></p>
+<p>Consider a sample of <span class="math inline">\(N\)</span> observations, of which <span class="math inline">\(n_u\)</span> exceed <span class="math inline">\(u\)</span> and which we denote by <span class="math inline">\(y_1, \ldots, y_{n_u}\)</span>. The likelihood associated to the limiting distribution of threshold exceedances is
+<span class="math display">\[\begin{align}
+L(\mu, \sigma, \xi; \boldsymbol{y}) = \exp \left[ - c \left\{1+ \xi \left( \frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}_{+}\right] (c\sigma)^{-n_u}\prod_{i=1}^{n_u} \left\{1+\xi\left( \frac{y_i-\mu}{\sigma}\right)\right\}^{-1/\xi-1}_{+}, \qquad \mu, \xi \in \mathbb{R}, \sigma &gt;0, \label{eq:ppp_lik}
+\end{align}\]</span>
+where <span class="math inline">\((\cdot)_{+} = \max\{0, \cdot\}\)</span>. The quantity <span class="math inline">\(c\)</span> is a tuning parameter whose role is described in 7.5 of <span class="citation">Coles (<a href="#ref-Coles:2001" role="doc-biblioref">2001</a>)</span>. If we take <span class="math inline">\(c=N/m\)</span>, the parameters of the point process likelihood correspond to those of the generalized extreme value distribution fitted to blocks of size <span class="math inline">\(m\)</span>.</p>
+<div id="profile-likelihood" class="section level3">
+<h3><span class="header-section-number">1.0.1</span> Profile likelihood</h3>
+<p>The profile
+likelihood <span class="math inline">\(\ell_\mathrm{p}\)</span>, a function of <span class="math inline">\(\boldsymbol{\psi}\)</span> alone, is obtained by maximizing the
+likelihood pointwise at each fixed value <span class="math inline">\(\boldsymbol{\psi}=\boldsymbol{\psi}_0\)</span> over the nuisance vector
+<span class="math inline">\(\boldsymbol{\lambda}_{\psi_0}\)</span>,
+<span class="math display">\[\begin{align*}
+   \ell_\mathrm{p}(\boldsymbol{\psi})=\max_{\boldsymbol{\lambda}}\ell(\boldsymbol{\psi}, \boldsymbol{\lambda})=\ell(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}}).
+\end{align*}\]</span>
+The observed profile information function is 
+<span class="math display">\[j_\mathrm{p}(\boldsymbol{\psi})
+=-\frac{\partial \ell_\mathrm{p}(\boldsymbol{\psi})}{\partial \boldsymbol{\psi}\partial \boldsymbol{\psi}^\top} 
+= \left\{j^{\boldsymbol{\psi\psi}}(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}})\right\}^{-1}.
+\]</span>
+The profile likelihood is not a
+genuine likelihood in the sense that it is not based on the density of a random variable.</p>
 <p>This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
 <span class="kw">library</span>(lubridate, <span class="dt">quietly =</span> <span class="ot">TRUE</span>, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
@@ -233,6 +285,13 @@ conf &lt;-<span class="st"> </span><span class="kw">confint</span>(profile, <spa
 ## Wald intervals               : 118.72 522.524 
 ## Profile likelihood           : 177.214 741.869</code></pre>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Coles:2001">
+<p>Coles, Stuart. 2001. <em>An Introduction to Statistical Modeling of Extreme Values</em>. London: Springer–Verlag.</p>
+</div>
 </div>
             </section>
 
