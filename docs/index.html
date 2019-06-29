@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-28" />
+<meta name="date" content="2019-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 
-<link rel="next" href="univariate-peaks-over-threshold-analysis.html">
+<link rel="next" href="likelihood-based-inference-for-univariate-extremes.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -129,18 +129,32 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
-<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+<li class="chapter" data-level="1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html"><i class="fa fa-check"></i><b>1</b> Likelihood based inference for univariate extremes</a><ul>
+<li class="chapter" data-level="1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#basic-theory"><i class="fa fa-check"></i><b>1.1</b> Basic theory</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#likelihoods"><i class="fa fa-check"></i><b>1.1.1</b> Likelihoods</a></li>
+<li class="chapter" data-level="1.1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#test-statistics-and-the-profile-likelihood"><i class="fa fa-check"></i><b>1.1.2</b> Test statistics and the profile likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
-<li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
-<li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
-<li class="chapter" data-level="3.2" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>3.2</b> Threshold stability plots</a></li>
-<li class="chapter" data-level="3.3" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>3.3</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
-<li class="chapter" data-level="3.4" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>3.4</b> Changepoint tests based on penultimate approximation</a></li>
-<li class="chapter" data-level="3.5" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>3.5</b> Extended generalized Pareto</a></li>
+<li class="chapter" data-level="1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#numerical-example"><i class="fa fa-check"></i><b>1.2</b> Numerical example</a></li>
+<li class="chapter" data-level="1.3" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#your-turn"><i class="fa fa-check"></i><b>1.3</b> Your turn</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a></li>
+<li class="chapter" data-level="2" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>2</b> Threshold selection</a><ul>
+<li class="chapter" data-level="2.1" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>2.1</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="2.2" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>2.2</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="2.3" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>2.3</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="2.4" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>2.4</b> Extended generalized Pareto</a></li>
+<li class="chapter" data-level="2.5" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>2.5</b> Robust selection</a></li>
+<li class="chapter" data-level="2.6" data-path="threshold-selection.html"><a href="threshold-selection.html#your-turn-1"><i class="fa fa-check"></i><b>2.6</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>3</b> Penultimate approximation</a><ul>
+<li class="chapter" data-level="3.1" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#your-turn-2"><i class="fa fa-check"></i><b>3.1</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a><ul>
+<li class="chapter" data-level="4.1" data-path="simulation.html"><a href="simulation.html#max-stable-processes"><i class="fa fa-check"></i><b>4.1</b> Max-stable processes</a></li>
+<li class="chapter" data-level="4.2" data-path="simulation.html"><a href="simulation.html#mathcalr-pareto-processes-and-generalizations"><i class="fa fa-check"></i><b>4.2</b> <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes and generalizations</a></li>
+<li class="chapter" data-level="4.3" data-path="simulation.html"><a href="simulation.html#algorithms"><i class="fa fa-check"></i><b>4.3</b> Algorithms</a></li>
+<li class="chapter" data-level="4.4" data-path="simulation.html"><a href="simulation.html#extremal-coefficient"><i class="fa fa-check"></i><b>4.4</b> Extremal coefficient</a></li>
+<li class="chapter" data-level="4.5" data-path="simulation.html"><a href="simulation.html#generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances"><i class="fa fa-check"></i><b>4.5</b> Generalized <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes for functional threshold exceedances</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -165,16 +179,17 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title"><code>mev</code> package tutorial</h1>
 <p class="author"><em>Léo Belzile</em></p>
-<p class="date"><em>2019-06-28</em></p>
+<p class="date"><em>2019-06-29</em></p>
 </div>
 <div id="preliminary-remarks" class="section level1 unnumbered">
 <h1>Preliminary remarks</h1>
 <p>The <code>mev</code> package bundles routine for
-- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and <span class="math inline">\(r\)</span>-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many recent threshold selection diagnostics that have appeared in the literature are implemented.</p>
-<p>The second includes multivaraite diagnostics (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.</p>
+- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and <span class="math inline">\(r\)</span>-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many threshold selection diagnostics that have recently been proposed in the literature are implemented.</p>
+<p>The second includes multivariate goodness-of-fit diagnostics and tests (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.</p>
 <p>Last, but not least, the package includes functions to simulate from multivariate max-stable vectors in dimension <span class="math inline">\(d\geq 2\)</span>, including extensions of most of the families in the <code>evd</code> package. The package also includes simulation algorithms for <span class="math inline">\(R\)</span>-Pareto processes using accept-reject and composition sampling, and accept-reject for generalized <span class="math inline">\(R\)</span>-Pareto processes.</p>
 <p>You can install the latest version of the package (<code>v.1.12</code>) directly from CRAN via</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;mev&quot;</span>)</code></pre>
+<p>These notes are copyright by the author: you may not reuse them without permission.</p>
 
 
 </div>
@@ -184,7 +199,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="univariate-peaks-over-threshold-analysis.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="likelihood-based-inference-for-univariate-extremes.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

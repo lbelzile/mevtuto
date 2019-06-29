@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Threshold selection | mev package tutorial</title>
+  <title>2 Threshold selection | mev package tutorial</title>
   <meta name="description" content="This is a short tutorial on the use of the mev R package." />
   <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Threshold selection | mev package tutorial" />
+  <meta property="og:title" content="2 Threshold selection | mev package tutorial" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="lbelzile/mevdocu" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Threshold selection | mev package tutorial" />
+  <meta name="twitter:title" content="2 Threshold selection | mev package tutorial" />
   
   <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
   
@@ -24,15 +24,15 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-28" />
+<meta name="date" content="2019-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="penultimate-approximation.html">
-<link rel="next" href="simulation.html">
+<link rel="prev" href="likelihood-based-inference-for-univariate-extremes.html">
+<link rel="next" href="penultimate-approximation.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -129,18 +129,32 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
-<li class="chapter" data-level="1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html"><i class="fa fa-check"></i><b>1</b> Univariate peaks-over-threshold analysis</a><ul>
-<li class="chapter" data-level="1.0.1" data-path="univariate-peaks-over-threshold-analysis.html"><a href="univariate-peaks-over-threshold-analysis.html#profile-likelihood"><i class="fa fa-check"></i><b>1.0.1</b> Profile likelihood</a></li>
+<li class="chapter" data-level="1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html"><i class="fa fa-check"></i><b>1</b> Likelihood based inference for univariate extremes</a><ul>
+<li class="chapter" data-level="1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#basic-theory"><i class="fa fa-check"></i><b>1.1</b> Basic theory</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#likelihoods"><i class="fa fa-check"></i><b>1.1.1</b> Likelihoods</a></li>
+<li class="chapter" data-level="1.1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#test-statistics-and-the-profile-likelihood"><i class="fa fa-check"></i><b>1.1.2</b> Test statistics and the profile likelihood</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>2</b> Penultimate approximation</a></li>
-<li class="chapter" data-level="3" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>3</b> Threshold selection</a><ul>
-<li class="chapter" data-level="3.1" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>3.1</b> Robust selection</a></li>
-<li class="chapter" data-level="3.2" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>3.2</b> Threshold stability plots</a></li>
-<li class="chapter" data-level="3.3" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>3.3</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
-<li class="chapter" data-level="3.4" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>3.4</b> Changepoint tests based on penultimate approximation</a></li>
-<li class="chapter" data-level="3.5" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>3.5</b> Extended generalized Pareto</a></li>
+<li class="chapter" data-level="1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#numerical-example"><i class="fa fa-check"></i><b>1.2</b> Numerical example</a></li>
+<li class="chapter" data-level="1.3" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#your-turn"><i class="fa fa-check"></i><b>1.3</b> Your turn</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a></li>
+<li class="chapter" data-level="2" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>2</b> Threshold selection</a><ul>
+<li class="chapter" data-level="2.1" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>2.1</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="2.2" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>2.2</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="2.3" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>2.3</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="2.4" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>2.4</b> Extended generalized Pareto</a></li>
+<li class="chapter" data-level="2.5" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>2.5</b> Robust selection</a></li>
+<li class="chapter" data-level="2.6" data-path="threshold-selection.html"><a href="threshold-selection.html#your-turn-1"><i class="fa fa-check"></i><b>2.6</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>3</b> Penultimate approximation</a><ul>
+<li class="chapter" data-level="3.1" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#your-turn-2"><i class="fa fa-check"></i><b>3.1</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a><ul>
+<li class="chapter" data-level="4.1" data-path="simulation.html"><a href="simulation.html#max-stable-processes"><i class="fa fa-check"></i><b>4.1</b> Max-stable processes</a></li>
+<li class="chapter" data-level="4.2" data-path="simulation.html"><a href="simulation.html#mathcalr-pareto-processes-and-generalizations"><i class="fa fa-check"></i><b>4.2</b> <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes and generalizations</a></li>
+<li class="chapter" data-level="4.3" data-path="simulation.html"><a href="simulation.html#algorithms"><i class="fa fa-check"></i><b>4.3</b> Algorithms</a></li>
+<li class="chapter" data-level="4.4" data-path="simulation.html"><a href="simulation.html#extremal-coefficient"><i class="fa fa-check"></i><b>4.4</b> Extremal coefficient</a></li>
+<li class="chapter" data-level="4.5" data-path="simulation.html"><a href="simulation.html#generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances"><i class="fa fa-check"></i><b>4.5</b> Generalized <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes for functional threshold exceedances</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -163,7 +177,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="threshold-selection" class="section level1">
-<h1><span class="header-section-number">3</span> Threshold selection</h1>
+<h1><span class="header-section-number">2</span> Threshold selection</h1>
 <p>The generalized Pareto (GP) distribution with scale <span class="math inline">\(\sigma \in \mathbb{R}_{+}\)</span> and shape <span class="math inline">\(\xi \in \mathbb{R}\)</span> is
 <span class="math display">\[\begin{align*}
   G(x)  = \begin{cases}
@@ -183,22 +197,18 @@ where <span class="math inline">\(H(x)\)</span> is the distribution function of 
 95% value, as the threshold, even if this is asymptotically incorrect, as in this case <span class="math inline">\(k/n \nrightarrow 0\)</span> as <span class="math inline">\(n \to \infty\)</span>. Most approaches for threshold selection rely on properties of the
 generalized Pareto distribution (moments, threshold-stability) to determine a region within which the asymptotic distribution fits the data well and the parameter estimates are stable.</p>
 <p>Below, we focus on recent graphical selection tools for likelihood based inference; mixture models are reviewed in <span class="citation">Scarrott and MacDonald (<a href="#ref-Scarrott:2012" role="doc-biblioref">2012</a>)</span> and are available in the package <code>evmix</code>.</p>
-<div id="robust-selection" class="section level2">
-<h2><span class="header-section-number">3.1</span> Robust selection</h2>
-<p>The extreme value distributions have unbounded influence functions and outliers can strongly affect the estimate of the shape. <span class="citation">Dupuis (<a href="#ref-Dupuis:1999" role="doc-biblioref">1999</a>)</span> proposes an optimal <span class="math inline">\(B\)</span>-robust estimator of the generalized Pareto parameters. Points that are outlying or for which the fit is poor are downweighted; if the weights for the largest observations are very low, this suggests that the threshold is too low. While there is no guarantee that observations that were simulated from a generalized Pareto distributed would not be downweighted, systematic downweighting of the largest exceedances may be indicative of poor fit.</p>
-</div>
 <div id="threshold-stability-plots" class="section level2">
-<h2><span class="header-section-number">3.2</span> Threshold stability plots</h2>
+<h2><span class="header-section-number">2.1</span> Threshold stability plots</h2>
 <p>Consider a sequence of ordered candidate thresholds <span class="math inline">\(u_1 &lt; \cdots &lt; u_k\)</span>; one of the most widely used tools for threshold selection is the threshold-stability plots of <span class="citation">Davison and Smith (<a href="#ref-Davison:1990" role="doc-biblioref">1990</a>)</span>. These show the point estimates of the shape <span class="math inline">\(\xi\)</span> and the modified scale <span class="math inline">\(\sigma_{u_i}-\xi u_i\)</span>, which should be constant for any threshold <span class="math inline">\(u_{j} &gt;u_i\)</span> assuming that the generalized Pareto above <span class="math inline">\(u_i\)</span> holds exactly. In addition to the point estimates, the asymptotic pointwise 95% Wald confidence intervals are displayed; the standard errors are obtained from the observed information matrix. While these are displayed by many packages, notably <code>extRemes</code>, <code>ismev</code> and <code>evd</code> , <code>mev</code> allows you to use profile likelihood based confidence intervals, which typically offer better coverage and capture some of the asymmetry of the distribution. The <code>mev</code> package functions for producing threshold stability plots are <code>tstab.gpd</code> and <code>tstab.pp</code> for respectively the generalized Pareto and Poisson process likelihoods.</p>
 <p>Parameter stability plots can be difficult to interpret because the confidence intervals are pointwise rather than simultaneous (each fit likewise uses an overlapping portion of the data). The plots also ignore changes in the estimated parameters due to the penultimate approximation.</p>
 </div>
 <div id="wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots" class="section level2">
-<h2><span class="header-section-number">3.3</span> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</h2>
+<h2><span class="header-section-number">2.2</span> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</h2>
 <p>The problem with the threshold stability plots lies in the point-wise nature of the estimate. Assuming a superposition of <span class="math inline">\(k\)</span> Poisson processes, <span class="citation">Wadsworth (<a href="#ref-Wadsworth:2016" role="doc-biblioref">2016</a>)</span> derives the limiting distribution of the maximum likelihood estimators from the Poisson process for overlapping windows as the number of windows <span class="math inline">\(k \to \infty\)</span> and <span class="math inline">\(n_k \to \infty\)</span>. The joint asymptotic Gaussian distribution allows <span class="citation">Wadsworth (<a href="#ref-Wadsworth:2016" role="doc-biblioref">2016</a>)</span> to propose two additional diagnostics: a white noise sequence of differences in estimates of the shape, standardized to have unit variance. The variables <span class="math inline">\(\xi^*_i=(\hat{\xi}_{u_{i+1}}-\hat{\xi}_{u_i})/\{(I^{-1}_{u_{i+1}}-I^{-1}_{u_{i}})_{\xi,\xi}^{1/2}\}\)</span>, where <span class="math inline">\(I_{u_{i}}\)</span> is the Fisher information of the Poisson process likelihood for exceedances above <span class="math inline">\(u_i\)</span>, should form a white-noise sequence of independent variables centered around the origin; systematic deviations are indicative of inadequacy. To formally test the hypothesis, a likelihood ratio test can be used assuming a simple alternative, namely a single change point at threshold <span class="math inline">\(u_j\)</span>. The null hypothesis is <span class="math inline">\(\mathrm{H}_0: \xi_i^* \stackrel{\mathrm{iid}}{\sim}\textsf{No}(0,1)\)</span> for <span class="math inline">\(i=1, \ldots, k-1\)</span> against the alternative <span class="math inline">\(\mathrm{H}_a: \xi^*_i \sim \textsf{No}(\beta, \sigma) (i=1, \ldots, j-1)\)</span> and <span class="math inline">\(\xi^*_i \sim \textsf{No}(0,1)\)</span> for <span class="math inline">\(j, \ldots, k-1\)</span>. This alternative is motivated by results on model misspecification <span class="citation">(White <a href="#ref-White:1982" role="doc-biblioref">1982</a>)</span>, which suggest that the asymptotic distribution may still be Gaussian, but with a different mean and variance. This can be used to automate threshold selection, by picking the smallest threshold for which the <span class="math inline">\(P\)</span>-value is above the level <span class="math inline">\(\alpha\)</span>. The function <code>W.diag</code> returns diagnostics plots (for the likelihood ratio statistic path, the white noise process and threshold stability along with asymptotic simultaneous confidence intervals) for non-homogeneous Poisson process model and for the bivariate exponential and the over a sequence of thresholds, specified using <code>q1</code>, <code>q2</code> and <code>k</code>. The argument <code>M</code> is a tuning parameter that can be chosen in a way such that the parameters of the non-homogeneous Poisson process likelihood coincide with those of the generalized extreme value distribution for blocks of size <span class="math inline">\(m\)</span>; see <span class="citation">Coles (<a href="#ref-Coles:2001" role="doc-biblioref">2001</a>)</span> to this effect.</p>
 <p>A main criticism of the proposals of <span class="citation">Wadsworth (<a href="#ref-Wadsworth:2016" role="doc-biblioref">2016</a>)</span> is their lack of robustness. For the asymptotic result to be approximately valid, the number of thresholds must be large, which implicitly requires large samples for each superposed point process. Moreover, the estimated difference in Fisher information matrices often fails to be positive definite in practice. The procedure is highly sensitive to the choice of <span class="math inline">\(k\)</span>. Changing the set of thresholds <span class="math inline">\(\boldsymbol{u}\)</span> under consideration leads to potentially completely different parameter estimates being chosen by the automated procedure.</p>
 </div>
 <div id="changepoint-tests-based-on-penultimate-approximation" class="section level2">
-<h2><span class="header-section-number">3.4</span> Changepoint tests based on penultimate approximation</h2>
+<h2><span class="header-section-number">2.3</span> Changepoint tests based on penultimate approximation</h2>
 <p>Let <span class="math inline">\(F(x)\)</span> denote a thrice-differentiable distribution function with endpoint <span class="math inline">\(x^*\)</span> and density <span class="math inline">\(f(x)\)</span>. Define the reciprocal hazard function <span class="math inline">\(r(x) = \{1-F(x)\}/f(x)\)</span>.
 The existence of the limit <span class="math inline">\(\xi_{\infty} = \lim_{n \to \infty} s&#39;\{b_n\}\)</span> is necessary and sufficient for convergence to an extreme value distribution and <span class="citation">Smith (<a href="#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> shows that there exists <span class="math inline">\(y\)</span> such that
 <span class="math display">\[\begin{align*}
@@ -209,8 +219,37 @@ unless <span class="math inline">\(r&#39;(x)\)</span> is constant. The penultima
 <p><span class="citation">Northrop and Coleman (<a href="#ref-Northrop:2014" role="doc-biblioref">2014</a>)</span> adapt the idea of <span class="citation">Wadsworth and Tawn (<a href="#ref-Wadsworth:2012" role="doc-biblioref">2012</a>)</span> and fit a generalized Pareto model with piecewise constant shape to <span class="math inline">\(k\)</span> different thresholds; continuity constraints at the thresholds impose <span class="math inline">\(k-1\)</span> restrictions on scale parameters, so the model only has <span class="math inline">\(k+1\)</span> parameters. A score test can be used to test the hypothesis of equal shape and it only requires evaluation of the model under the null hypothesis that a generalized Pareto distribution is valid above all thresholds. A diagnostic plot is obtained by plotting <span class="math inline">\(P\)</span>-values against threshold. One can then choose to take, e.g., (a) the lowest threshold at which the <span class="math inline">\(P\)</span>-value is non-significant, or (b) the lowest threshold at which the <span class="math inline">\(P\)</span>-values for all higher thresholds are non-significant: under the null hypothesis, there is an <span class="math inline">\(\alpha\%\)</span> probability of rejection at any given threshold. The function <code>NC.diag</code> computes the <span class="math inline">\(P\)</span>-value of the score test as a function of the threshold.</p>
 </div>
 <div id="extended-generalized-pareto" class="section level2">
-<h2><span class="header-section-number">3.5</span> Extended generalized Pareto</h2>
+<h2><span class="header-section-number">2.4</span> Extended generalized Pareto</h2>
 <p><span class="citation">Papastathopoulos and Tawn (<a href="#ref-Papastathopoulos:2013" role="doc-biblioref">2013</a>)</span> propose three extended generalized Pareto distributions: for example, the third extended generalized Pareto model has distribution function <span class="math inline">\(\{1-(1+\xi x/\sigma)^{-1/\xi}_{+}\}^{\kappa}\)</span> for <span class="math inline">\(x &gt;0\)</span> and <span class="math inline">\(\kappa &gt; 0\)</span>. Each family reduces to the generalized Pareto when the additional parameter <span class="math inline">\(\kappa=1\)</span> and share the same tail index <span class="math inline">\(\xi\)</span>, the extended generalized Pareto provide more flexibility for modelling departures from the limiting form. Standard parameter stability plots can be used to find a region in which <span class="math inline">\(\kappa \approx 1\)</span> and the shape parameter stabilizes. The additional parameter gives flexibility for modelling departures from the limiting distribution and the hope is one can fit to exceedances over lower threshold and increase the number of points to which the distribution is fitted. The stability plots, obtained through <code>tstab.egp</code>, suffer from the same caveats as classical diagnostics.</p>
+</div>
+<div id="robust-selection" class="section level2">
+<h2><span class="header-section-number">2.5</span> Robust selection</h2>
+<p>The extreme value distributions have unbounded influence functions and outliers can strongly affect the estimate of the shape. <span class="citation">Dupuis (<a href="#ref-Dupuis:1999" role="doc-biblioref">1999</a>)</span> proposes an optimal <span class="math inline">\(B\)</span>-robust estimator of the generalized Pareto parameters. Points that are outlying or for which the fit is poor are downweighted; if the weights for the largest observations are very low, this suggests that the threshold is too low. While there is no guarantee that observations that were simulated from a generalized Pareto distributed would not be downweighted, systematic downweighting of the largest exceedances may be indicative of poor fit.</p>
+<p>We are now ready to go back to the Maiquetia data and try to select a reasonable threshold. To this effect, we select a sequence of candidate thresholds and run the procedures described above.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;maiquetia&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;mev&quot;</span>)
+day &lt;-<span class="st"> </span><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1961-01-01&quot;</span>), 
+                <span class="dt">to =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1999-12-31&quot;</span>), <span class="dt">by =</span> <span class="st">&quot;day&quot;</span>)
+<span class="co"># Keep non-zero rainfall, exclude 1999 observations</span>
+nzrain &lt;-<span class="st"> </span>maiquetia[<span class="kw">substr</span>(day, <span class="dv">3</span>, <span class="dv">4</span>) <span class="op">&lt;</span><span class="st"> </span><span class="dv">99</span> <span class="op">&amp;</span><span class="st"> </span>maiquetia <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]
+thcan &lt;-<span class="st"> </span><span class="kw">quantile</span>(nzrain, <span class="kw">seq</span>(<span class="fl">0.8</span>, <span class="fl">0.99</span>, <span class="dt">length.out =</span> <span class="dv">25</span>))
+<span class="kw">tstab.gpd</span>(<span class="dt">dat =</span> nzrain, <span class="dt">thresh =</span> thcan, <span class="dt">method =</span> <span class="st">&quot;profile&quot;</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tstab.egp</span>(<span class="dt">xdat =</span> nzrain, <span class="dt">thresh =</span> thcan, <span class="dt">model =</span> <span class="st">&quot;egp2&quot;</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p>What do you notice on the parameter stability plots?</p>
+<p>We can plot simultaneous parameter statibility plots for the shape, as well as the white-noise sequence. The <code>W.diag</code> function, which implements the tests of <span class="citation">Wadsworth (<a href="#ref-Wadsworth:2016" role="doc-biblioref">2016</a>)</span>, returns the white noise process and calculates by simulation the null distribution, selecting the lowest threshold at which the hypothesis of changepoint is not rejected for all higher thresholds. For the Maiquetia rainfall, a threshold around 15.15mm is returned.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fWdiag &lt;-<span class="st"> </span><span class="kw">W.diag</span>(<span class="dt">xdat =</span> nzrain, <span class="dt">model =</span> <span class="st">&quot;nhpp&quot;</span>, <span class="dt">u =</span> thcan, <span class="dt">plots =</span> <span class="kw">c</span>(<span class="st">&quot;WN&quot;</span>, <span class="st">&quot;PS&quot;</span>))</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Another option is the <span class="citation">Northrop and Coleman (<a href="#ref-Northrop:2014" role="doc-biblioref">2014</a>)</span> penultimate test, which considers a sequence of threshold and tests whether a single shape fits the data against the alternative where the shape parameter differs at each candidate threshold following a step function. The <code>NC.diag</code> function plots the <span class="math inline">\(p\)</span>-value path against the candidate thresholds; the top axis also displays the number of threshold exceedances. The extended generalized Pareto distribution can also be used to produce threshold stability plot with 95% confidence intervals. The parameter <span class="math inline">\(\kappa=1\)</span> if the model is generalized Pareto. Although there are three potential families, the family <code>egp2</code> exhibits the fastest converence for</p>
+<pre class="sourceCode r"><code class="sourceCode r">fNCdiag &lt;-<span class="st"> </span><span class="kw">NC.diag</span>(<span class="dt">x =</span> nzrain, <span class="dt">u =</span> thcan)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="your-turn-1" class="section level2">
+<h2><span class="header-section-number">2.6</span> Your turn</h2>
+<ol style="list-style-type: decimal">
+<li>Try using the threshold diagnostic tests on your favourite data. For example, you can use the infamous <code>nidd</code> river data. Which threshold would you choose based on the conclusions of the test?</li>
+<li>Compare the inference obtained by using the different threshold (by comparing, for example, return levels or quantiles of a distribution of interest). Are your results sensitive to the choice of threshold?</li>
+</ol>
 
 </div>
 </div>
@@ -252,8 +291,8 @@ unless <span class="math inline">\(r&#39;(x)\)</span> is constant. The penultima
           </div>
         </div>
       </div>
-<a href="penultimate-approximation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="simulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="likelihood-based-inference-for-univariate-extremes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="penultimate-approximation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

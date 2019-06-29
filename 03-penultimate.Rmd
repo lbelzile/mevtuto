@@ -3,9 +3,9 @@
 The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of $T \in \N$ is the same up to a location-scale transform: if $F \sim \mathsf{GEV}$, then there exist location and scale constants $b \in \R$ and $a>0$ such that $F^T(ax+b) = F(x)$. The parameters of the new distribution are easily derived: if $X_i \simiid \mathsf{GEV}(\mu,\sigma, \xi)$, then $\max\{X_1, \ldots, X_T\}  \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)$ with $\mu_T = \mu - \sigma(1-T^\xi)/\xi$ and $\sigma_T = \sigma T^\xi$ for $\xi \neq 0$, or $\mu_T = \mu +\sigma \log(T)$ and $\sigma_T = \sigma$ if $\xi=0$.
 
 
-In practice, the GEV is fitted to data that are partitioned into $k$ blocks of (potentially random) sizes $m_i$. We shall assume that the block sizes are all the same, so that $m_i=m$ for $i=1,\ldots, k$ and $n = km$. The quality of the generalized extreme value approximation increases with the block size $m$. For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.
+In practice, the GEV is fitted to data that are partitioned into $k$ blocks of sizes $m$, assumed eequal for simplicity, so that $n = km$. The quality of the generalized extreme value approximation increases with the block size $m$. For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.
 
-Let $F(x)$ denote a thrice-differentiable distribution function with endpoint $x^*$ and density $f(x)$ and define $s(x)=-F(x)\log\{F(x)\}/f(x)$. The existence of the limit $\xi_{\infty} =  \lim_{n \to \infty} s'\{b_n\}$ is  necessary and sufficient for convergence to an extreme value distribution $G$,
+Let $F(x)$ denote a thrice-differentiable distribution function with endpoint $x^*$ and density $f(x)$ and define $s(x)=-F(x)\log\{F(x)\}/f(x)$. The existence of the limit $\xi_{\infty} =  \lim_{n \to \infty} s'\{b_n\}$ is necessary and sufficient for convergence to an extreme value distribution $G$,
 \begin{align*}
  \lim_{n \to \infty} F^n(a_nx+b_n) = \exp\left\{-(1+\xi_\infty x)^{-1/\xi_\infty}\right\}=G(x).
 \end{align*}
@@ -86,3 +86,15 @@ penult <- smith.penult(family = "norm", method = "pot",
                        u = qnorm(u <- seq(0.8, 0.9999, by = 0.0001))) 
 plot(u, penult$shape, bty = "l", type='l', xlab='Quantile', ylab='Penultimate shape')
 ```
+
+While the above discussion has been restricted to block maxima and the generalized extreme value distribution, similar results exists for peaks over threshold using a generalized Pareto distribution. 
+For threshold exceedances, we start with the reciprocal hazard $r(x) = \{1-F(x)\}/f(x)$ in place of $s(x)$. The normalizing constants are $(u, r(u))$ and the penultimate shape parameter for the generalized Pareto distribution is $r'(u)$.
+
+We can relate threshold exceedances to the distribution of maxima as follows: suppose a generalized Pareto distribution $F$ is fitted to threshold exceedances above a threshold $u$, with parameters $(\zeta_u, \sigma_u, \xi)$, where $\zeta_u$ denotes the unknown  proportion of points above the threshold $u$.  If there are $n_y$ observations per year on average, then the $T$-year return level is $z_{1/T}=u+\sigma_u/\xi\{(Tn_y\zeta_u)^\xi-1\}$. We take $F^{\zeta_uTn_y}$ as the approximation to the $T$-year maxima distribution, conditional on exceeding $u$.
+
+## Your turn
+
+1. Sample observations from the standard Gaussian distribution $\mathsf{No}(0,1)$ for $m = 25, 50, 100, 1000$ and $k=1000$ replications.
+2. Fit a generalized extreme value distribution to block maxima of size $m$. Obtain an estimate of the distribution of $m = 1000000$ observations from a standard Gaussian using max-stability (the functions `fit.gev` and `gev.mle` can be useful).
+3. Plot the density of the resulting approximations and compare them to the density of the true distribution $N\phi(x)\Phi^{N-1}(x)$. 
+4. Superpose the density of the penultimate approximation for $m = 1000000$ obtained using the Smith penultimate approximation (`smith.penult`).

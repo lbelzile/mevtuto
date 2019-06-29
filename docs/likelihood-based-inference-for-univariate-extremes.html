@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Likelihood based inference for univariate extremes | mev package tutorial</title>
+  <meta name="description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Likelihood based inference for univariate extremes | mev package tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short tutorial on the use of the mev R package." />
+  <meta name="github-repo" content="lbelzile/mevdocu" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Likelihood based inference for univariate extremes | mev package tutorial" />
+  
+  <meta name="twitter:description" content="This is a short tutorial on the use of the mev R package." />
+  
+
+<meta name="author" content="Léo Belzile" />
+
+
+<meta name="date" content="2019-06-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="threshold-selection.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tutorial for the mev R package</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preliminary remarks</a></li>
+<li class="chapter" data-level="1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html"><i class="fa fa-check"></i><b>1</b> Likelihood based inference for univariate extremes</a><ul>
+<li class="chapter" data-level="1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#basic-theory"><i class="fa fa-check"></i><b>1.1</b> Basic theory</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#likelihoods"><i class="fa fa-check"></i><b>1.1.1</b> Likelihoods</a></li>
+<li class="chapter" data-level="1.1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#test-statistics-and-the-profile-likelihood"><i class="fa fa-check"></i><b>1.1.2</b> Test statistics and the profile likelihood</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#numerical-example"><i class="fa fa-check"></i><b>1.2</b> Numerical example</a></li>
+<li class="chapter" data-level="1.3" data-path="likelihood-based-inference-for-univariate-extremes.html"><a href="likelihood-based-inference-for-univariate-extremes.html#your-turn"><i class="fa fa-check"></i><b>1.3</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="threshold-selection.html"><a href="threshold-selection.html"><i class="fa fa-check"></i><b>2</b> Threshold selection</a><ul>
+<li class="chapter" data-level="2.1" data-path="threshold-selection.html"><a href="threshold-selection.html#threshold-stability-plots"><i class="fa fa-check"></i><b>2.1</b> Threshold stability plots</a></li>
+<li class="chapter" data-level="2.2" data-path="threshold-selection.html"><a href="threshold-selection.html#wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots"><i class="fa fa-check"></i><b>2.2</b> Wadsworth’s diagnostics: white noise process and simultaneous threshold stability plots</a></li>
+<li class="chapter" data-level="2.3" data-path="threshold-selection.html"><a href="threshold-selection.html#changepoint-tests-based-on-penultimate-approximation"><i class="fa fa-check"></i><b>2.3</b> Changepoint tests based on penultimate approximation</a></li>
+<li class="chapter" data-level="2.4" data-path="threshold-selection.html"><a href="threshold-selection.html#extended-generalized-pareto"><i class="fa fa-check"></i><b>2.4</b> Extended generalized Pareto</a></li>
+<li class="chapter" data-level="2.5" data-path="threshold-selection.html"><a href="threshold-selection.html#robust-selection"><i class="fa fa-check"></i><b>2.5</b> Robust selection</a></li>
+<li class="chapter" data-level="2.6" data-path="threshold-selection.html"><a href="threshold-selection.html#your-turn-1"><i class="fa fa-check"></i><b>2.6</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>3</b> Penultimate approximation</a><ul>
+<li class="chapter" data-level="3.1" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#your-turn-2"><i class="fa fa-check"></i><b>3.1</b> Your turn</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a><ul>
+<li class="chapter" data-level="4.1" data-path="simulation.html"><a href="simulation.html#max-stable-processes"><i class="fa fa-check"></i><b>4.1</b> Max-stable processes</a></li>
+<li class="chapter" data-level="4.2" data-path="simulation.html"><a href="simulation.html#mathcalr-pareto-processes-and-generalizations"><i class="fa fa-check"></i><b>4.2</b> <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes and generalizations</a></li>
+<li class="chapter" data-level="4.3" data-path="simulation.html"><a href="simulation.html#algorithms"><i class="fa fa-check"></i><b>4.3</b> Algorithms</a></li>
+<li class="chapter" data-level="4.4" data-path="simulation.html"><a href="simulation.html#extremal-coefficient"><i class="fa fa-check"></i><b>4.4</b> Extremal coefficient</a></li>
+<li class="chapter" data-level="4.5" data-path="simulation.html"><a href="simulation.html#generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances"><i class="fa fa-check"></i><b>4.5</b> Generalized <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes for functional threshold exceedances</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"><code>mev</code> package tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="likelihood-based-inference-for-univariate-extremes" class="section level1">
+<h1><span class="header-section-number">1</span> Likelihood based inference for univariate extremes</h1>
+<div id="basic-theory" class="section level2">
+<h2><span class="header-section-number">1.1</span> Basic theory</h2>
+<p>Let <span class="math inline">\(\ell(\boldsymbol{y}; \boldsymbol{\theta})\)</span> denotes the log-likelihood of an <span class="math inline">\(n\)</span> sample with a <span class="math inline">\(p\)</span>-dimensional parameter <span class="math inline">\(\boldsymbol{\theta}\)</span>. The score vector is <span class="math inline">\(U(\boldsymbol{\theta})=\partial \ell / \partial \boldsymbol{\theta}\)</span>, while the Fisher information is <span class="math inline">\(i(\boldsymbol{\theta})=\mathrm{E}\{U(\boldsymbol{\theta})U(\boldsymbol{\theta})^\top\}\)</span>. Under regularity conditions, we also have <span class="math inline">\(i(\boldsymbol{\theta}) = - \mathrm{E}(\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top)\)</span>. The observed information is the negative Hessian <span class="math inline">\(-\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top\)</span>, evaluated at the maximum likelihood estimator <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>.</p>
+<p>By definition, the maximum likelihood estimator solves the score equation, i.e. <span class="math inline">\(U(\hat{\boldsymbol{\theta}})=\boldsymbol{0}_p\)</span>. If the maximum likelihood estimator is not available in closed-form, its solution is found numerically and this property can be used to verify that the optimization routine has converged or for gradient-based maximization algorithms.</p>
+<div id="likelihoods" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Likelihoods</h3>
+<p>There are four basic likelihoods for univariate extremes: the likelihood of the generalized extreme value (GEV) distribution for block maxima, the likelihood for the generalized Pareto distribution and that of the non-homogeneous Poisson process (NHPP) for exceedances above a threshold <span class="math inline">\(u\)</span> and lastly the likelihood of the <span class="math inline">\(r\)</span>-largest observations.</p>
+<p>The generalized extreme value (GEV) distribution with location parameter <span class="math inline">\(\mu \in \mathbb{R}\)</span>, scale parameter <span class="math inline">\(\sigma \in \mathbb{R}_{+}\)</span> and shape
+parameter <span class="math inline">\(\xi \in \mathbb{R}\)</span> is
+<span class="math display">\[\begin{align*}
+  G(x)  = 
+\begin{cases}
+\exp\left\{-\left(1+\xi \frac{x-\mu}{\sigma}\right)^{-1/\xi}\right\}, &amp;  \xi \neq 0,\\
+\exp \left\{ -\exp \left(-\frac{x-\mu}{\sigma}\right)\right\},&amp;  \xi = 0,
+\end{cases} 
+ \end{align*}\]</span>
+defined on <span class="math inline">\(\{x \in \mathbb{R}: \xi(x-\mu)/\sigma &gt; -1\}\)</span> where <span class="math inline">\(x_{+} = \max\{0, x\}\)</span>. The case <span class="math inline">\(\xi=0\)</span> is commonly known as the Gumbel
+distribution.
+We denote the distribution by <span class="math inline">\(\mathsf{GEV}(\mu, \sigma, \xi)\)</span>.</p>
+<p>The generalized Pareto (GP) distribution with scale <span class="math inline">\(\sigma \in \mathbb{R}_{+}\)</span> and shape <span class="math inline">\(\xi \in \mathbb{R}\)</span> is
+<span class="math display">\[\begin{align*}
+  G(x)  = 
+\begin{cases}
+1-\left(1+\xi \frac{x}{\sigma}\right)_{+}^{-1/\xi}, &amp;  \xi \neq 0,\\ 1-
+\exp \left(-\frac{x}{\sigma}\right),&amp;  \xi = 0.
+\end{cases}
+ \end{align*}\]</span>
+The range of the generalized Pareto distribution is <span class="math inline">\([0, -\sigma/\xi)\)</span> if <span class="math inline">\(\xi &lt; 0\)</span> and is <span class="math inline">\(\mathbb{R}_{+}\)</span> otherwise. We denote the distribution
+by <span class="math inline">\(\mathsf{GP}(\sigma, \xi)\)</span>.</p>
+<p>Let <span class="math inline">\(Y_{(1)} \geq \cdots \geq Y_{(r)}\)</span> denote the <span class="math inline">\(r\)</span> largest observations from a sample. The likelihood of the limiting distribution of the point process for the <span class="math inline">\(r\)</span>-largest observations is, for <span class="math inline">\(\mu,\xi\in\mathbb{R}, \sigma&gt;0\)</span>, <span class="math display">\[
+\ell(\mu,\sigma,\xi; \boldsymbol{y}) \equiv  -r\log(\sigma) - \left(1+\frac{1}{\xi}\right)\sum_{j=1}^r \log\left(1 + \xi\frac{y_{(j)}-\mu}{\sigma}\right)_{+} - \left(1 + \xi\frac{y_{(r)}-\mu}{\sigma}\right)^{-1/\xi}_+.
+\]</span>
+This likelihood can be used to model the <span class="math inline">\(r\)</span>-largest observations per block or threshold exceedances where the threshold is the <span class="math inline">\(r\)</span>th order statistic</p>
+<p>Consider a sample of <span class="math inline">\(N\)</span> observations, of which <span class="math inline">\(n_u\)</span> exceed <span class="math inline">\(u\)</span> and which we denote by <span class="math inline">\(y_1, \ldots, y_{n_u}\)</span>. The likelihood associated to the limiting distribution of threshold exceedances is, for <span class="math inline">\(\mu, \xi \in \mathbb{R}, \sigma &gt;0\)</span>,
+<span class="math display">\[\begin{align}
+L(\mu, \sigma, \xi; \boldsymbol{y}) = \exp \left[ - c \left\{1+ \xi \left( \frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}_{+}\right] (c\sigma)^{-n_u}\prod_{i=1}^{n_u} \left\{1+\xi\left( \frac{y_i-\mu}{\sigma}\right)\right\}^{-1/\xi-1}_{+},\label{eq:ppp_lik}
+\end{align}\]</span>
+where <span class="math inline">\((\cdot)_{+} = \max\{0, \cdot\}\)</span>. The quantity <span class="math inline">\(c\)</span> is a tuning parameter whose role is described in 7.5 of <span class="citation">Coles (<a href="#ref-Coles:2001" role="doc-biblioref">2001</a>)</span>. If we take <span class="math inline">\(c=N/m\)</span>, the parameters of the point process likelihood correspond to those of the generalized extreme value distribution fitted to blocks of size <span class="math inline">\(m\)</span>. The NHPP likelihood includes a contribution for the fraction of points that exceeds the threshold, whereas the generalized Pareto is a conditional distribution, whose third parameter is the normalizing constant <span class="math inline">\(\zeta_u=\Pr(Y&gt;u)\)</span>. Since the latter has a Bernoulli and <span class="math inline">\(\zeta_u\)</span> is orthogonal to the pair <span class="math inline">\((\sigma, \xi)\)</span>, it is often omitted from further analyses and estimated as the proportion of samples above the threshold.</p>
+</div>
+<div id="test-statistics-and-the-profile-likelihood" class="section level3">
+<h3><span class="header-section-number">1.1.2</span> Test statistics and the profile likelihood</h3>
+<p>The three main type of test statistics for likelihood-based inference are the Wald, score and likelihood ratio tests.
+The three main classes of statistics for testing a simple null hypothesis <span class="math inline">\(\mathrm{H}_0: \boldsymbol{\theta}=\boldsymbol{\theta}_0\)</span> against the alternative <span class="math inline">\(\mathrm{H}_a: \boldsymbol{\theta} \neq \boldsymbol{\theta}_0\)</span> are the likelihood ratio, the score and the Wald statistics,
+defined
+respectively as
+<span class="math display">\[\begin{align*}
+ w &amp;= 2 \left\{ \ell(\hat{\boldsymbol{\theta}})-\ell(\boldsymbol{\theta}_0)\right\},\qquad 
+ \\w_{\mathsf{score}} &amp;= U^\top(\boldsymbol{\theta}_0)i^{-1}(\boldsymbol{\theta}_0)U(\boldsymbol{\theta}_0),\qquad
+ \\ w_{\mathsf{wald}} &amp;= (\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_0)^\top i(\boldsymbol{\theta}_0)(\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_0),
+\end{align*}\]</span>
+where <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> is the maximum likelihood estimate under the alternative and
+<span class="math inline">\(\boldsymbol{\theta}_0\)</span> is the null value of the parameter vector. The statistics <span class="math inline">\(w, w_{\mathsf{score}}, w_{\mathsf{wald}}\)</span> are all first order equivalent and asymptotically follow a <span class="math inline">\(\chi^2_p\)</span> distribution, where <span class="math inline">\(q\)</span> is the difference between <span class="math inline">\(p\)</span> and the number of parameters under the null hypothesis. Under the conditions of the Neyman–Pearson theorem, the likelihood ratio test is most powerful test of the lot. The score statistic <span class="math inline">\(w_{\mathsf{score}}\)</span> only requires
+calculation of the score and information under
+<span class="math inline">\(\mathrm{H}_0\)</span>, which can be useful in problems where calculations under the alternative are difficult to obtain. The Wald statistic <span class="math inline">\(w_{\mathsf{wald}}\)</span> is not parametrization-invariant and typically has poor coverage properties.</p>
+<p>Oftentimes, we are interested in a functional of the parameter vector <span class="math inline">\(\boldsymbol{\theta}\)</span>.
+The profile
+likelihood <span class="math inline">\(\ell_\mathrm{p}\)</span>, a function of <span class="math inline">\(\boldsymbol{\psi}\)</span> alone, is obtained by maximizing the
+likelihood pointwise at each fixed value <span class="math inline">\(\boldsymbol{\psi}=\boldsymbol{\psi}_0\)</span> over the nuisance vector
+<span class="math inline">\(\boldsymbol{\lambda}_{\psi_0}\)</span>,
+<span class="math display">\[\begin{align*}
+   \ell_\mathrm{p}(\boldsymbol{\psi})=\max_{\boldsymbol{\lambda}}\ell(\boldsymbol{\psi}, \boldsymbol{\lambda})=\ell(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}}).
+\end{align*}\]</span>
+We denote the restricted maximum likelihood estimator <span class="math inline">\(\hat{\boldsymbol{\theta}}_\psi= (\psi, \hat{\lambda}_{\psi})\)</span>.</p>
+<p>We can define score and information in the usual fashion: for example, the observed profile information function is
+<span class="math display">\[j_\mathrm{p}(\boldsymbol{\psi})
+=-\frac{\partial \ell_\mathrm{p}(\boldsymbol{\psi})}{\partial \boldsymbol{\psi}\partial \boldsymbol{\psi}^\top} 
+= \left\{j^{\boldsymbol{\psi\psi}}(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}})\right\}^{-1}.
+\]</span>
+The profile likelihood is not a
+genuine likelihood in the sense that it is not based on the density of a random variable.</p>
+<p>We can turn tests and their asymptotic distribution into confidence intervals. For the hypothesis <span class="math inline">\(\psi = \psi_0\)</span>, a <span class="math inline">\((1-\alpha)\)</span> confidence interval based on the profile likelihood ratio test is <span class="math inline">\(\{ \psi: 2\{\ell(\hat{\theta}) - \ell(\hat{\theta}_{\psi})\} \leq \chi^2_1(0.95)\}\)</span>.</p>
+<p>Two typical questions in extreme values are: given the intensity of an extreme event, what is its recurrence period? and what is a typical worst-case scenario over a given period of time? For the latter, suppose for simplicity that the daily observations are blocked into years, so that inference is based on <span class="math inline">\(N\)</span> points for the <span class="math inline">\(N\)</span> years during which the data were recorded. The <em>return level</em> is a quantile of the underlying distribution corresponding to an event of probability <span class="math inline">\(p=1-1/T\)</span> for an annual maximum, which is interpreted as ``the level exceeded by an annual maximum on average every <span class="math inline">\(T\)</span> years’’. If observations are independent and identically distributed, then we can approximate the probability that a return level is exceeded <span class="math inline">\(l\)</span> times over a <span class="math inline">\(T\)</span> year period using a binomial distribution with probability of success <span class="math inline">\(1-1/T\)</span> and <span class="math inline">\(T\)</span> trials. For <span class="math inline">\(T\)</span> large, the return level is exceeded <span class="math inline">\(l=0, 1, 2, 3, 4\)</span> times within any <span class="math inline">\(T\)</span>-years period with approximate probabilities 36.8%, 36.8%, 18.4%, 6.1% and 1.5%. The probability that the maximum observation over <span class="math inline">\(T\)</span> years is exceeded with a given probability is readily obtained from the distribution of the <span class="math inline">\(T\)</span>-year maximum, leading <span class="citation">(Cox, Isham, and Northrop <a href="#ref-Cox:2002" role="doc-biblioref">2002</a>, 3(b))</span> to advocate its use over return levels, among other quantities of interest such as the number of times a threshold <span class="math inline">\(u\)</span> will be exceeded in <span class="math inline">\(T\)</span> years or the average number of years before a threshold <span class="math inline">\(u\)</span> is exceeded.</p>
+<p><strong>Quantiles, mean and return levels of <span class="math inline">\(T\)</span>-maxima</strong>: consider the distribution <span class="math inline">\(H(x) = G^T(x)\)</span> of the maximum of <span class="math inline">\(T\)</span> independent and identically distributed generalized extreme value variates with parameters <span class="math inline">\((\mu, \sigma, \xi)\)</span> and distribution function <span class="math inline">\(G\)</span>. By max-stability, the parameters of <span class="math inline">\(H(x)\)</span> are <span class="math inline">\(\mu_T=\mu-\sigma(1-T^\xi)/\xi\)</span> and <span class="math inline">\(\sigma_T=\sigma T^\xi\)</span> when <span class="math inline">\(\xi \neq 0\)</span>. We denote the expectation of the <span class="math inline">\(T\)</span>-observation maximum by <span class="math inline">\(\mathfrak{e}_T\)</span>, the <span class="math inline">\(p\)</span> quantile of the <span class="math inline">\(T\)</span>-observation maximum by <span class="math inline">\(\mathfrak{q}_p = H^{-1}(p)\)</span> and the associated return level by <span class="math inline">\(z_{1/T} = G^{-1}(1-1/T)\)</span>. Then, any of these three quantities can be written as
+<span class="math display">\[\begin{align*}
+ \begin{cases}
+ \mu-\frac{\sigma}{\xi}\left\{1-\kappa_{\xi}\right\}, &amp;  \xi &lt;1, \xi \neq 0, \\
+ \mu+\sigma\kappa_0, &amp;  \xi =0,
+  \end{cases}
+\end{align*}\]</span>
+where <span class="math inline">\(\kappa_{\xi}=T^\xi\Gamma(1-\xi)\)</span> for <span class="math inline">\(\mathfrak{e}_T\)</span>, <span class="math inline">\(\kappa_{\xi}=T^\xi\log(1/p)^{-\xi}\)</span> for <span class="math inline">\(\mathfrak{q}_p\)</span> and <span class="math inline">\(\kappa_{\xi}=\left\{-\log\left(1-{1}/{T}\right)\right\}^{-\xi}\)</span> for <span class="math inline">\(z_{1/T}\)</span>. In the Gumbel case, we have <span class="math inline">\(\kappa_0=\log(T)+\gamma_{e}\)</span> for <span class="math inline">\(\mathfrak{e}_T\)</span>, <span class="math inline">\(\kappa_0=\log(T)-\log\{-\log(p)\}\)</span> for <span class="math inline">\(\mathfrak{q}_p\)</span> and <span class="math inline">\(\kappa_0=-\log\{-\log(1-1/T)\}\)</span> for <span class="math inline">\(z_{1/T}\)</span>.</p>
+</div>
+</div>
+<div id="numerical-example" class="section level2">
+<h2><span class="header-section-number">1.2</span> Numerical example</h2>
+<p>This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
+<span class="kw">data</span>(<span class="st">&quot;maiquetia&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;mev&quot;</span>)
+day &lt;-<span class="st"> </span><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1961-01-01&quot;</span>), 
+                <span class="dt">to =</span> <span class="kw">as.Date</span>(<span class="st">&quot;1999-12-31&quot;</span>), <span class="dt">by =</span> <span class="st">&quot;day&quot;</span>)
+<span class="co"># Keep non-zero rainfall, exclude 1999 observations</span>
+nzrain &lt;-<span class="st"> </span>maiquetia[<span class="kw">substr</span>(day, <span class="dv">3</span>, <span class="dv">4</span>) <span class="op">&lt;</span><span class="st"> </span><span class="dv">99</span> <span class="op">&amp;</span><span class="st"> </span>maiquetia <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]
+gpdf &lt;-<span class="st"> </span><span class="kw">fit.gpd</span>(nzrain, <span class="dt">threshold =</span> <span class="dv">20</span>)
+<span class="kw">print</span>(gpdf)</code></pre>
+<pre><code>## Method: Grimshaw 
+## Log-likelihood: -832.629 
+## 
+## Threshold: 20 
+## Number Above: 216 
+## Proportion Above: 0.0604 
+## 
+## Estimates
+##   scale    shape  
+## 15.5800   0.1088  
+## 
+## Standard Errors
+##   scale    shape  
+## 1.60673  0.07785  
+## 
+## Optimization Information
+##   Convergence: successful</code></pre>
+<p>We will ignore temporal dependence and stationarity, but these should be considered.
+The first step in our analysis is to choose a threshold. For the time being, we set the latter to 20 and consider threshold selection in the next section.</p>
+<p>The default optimization routine for the generalized Pareto distribution is
+Grimshaw’s method, which profiles out the likelihood. The method has theoretical convergence guaranteesfor convergence. Because of non-regularity, the maximum likelihood estimator for <span class="math inline">\(\xi &lt; -1\)</span> does not solve the score equation and leads to infinite log-likelihood, hence the maximum returned lies on the boundary of the parameter space. The standard errors are based on the inverse observed information matrix and provided only if <span class="math inline">\(\xi&gt;-1/2\)</span>. We can verify that our maximum likelihood estimate is indeed a maximum by checking if it solves the score equation if <span class="math inline">\(\hat{\xi}&gt;-1\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">isTRUE</span>(<span class="kw">all.equal</span>(
+  <span class="kw">gpd.score</span>(gpdf<span class="op">$</span>estimate, <span class="dt">dat =</span> gpdf<span class="op">$</span>exceedances),
+  <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">tolerance =</span> <span class="fl">1e-5</span>))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>If the sample is small, maximum likelihood estimators are biased for the generalized Pareto distribution (the shape parameter is negatively biased, regardless of the true value for <span class="math inline">\(\xi\)</span>). Bias correction methods includes the modified score of Firth, but the default method is the implicit correction (<code>subtract</code>), which solves the
+implicit equation
+<span class="math display">\[\begin{align}
+   \boldsymbol{\tilde{\theta}}=\hat{\boldsymbol{\theta}}-\boldsymbol{b}(\tilde{\boldsymbol{\theta}}). \label{eq:implbias}
+\end{align}\]</span>
+The point estimate <span class="math inline">\(\boldsymbol{\tilde{\theta}}\)</span> is obtained numerically as the root of this nonlinear system of
+equations. In the present case, the sample size is large and hence the first-order correction, derived through asymptotic arguments from the generalized Pareto distribution likelihood, is small. Note that the bias correction requires <span class="math inline">\(\xi &gt; -1/3\)</span>, since it is based on third-order cumulants of the distribution.</p>
+<pre class="sourceCode r"><code class="sourceCode r">gpdbcor &lt;-<span class="st"> </span><span class="kw">gpd.bcor</span>(<span class="dt">dat =</span> gpdf<span class="op">$</span>exceedances, <span class="dt">par =</span> gpdf<span class="op">$</span>estimate)
+<span class="co">#print the differences between MLE and bias-corrected estimates</span>
+gpdf<span class="op">$</span>estimate <span class="op">-</span><span class="st"> </span>gpdbcor</code></pre>
+<pre><code>##      scale      shape 
+##  0.1915284 -0.0118876</code></pre>
+<p>The package includes some default diagnostic plots (probability-probability plots and quantile-quantile plots), which include approximate confidence intervals based on order statistics. We can also get profile likelihood and profile-based confidence intervals for most quantities of interest (parameters of the generalized Pareto distribution, excepted shortfall, return levels, <span class="math inline">\(N\)</span>-observation maxima mean and quantiles). The example below gives the estimated profile for the median of the centenial maximum distribution conditional on exceeding 15, along with 95% confidence intervals.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gpdf, <span class="dt">which =</span> <span class="dv">2</span>) <span class="co">#Q-Q plot</span></code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Profile of median of maxima of 100 years</span>
+profile &lt;-<span class="st"> </span><span class="kw">gpd.pll</span>(<span class="dt">param =</span> <span class="st">&quot;Nquant&quot;</span>, <span class="dt">dat =</span> nzrain, <span class="dt">threshold =</span> <span class="dv">15</span>, 
+        <span class="dt">N =</span> <span class="kw">length</span>(nzrain)<span class="op">/</span>(<span class="dv">1998-1961</span>)<span class="op">*</span><span class="dv">100</span>, <span class="dt">q =</span> <span class="fl">0.5</span>)
+<span class="co"># 95% confidence intervals</span>
+conf &lt;-<span class="st"> </span><span class="kw">confint</span>(profile, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre>
+<p><img src="mevtuto_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre><code>## Point estimate for the parameter of interest psi:
+## Maximum likelihood          : 320.622 
+## 
+## Confidence intervals, levels : 0.025 0.975 
+## Wald intervals               : 118.72 522.524 
+## Profile likelihood           : 177.214 741.869</code></pre>
+</div>
+<div id="your-turn" class="section level2">
+<h2><span class="header-section-number">1.3</span> Your turn</h2>
+<ol style="list-style-type: decimal">
+<li>Simulate 200 observations from the <span class="math inline">\(r\)</span>-largest likelihood using <code>rrlarg</code> with shape parameter <span class="math inline">\(\xi=-0.2\)</span> and <span class="math inline">\(r=5\)</span>.</li>
+<li>Test the hypothesis <span class="math inline">\(\mathrm{H}_0: \xi = \xi_0\)</span> using a score test and derive a 90% confidence interval for <span class="math inline">\(\xi\)</span>. You can obtain the maximum likelihood estimator by calling <code>fit.rlarg</code> and the score and information matrix are implemented under <code>rlarg.score</code> and <code>rlarg.infomat</code>. Recall that the score statistic <span class="math inline">\(w_{\mathsf{score}} \equiv U(\hat{\boldsymbol{\theta}}_{\xi_0})^\top i^{-1}(\hat{\boldsymbol{\theta}}_{\xi_0})U( \hat{\boldsymbol{\theta}}_{\xi_0}) \sim \chi^2_1.\)</span></li>
+</ol>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Coles:2001">
+<p>Coles, Stuart. 2001. <em>An Introduction to Statistical Modeling of Extreme Values</em>. London: Springer–Verlag.</p>
+</div>
+<div id="ref-Cox:2002">
+<p>Cox, D. R., V. S. Isham, and P. J. Northrop. 2002. “Floods: Some Probabilistic and Statistical Approaches.” <em>Philosophical Transactions of the Royal Society of London A: Mathematical, Physical and Engineering Sciences</em> 360 (1796): 1389–1408. <a href="https://doi.org/10.1098/rsta.2002.1006">https://doi.org/10.1098/rsta.2002.1006</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="threshold-selection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["mevtuto.pdf", "mevtuto.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

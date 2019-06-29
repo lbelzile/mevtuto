@@ -124,8 +124,10 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-28}
+    \date{2019-06-29}
 
+\usepackage{geometry}
+\geometry{left = 1in, right = 1in}
 \usepackage[mathscr]{eucal}
 \DeclareMathAlphabet{\mathcrl}{U}{rsfs}{m}{n}
 \usepackage{fourier}
@@ -233,7 +235,7 @@
 \addcontentsline{toc}{chapter}{Preliminary remarks}
 
 The \texttt{mev} package bundles routine for
-- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and \(r\)-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many recent threshold selection diagnostics that have appeared in the literature are implemented.
+- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and \(r\)-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many threshold selection diagnostics that have recently been proposed in the literature are implemented.
 
 The second includes multivariate goodness-of-fit diagnostics and tests (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.
 
@@ -246,6 +248,8 @@ You can install the latest version of the package (\texttt{v.1.12}) directly fro
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"mev"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+These notes are copyright by the author: you may not reuse them without permission.
 
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\Hmat}{\mathbf{H}}
@@ -270,15 +274,27 @@ You can install the latest version of the package (\texttt{v.1.12}) directly fro
 \newcommand{\simiid}{\stackrel{\mathrm{iid}}{\sim}}
 \newcommand{\bigO}{\mathrm{O}}
 \newcommand{\rp}{\mathrm{p}}
+\newcommand{\Hy}{\mathrm{H}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\sphere}{\mathbb{S}}
+\newcommand{\ang}{\mathrm{ang}}
+\newcommand{\Ri}{\mathcal{R}}
+\newcommand{\cone}{\mathcal{C}}
 
-\hypertarget{univariate-peaks-over-threshold-analysis}{%
-\chapter{Univariate peaks-over-threshold analysis}\label{univariate-peaks-over-threshold-analysis}}
+\hypertarget{likelihood-based-inference-for-univariate-extremes}{%
+\chapter{Likelihood based inference for univariate extremes}\label{likelihood-based-inference-for-univariate-extremes}}
 
-Let \(\ell(\boldsymbol{y}; \boldsymbol{\theta})\) denotes the log-likelihood of an \(n\) sample with a \(p\)-dimensional parameter \(\boldsymbol{\theta}\). The score vector is \(U(\boldsymbol{\theta})=\partial \ell / \partial \boldsymbol{\theta}\), while the Fisher information is \(i(\boldsymbol{\theta})=\mathrm{E}\{U(\boldsymbol{\theta})U(\boldsymbol{\theta})^\top\}\). Under regularity conditions, we also have \(i(\boldsymbol{\theta}) = - \mathrm{E}(\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top)\). The observed information is the Hessian \(-\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top\), evaluated at the maximum likelihood estimator \(\hat{\boldsymbol{\theta}}\).
+\hypertarget{basic-theory}{%
+\section{Basic theory}\label{basic-theory}}
 
-By definition, the maximum likelihood estimator solves the score equation, i.e.~\(U(\hat{\boldsymbol{\theta}})=\boldsymbol{0}_p\). If the maximum likelihood estimator is not available in closed-form, this can be used to verify that the optimization routine has converged. It can also be used for Newton methods.
+Let \(\ell(\boldsymbol{y}; \boldsymbol{\theta})\) denotes the log-likelihood of an \(n\) sample with a \(p\)-dimensional parameter \(\boldsymbol{\theta}\). The score vector is \(U(\boldsymbol{\theta})=\partial \ell / \partial \boldsymbol{\theta}\), while the Fisher information is \(i(\boldsymbol{\theta})=\mathrm{E}\{U(\boldsymbol{\theta})U(\boldsymbol{\theta})^\top\}\). Under regularity conditions, we also have \(i(\boldsymbol{\theta}) = - \mathrm{E}(\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top)\). The observed information is the negative Hessian \(-\partial^2 \ell / \partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^\top\), evaluated at the maximum likelihood estimator \(\hat{\boldsymbol{\theta}}\).
 
-There are four basic likelihoods for univariate extremes: the likelihood of the generalized extreme value (GEV) distribution for block maxima, the likelihood for the generalized Pareto distribution and that of the non-homogeneous Poisson process (NHPP) for exceedances above a threshold \(u\), the likelihood of the \(r\)-largest observations, which can be used to model the \(r\)-largest observations per block or threshold exceedances where the threshold is the \(r\)th order statistic. The NHPP likelihood includes a contribution for the fraction of points that exceeds the threshold, whereas the generalized Pareto is a conditional distribution, whose normalizing constant \(\zeta_u=\Pr(Y>u)\) is the third parameter.
+By definition, the maximum likelihood estimator solves the score equation, i.e.~\(U(\hat{\boldsymbol{\theta}})=\boldsymbol{0}_p\). If the maximum likelihood estimator is not available in closed-form, its solution is found numerically and this property can be used to verify that the optimization routine has converged or for gradient-based maximization algorithms.
+
+\hypertarget{likelihoods}{%
+\subsection{Likelihoods}\label{likelihoods}}
+
+There are four basic likelihoods for univariate extremes: the likelihood of the generalized extreme value (GEV) distribution for block maxima, the likelihood for the generalized Pareto distribution and that of the non-homogeneous Poisson process (NHPP) for exceedances above a threshold \(u\) and lastly the likelihood of the \(r\)-largest observations.
 
 The generalized extreme value (GEV) distribution with location parameter \(\mu \in \mathbb{R}\), scale parameter \(\sigma \in \mathbb{R}_{+}\) and shape
 parameter \(\xi \in \mathbb{R}\) is
@@ -292,7 +308,6 @@ parameter \(\xi \in \mathbb{R}\) is
 defined on \(\{x \in \mathbb{R}: \xi(x-\mu)/\sigma > -1\}\) where \(x_{+} = \max\{0, x\}\). The case \(\xi=0\) is commonly known as the Gumbel
 distribution.
 We denote the distribution by \(\mathsf{GEV}(\mu, \sigma, \xi)\).
-\textbackslash end\{defn\}
 
 The generalized Pareto (GP) distribution with scale \(\sigma \in \mathbb{R}_{+}\) and shape \(\xi \in \mathbb{R}\) is
 \begin{align*}
@@ -305,19 +320,35 @@ The generalized Pareto (GP) distribution with scale \(\sigma \in \mathbb{R}_{+}\
 The range of the generalized Pareto distribution is \([0, -\sigma/\xi)\) if \(\xi < 0\) and is \(\mathbb{R}_{+}\) otherwise. We denote the distribution
 by \(\mathsf{GP}(\sigma, \xi)\).
 
-Let \(Y_{(1)} \geq \cdots \geq Y_{(r)}\) denote the \(r\) largest observations from a sample. The likelihood of the limiting distribution of the point process for the \(r\)-largest observations is \[
-\ell(\mu,\sigma,\xi; \boldsymbol{y}) \equiv  -r\log(\sigma) - \left(1+\frac{1}{\xi}\right)\sum_{j=1}^r \log\left(1 + \xi\frac{y_{(j)}-\mu}{\sigma}\right)_{+} - \left(1 + \xi\frac{y_{(r)}-\mu}{\sigma}\right)^{-1/\xi}_+, \quad \mu,\xi\in\mathbb{R}, \sigma>0.
+Let \(Y_{(1)} \geq \cdots \geq Y_{(r)}\) denote the \(r\) largest observations from a sample. The likelihood of the limiting distribution of the point process for the \(r\)-largest observations is, for \(\mu,\xi\in\mathbb{R}, \sigma>0\), \[
+\ell(\mu,\sigma,\xi; \boldsymbol{y}) \equiv  -r\log(\sigma) - \left(1+\frac{1}{\xi}\right)\sum_{j=1}^r \log\left(1 + \xi\frac{y_{(j)}-\mu}{\sigma}\right)_{+} - \left(1 + \xi\frac{y_{(r)}-\mu}{\sigma}\right)^{-1/\xi}_+.
 \]
+This likelihood can be used to model the \(r\)-largest observations per block or threshold exceedances where the threshold is the \(r\)th order statistic
 
-Consider a sample of \(N\) observations, of which \(n_u\) exceed \(u\) and which we denote by \(y_1, \ldots, y_{n_u}\). The likelihood associated to the limiting distribution of threshold exceedances is
+Consider a sample of \(N\) observations, of which \(n_u\) exceed \(u\) and which we denote by \(y_1, \ldots, y_{n_u}\). The likelihood associated to the limiting distribution of threshold exceedances is, for \(\mu, \xi \in \mathbb{R}, \sigma >0\),
 \begin{align}
-L(\mu, \sigma, \xi; \boldsymbol{y}) = \exp \left[ - c \left\{1+ \xi \left( \frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}_{+}\right] (c\sigma)^{-n_u}\prod_{i=1}^{n_u} \left\{1+\xi\left( \frac{y_i-\mu}{\sigma}\right)\right\}^{-1/\xi-1}_{+}, \qquad \mu, \xi \in \mathbb{R}, \sigma >0, \label{eq:ppp_lik}
+L(\mu, \sigma, \xi; \boldsymbol{y}) = \exp \left[ - c \left\{1+ \xi \left( \frac{u-\mu}{\sigma}\right)\right\}^{-1/\xi}_{+}\right] (c\sigma)^{-n_u}\prod_{i=1}^{n_u} \left\{1+\xi\left( \frac{y_i-\mu}{\sigma}\right)\right\}^{-1/\xi-1}_{+},\label{eq:ppp_lik}
 \end{align}
-where \((\cdot)_{+} = \max\{0, \cdot\}\). The quantity \(c\) is a tuning parameter whose role is described in \S 7.5 of \citet{Coles:2001}. If we take \(c=N/m\), the parameters of the point process likelihood correspond to those of the generalized extreme value distribution fitted to blocks of size \(m\).
+where \((\cdot)_{+} = \max\{0, \cdot\}\). The quantity \(c\) is a tuning parameter whose role is described in \S 7.5 of \citet{Coles:2001}. If we take \(c=N/m\), the parameters of the point process likelihood correspond to those of the generalized extreme value distribution fitted to blocks of size \(m\). The NHPP likelihood includes a contribution for the fraction of points that exceeds the threshold, whereas the generalized Pareto is a conditional distribution, whose third parameter is the normalizing constant \(\zeta_u=\Pr(Y>u)\). Since the latter has a Bernoulli and \(\zeta_u\) is orthogonal to the pair \((\sigma, \xi)\), it is often omitted from further analyses and estimated as the proportion of samples above the threshold.
 
-\hypertarget{profile-likelihood}{%
-\subsection{Profile likelihood}\label{profile-likelihood}}
+\hypertarget{test-statistics-and-the-profile-likelihood}{%
+\subsection{Test statistics and the profile likelihood}\label{test-statistics-and-the-profile-likelihood}}
 
+The three main type of test statistics for likelihood-based inference are the Wald, score and likelihood ratio tests.
+The three main classes of statistics for testing a simple null hypothesis \(\mathrm{H}_0: \boldsymbol{\theta}=\boldsymbol{\theta}_0\) against the alternative \(\mathrm{H}_a: \boldsymbol{\theta} \neq \boldsymbol{\theta}_0\) are the likelihood ratio, the score and the Wald statistics,
+defined
+respectively as
+\begin{align*}
+ w &= 2 \left\{ \ell(\hat{\boldsymbol{\theta}})-\ell(\boldsymbol{\theta}_0)\right\},\qquad 
+ \\w_{\mathsf{score}} &= U^\top(\boldsymbol{\theta}_0)i^{-1}(\boldsymbol{\theta}_0)U(\boldsymbol{\theta}_0),\qquad
+ \\ w_{\mathsf{wald}} &= (\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_0)^\top i(\boldsymbol{\theta}_0)(\hat{\boldsymbol{\theta}}-\boldsymbol{\theta}_0),
+\end{align*}
+where \(\hat{\boldsymbol{\theta}}\) is the maximum likelihood estimate under the alternative and
+\(\boldsymbol{\theta}_0\) is the null value of the parameter vector. The statistics \(w, w_{\mathsf{score}}, w_{\mathsf{wald}}\) are all first order equivalent and asymptotically follow a \(\chi^2_p\) distribution, where \(q\) is the difference between \(p\) and the number of parameters under the null hypothesis. Under the conditions of the Neyman--Pearson theorem, the likelihood ratio test is most powerful test of the lot. The score statistic \(w_{\mathsf{score}}\) only requires
+calculation of the score and information under
+\(\mathrm{H}_0\), which can be useful in problems where calculations under the alternative are difficult to obtain. The Wald statistic \(w_{\mathsf{wald}}\) is not parametrization-invariant and typically has poor coverage properties.
+
+Oftentimes, we are interested in a functional of the parameter vector \(\boldsymbol{\theta}\).
 The profile
 likelihood \(\ell_\mathrm{p}\), a function of \(\boldsymbol{\psi}\) alone, is obtained by maximizing the
 likelihood pointwise at each fixed value \(\boldsymbol{\psi}=\boldsymbol{\psi}_0\) over the nuisance vector
@@ -325,7 +356,9 @@ likelihood pointwise at each fixed value \(\boldsymbol{\psi}=\boldsymbol{\psi}_0
 \begin{align*}
    \ell_\mathrm{p}(\boldsymbol{\psi})=\max_{\boldsymbol{\lambda}}\ell(\boldsymbol{\psi}, \boldsymbol{\lambda})=\ell(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}}).
 \end{align*}
-The observed profile information function is \index{information!observed (profile)}
+We denote the restricted maximum likelihood estimator \(\hat{\boldsymbol{\theta}}_\psi= (\psi, \hat{\lambda}_{\psi})\).
+
+We can define score and information in the usual fashion: for example, the observed profile information function is
 \[j_\mathrm{p}(\boldsymbol{\psi})
 =-\frac{\partial \ell_\mathrm{p}(\boldsymbol{\psi})}{\partial \boldsymbol{\psi}\partial \boldsymbol{\psi}^\top} 
 = \left\{j^{\boldsymbol{\psi\psi}}(\boldsymbol{\psi}, \hat{\boldsymbol{\lambda}}_{\boldsymbol{\psi}})\right\}^{-1}.
@@ -333,48 +366,34 @@ The observed profile information function is \index{information!observed (profil
 The profile likelihood is not a
 genuine likelihood in the sense that it is not based on the density of a random variable.
 
+We can turn tests and their asymptotic distribution into confidence intervals. For the hypothesis \(\psi = \psi_0\), a \((1-\alpha)\) confidence interval based on the profile likelihood ratio test is \(\{ \psi: 2\{\ell(\hat{\theta}) - \ell(\hat{\theta}_{\psi})\} \leq \chi^2_1(0.95)\}\).
+
+Two typical questions in extreme values are: given the intensity of an extreme event, what is its recurrence period? and what is a typical worst-case scenario over a given period of time? For the latter, suppose for simplicity that the daily observations are blocked into years, so that inference is based on \(N\) points for the \(N\) years during which the data were recorded. The \emph{return level} is a quantile of the underlying distribution corresponding to an event of probability \(p=1-1/T\) for an annual maximum, which is interpreted as ``the level exceeded by an annual maximum on average every \(T\) years''. If observations are independent and identically distributed, then we can approximate the probability that a return level is exceeded \(l\) times over a \(T\) year period using a binomial distribution with probability of success \(1-1/T\) and \(T\) trials. For \(T\) large, the return level is exceeded \(l=0, 1, 2, 3, 4\) times within any \(T\)-years period with approximate probabilities 36.8\%, 36.8\%, 18.4\%, 6.1\% and 1.5\%. The probability that the maximum observation over \(T\) years is exceeded with a given probability is readily obtained from the distribution of the \(T\)-year maximum, leading \citep[\S3(b)]{Cox:2002} to advocate its use over return levels, among other quantities of interest such as the number of times a threshold \(u\) will be exceeded in \(T\) years or the average number of years before a threshold \(u\) is exceeded.
+
+\textbf{Quantiles, mean and return levels of \(T\)-maxima}: consider the distribution \(H(x) = G^T(x)\) of the maximum of \(T\) independent and identically distributed generalized extreme value variates with parameters \((\mu, \sigma, \xi)\) and distribution function \(G\). By max-stability, the parameters of \(H(x)\) are \(\mu_T=\mu-\sigma(1-T^\xi)/\xi\) and \(\sigma_T=\sigma T^\xi\) when \(\xi \neq 0\). We denote the expectation of the \(T\)-observation maximum by \(\mathfrak{e}_T\), the \(p\) quantile of the \(T\)-observation maximum by \(\mathfrak{q}_p = H^{-1}(p)\) and the associated return level by \(z_{1/T} = G^{-1}(1-1/T)\). Then, any of these three quantities can be written as
+\begin{align*}
+ \begin{cases}
+ \mu-\frac{\sigma}{\xi}\left\{1-\kappa_{\xi}\right\}, &  \xi <1, \xi \neq 0, \\
+ \mu+\sigma\kappa_0, &  \xi =0,
+  \end{cases}
+\end{align*}
+where \(\kappa_{\xi}=T^\xi\Gamma(1-\xi)\) for \(\mathfrak{e}_T\), \(\kappa_{\xi}=T^\xi\log(1/p)^{-\xi}\) for \(\mathfrak{q}_p\) and \(\kappa_{\xi}=\left\{-\log\left(1-{1}/{T}\right)\right\}^{-\xi}\) for \(z_{1/T}\). In the Gumbel case, we have \(\kappa_0=\log(T)+\gamma_{e}\) for \(\mathfrak{e}_T\), \(\kappa_0=\log(T)-\log\{-\log(p)\}\) for \(\mathfrak{q}_p\) and \(\kappa_0=-\log\{-\log(1-1/T)\}\) for \(z_{1/T}\).
+
+\hypertarget{numerical-example}{%
+\section{Numerical example}\label{numerical-example}}
+
 This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(mev)}
-\KeywordTok{library}\NormalTok{(lubridate, }\DataTypeTok{quietly =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{warn.conflicts =} \OtherTok{FALSE}\NormalTok{)}
-
-\KeywordTok{data}\NormalTok{(}\StringTok{"maiquetia"}\NormalTok{)}
+\KeywordTok{data}\NormalTok{(}\StringTok{"maiquetia"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"mev"}\NormalTok{)}
 \NormalTok{day <-}\StringTok{ }\KeywordTok{seq.Date}\NormalTok{(}\DataTypeTok{from =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1961-01-01"}\NormalTok{), }
                 \DataTypeTok{to =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1999-12-31"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"day"}\NormalTok{)}
 \CommentTok{# Keep non-zero rainfall, exclude 1999 observations}
-\NormalTok{nzrain <-}\StringTok{ }\NormalTok{maiquetia[}\KeywordTok{year}\NormalTok{(day) }\OperatorTok{<}\StringTok{ }\DecValTok{1999} \OperatorTok{&}\StringTok{ }\NormalTok{maiquetia }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{]}
-\end{Highlighting}
-\end{Shaded}
-
-We will ignore temporal dependence and stationarity, but these should be considered.
-The first step in our analysis is to choose a threshold. We select candidates based on quantiles and test whether they lead to stable inference.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{ths <-}\StringTok{ }\KeywordTok{quantile}\NormalTok{(nzrain, }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.9}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\DataTypeTok{length.out =} \DecValTok{15}\NormalTok{))}
-\CommentTok{# Threshold selection diagnostics}
-\KeywordTok{W.diag}\NormalTok{(}\DataTypeTok{xdat =}\NormalTok{ nzrain, }\DataTypeTok{model =} \StringTok{"nhpp"}\NormalTok{, }\DataTypeTok{plots =} \KeywordTok{c}\NormalTok{(}\StringTok{"WN"}\NormalTok{,}\StringTok{"PS"}\NormalTok{), }\DataTypeTok{u =}\NormalTok{ ths)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-2-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{NC.diag}\NormalTok{(nzrain, }\DataTypeTok{u =}\NormalTok{ ths)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-2-2.pdf}
-
-Threshold selection diagnostics indicate that the shape is more or less constant over the range of threshold considered. Wadsworth's white noise sequence yields a very large residual around \(u=20\), but the Northrop--Coleman score test yields \(P\)-value path above 0.2 for every threshold under consideration.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Fit using maximum likelihood estimation}
-\NormalTok{gpdf <-}\StringTok{ }\KeywordTok{fit.gpd}\NormalTok{(nzrain, }\DataTypeTok{threshold =} \DecValTok{20}\NormalTok{, }\DataTypeTok{show =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{nzrain <-}\StringTok{ }\NormalTok{maiquetia[}\KeywordTok{substr}\NormalTok{(day, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{) }\OperatorTok{<}\StringTok{ }\DecValTok{99} \OperatorTok{&}\StringTok{ }\NormalTok{maiquetia }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{]}
+\NormalTok{gpdf <-}\StringTok{ }\KeywordTok{fit.gpd}\NormalTok{(nzrain, }\DataTypeTok{threshold =} \DecValTok{20}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(gpdf)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -398,8 +417,11 @@ Threshold selection diagnostics indicate that the shape is more or less constant
 ##   Convergence: successful
 \end{verbatim}
 
+We will ignore temporal dependence and stationarity, but these should be considered.
+The first step in our analysis is to choose a threshold. For the time being, we set the latter to 20 and consider threshold selection in the next section.
+
 The default optimization routine for the generalized Pareto distribution is
-Grimshaw's method, which profiles out the likelihood. The method is almost guaranteed to converge. Because of non-regularity, the maximum likelihood estimator for \(\xi < -1\) does not solve the score equation and leads to infinite log-likelihood, hence the maximum returned lies on the boundary. The standard errors are based on the inverse observed information matrix and provided only if \(\xi>-1/2\). We can verify that our maximum likelihood estimate is indeed a maximum by checking if it solves the score equation if \(\hat{\xi}>-1\).
+Grimshaw's method, which profiles out the likelihood. The method has theoretical convergence guaranteesfor convergence. Because of non-regularity, the maximum likelihood estimator for \(\xi < -1\) does not solve the score equation and leads to infinite log-likelihood, hence the maximum returned lies on the boundary of the parameter space. The standard errors are based on the inverse observed information matrix and provided only if \(\xi>-1/2\). We can verify that our maximum likelihood estimate is indeed a maximum by checking if it solves the score equation if \(\hat{\xi}>-1\).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -442,24 +464,19 @@ The package includes some default diagnostic plots (probability-probability plot
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-4-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Profile of median of maxima of 100 years}
 \NormalTok{profile <-}\StringTok{ }\KeywordTok{gpd.pll}\NormalTok{(}\DataTypeTok{param =} \StringTok{"Nquant"}\NormalTok{, }\DataTypeTok{dat =}\NormalTok{ nzrain, }\DataTypeTok{threshold =} \DecValTok{15}\NormalTok{, }
         \DataTypeTok{N =} \KeywordTok{length}\NormalTok{(nzrain)}\OperatorTok{/}\NormalTok{(}\DecValTok{1998-1961}\NormalTok{)}\OperatorTok{*}\DecValTok{100}\NormalTok{, }\DataTypeTok{q =} \FloatTok{0.5}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-6-2.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{# 95% confidence intervals}
 \NormalTok{conf <-}\StringTok{ }\KeywordTok{confint}\NormalTok{(profile, }\DataTypeTok{print =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-4-2.pdf}
 
 \begin{verbatim}
 ## Point estimate for the parameter of interest psi:
@@ -470,12 +487,148 @@ The package includes some default diagnostic plots (probability-probability plot
 ## Profile likelihood           : 177.214 741.869
 \end{verbatim}
 
+\hypertarget{your-turn}{%
+\section{Your turn}\label{your-turn}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Simulate 200 observations from the \(r\)-largest likelihood using \texttt{rrlarg} with shape parameter \(\xi=-0.2\) and \(r=5\).
+\item
+  Test the hypothesis \(\mathrm{H}_0: \xi = \xi_0\) using a score test and derive a 90\% confidence interval for \(\xi\). You can obtain the maximum likelihood estimator by calling \texttt{fit.rlarg} and the score and information matrix are implemented under \texttt{rlarg.score} and \texttt{rlarg.infomat}. Recall that the score statistic \(w_{\mathsf{score}} \equiv U(\hat{\boldsymbol{\theta}}_{\xi_0})^\top i^{-1}(\hat{\boldsymbol{\theta}}_{\xi_0})U( \hat{\boldsymbol{\theta}}_{\xi_0}) \sim \chi^2_1.\)
+\end{enumerate}
+
+\hypertarget{threshold-selection}{%
+\chapter{Threshold selection}\label{threshold-selection}}
+
+The generalized Pareto (GP) distribution with scale \(\sigma \in \mathbb{R}_{+}\) and shape \(\xi \in \mathbb{R}\) is
+\begin{align*}
+  G(x)  = \begin{cases}
+1-\left\{1+\xi \left(\frac{x}{\sigma}\right)\right\}_{+}^{-1/\xi}, &  \xi \neq 0,
+\\ 1-\exp \left(-{x}{\sigma}\right),&  \xi = 0.
+\end{cases}
+ \end{align*}
+The range of the generalized Pareto distribution is \([0, -\sigma/\xi)\) if \(\xi < 0\) and \(\mathbb{R}_{+}\) otherwise.
+
+Why is the generalized Pareto distribution so central to peaks-over-threshold analysis? The conditional distribution of exceedances over a threshold \(u < x^*\) converges to a generalized Pareto distribution as \(u\) converges to the endpoint of the distribution,
+\begin{align*}
+\lim_{u \to x^*} \frac{1-F(xa_u+u)}{1-F(u)} = 1-H(x),
+\end{align*}
+where \(H(x)\) is the distribution function of \(\mathsf{GP}(1, \xi)\).
+
+If \(X \sim \mathsf{GP}(\sigma, \xi)\), straightforward calculations show that \(X-u \mid X>u \sim \mathsf{GP}(\sigma + \xi u, \xi)\) for any \(u \in \mathbb{R}\) such that \(\sigma+\xi u>0\), meaning that conditional exceedances above a threshold \(u\) also follow a generalized Pareto distribution. This property is termed threshold-stability.
+
+The limiting distribution of threshold exceedances is generalized Pareto as \(u \to x^*\) but, in practice, we must choose a finite threshold in order to have enough exceedances to draw inference. Since the scaling constant \(a_u\) is unknown, we have \(X \mid X > u \stackrel{\cdot}{\sim} \mathsf{GP}(\sigma_u, \xi)\). The term \(1-F(u)\) in the denominator is the fraction of points exceeding the threshold, which has a binomial distribution.
+
+Threshold selection is subtle and it is common to select a high percentile of the data, say the
+95\% value, as the threshold, even if this is asymptotically incorrect, as in this case \(k/n \nrightarrow 0\) as \(n \to \infty\). Most approaches for threshold selection rely on properties of the
+generalized Pareto distribution (moments, threshold-stability) to determine a region within which the asymptotic distribution fits the data well and the parameter estimates are stable.
+
+Below, we focus on recent graphical selection tools for likelihood based inference; mixture models are reviewed in \citet{Scarrott:2012} and are available in the package \texttt{evmix}.
+
+\hypertarget{threshold-stability-plots}{%
+\section{Threshold stability plots}\label{threshold-stability-plots}}
+
+Consider a sequence of ordered candidate thresholds \(u_1 < \cdots < u_k\); one of the most widely used tools for threshold selection is the threshold-stability plots of \citet{Davison:1990}. These show the point estimates of the shape \(\xi\) and the modified scale \(\sigma_{u_i}-\xi u_i\), which should be constant for any threshold \(u_{j} >u_i\) assuming that the generalized Pareto above \(u_i\) holds exactly. In addition to the point estimates, the asymptotic pointwise 95\% Wald confidence intervals are displayed; the standard errors are obtained from the observed information matrix. While these are displayed by many packages, notably \texttt{extRemes}, \texttt{ismev} and \texttt{evd} , \texttt{mev} allows you to use profile likelihood based confidence intervals, which typically offer better coverage and capture some of the asymmetry of the distribution. The \texttt{mev} package functions for producing threshold stability plots are \texttt{tstab.gpd} and \texttt{tstab.pp} for respectively the generalized Pareto and Poisson process likelihoods.
+
+Parameter stability plots can be difficult to interpret because the confidence intervals are pointwise rather than simultaneous (each fit likewise uses an overlapping portion of the data). The plots also ignore changes in the estimated parameters due to the penultimate approximation.
+
+\hypertarget{wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots}{%
+\section{Wadsworth's diagnostics: white noise process and simultaneous threshold stability plots}\label{wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots}}
+
+The problem with the threshold stability plots lies in the point-wise nature of the estimate. Assuming a superposition of \(k\) Poisson processes, \citet{Wadsworth:2016} derives the limiting distribution of the maximum likelihood estimators from the Poisson process for overlapping windows as the number of windows \(k \to \infty\) and \(n_k \to \infty\). The joint asymptotic Gaussian distribution allows \citet{Wadsworth:2016} to propose two additional diagnostics: a white noise sequence of differences in estimates of the shape, standardized to have unit variance. The variables \(\xi^*_i=(\hat{\xi}_{u_{i+1}}-\hat{\xi}_{u_i})/\{(I^{-1}_{u_{i+1}}-I^{-1}_{u_{i}})_{\xi,\xi}^{1/2}\}\), where \(I_{u_{i}}\) is the Fisher information of the Poisson process likelihood for exceedances above \(u_i\), should form a white-noise sequence of independent variables centered around the origin; systematic deviations are indicative of inadequacy. To formally test the hypothesis, a likelihood ratio test can be used assuming a simple alternative, namely a single change point at threshold \(u_j\). The null hypothesis is \(\mathrm{H}_0: \xi_i^* \stackrel{\mathrm{iid}}{\sim}\textsf{No}(0,1)\) for \(i=1, \ldots, k-1\) against the alternative \(\mathrm{H}_a: \xi^*_i \sim \textsf{No}(\beta, \sigma) (i=1, \ldots, j-1)\) and \(\xi^*_i \sim \textsf{No}(0,1)\) for \(j, \ldots, k-1\). This alternative is motivated by results on model misspecification \citep{White:1982}, which suggest that the asymptotic distribution may still be Gaussian, but with a different mean and variance. This can be used to automate threshold selection, by picking the smallest threshold for which the \(P\)-value is above the level \(\alpha\). The function \texttt{W.diag} returns diagnostics plots (for the likelihood ratio statistic path, the white noise process and threshold stability along with asymptotic simultaneous confidence intervals) for non-homogeneous Poisson process model and for the bivariate exponential and the over a sequence of thresholds, specified using \texttt{q1}, \texttt{q2} and \texttt{k}. The argument \texttt{M} is a tuning parameter that can be chosen in a way such that the parameters of the non-homogeneous Poisson process likelihood coincide with those of the generalized extreme value distribution for blocks of size \(m\); see \citet{Coles:2001} to this effect.
+
+A main criticism of the proposals of \citet{Wadsworth:2016} is their lack of robustness. For the asymptotic result to be approximately valid, the number of thresholds must be large, which implicitly requires large samples for each superposed point process. Moreover, the estimated difference in Fisher information matrices often fails to be positive definite in practice. The procedure is highly sensitive to the choice of \(k\). Changing the set of thresholds \(\boldsymbol{u}\) under consideration leads to potentially completely different parameter estimates being chosen by the automated procedure.
+
+\hypertarget{changepoint-tests-based-on-penultimate-approximation}{%
+\section{Changepoint tests based on penultimate approximation}\label{changepoint-tests-based-on-penultimate-approximation}}
+
+Let \(F(x)\) denote a thrice-differentiable distribution function with endpoint \(x^*\) and density \(f(x)\). Define the reciprocal hazard function \(r(x) = \{1-F(x)\}/f(x)\).
+The existence of the limit \(\xi_{\infty} = \lim_{n \to \infty} s'\{b_n\}\) is necessary and sufficient for convergence to an extreme value distribution and \citet{Smith:1987} shows that there exists \(y\) such that
+\begin{align*}
+ \frac{1-F\{u+xr(u)\}}{1-F(u)} = \left\{1+xr'(y)\right\}_{+}^{-1/r'(y)}, \qquad u < y < u+xr(u),
+\end{align*}
+unless \(r'(x)\) is constant. The penultimate shape parameter for the generalized Pareto distribution is \(r'(u)\), but the true shape parameter lies between \(r'(u)\) and \(\xi_{\infty}\).
+
+When we fit the limiting parametric models to finite samples, maximum likelihood estimates of the shape parameter will be closer to their penultimate counterparts than to the limiting value and we can expect them to vary as we increase the threshold.
+
+\citet{Northrop:2014} adapt the idea of \citet{Wadsworth:2012} and fit a generalized Pareto model with piecewise constant shape to \(k\) different thresholds; continuity constraints at the thresholds impose \(k-1\) restrictions on scale parameters, so the model only has \(k+1\) parameters. A score test can be used to test the hypothesis of equal shape and it only requires evaluation of the model under the null hypothesis that a generalized Pareto distribution is valid above all thresholds. A diagnostic plot is obtained by plotting \(P\)-values against threshold. One can then choose to take, e.g., (a) the lowest threshold at which the \(P\)-value is non-significant, or (b) the lowest threshold at which the \(P\)-values for all higher thresholds are non-significant: under the null hypothesis, there is an \(\alpha\%\) probability of rejection at any given threshold. The function \texttt{NC.diag} computes the \(P\)-value of the score test as a function of the threshold.
+
+\hypertarget{extended-generalized-pareto}{%
+\section{Extended generalized Pareto}\label{extended-generalized-pareto}}
+
+\citet{Papastathopoulos:2013} propose three extended generalized Pareto distributions: for example, the third extended generalized Pareto model has distribution function \(\{1-(1+\xi x/\sigma)^{-1/\xi}_{+}\}^{\kappa}\) for \(x >0\) and \(\kappa > 0\). Each family reduces to the generalized Pareto when the additional parameter \(\kappa=1\) and share the same tail index \(\xi\), the extended generalized Pareto provide more flexibility for modelling departures from the limiting form. Standard parameter stability plots can be used to find a region in which \(\kappa \approx 1\) and the shape parameter stabilizes. The additional parameter gives flexibility for modelling departures from the limiting distribution and the hope is one can fit to exceedances over lower threshold and increase the number of points to which the distribution is fitted. The stability plots, obtained through \texttt{tstab.egp}, suffer from the same caveats as classical diagnostics.
+
+\hypertarget{robust-selection}{%
+\section{Robust selection}\label{robust-selection}}
+
+The extreme value distributions have unbounded influence functions and outliers can strongly affect the estimate of the shape. \citet{Dupuis:1999} proposes an optimal \(B\)-robust estimator of the generalized Pareto parameters. Points that are outlying or for which the fit is poor are downweighted; if the weights for the largest observations are very low, this suggests that the threshold is too low. While there is no guarantee that observations that were simulated from a generalized Pareto distributed would not be downweighted, systematic downweighting of the largest exceedances may be indicative of poor fit.
+
+We are now ready to go back to the Maiquetia data and try to select a reasonable threshold. To this effect, we select a sequence of candidate thresholds and run the procedures described above.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(}\StringTok{"maiquetia"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"mev"}\NormalTok{)}
+\NormalTok{day <-}\StringTok{ }\KeywordTok{seq.Date}\NormalTok{(}\DataTypeTok{from =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1961-01-01"}\NormalTok{), }
+                \DataTypeTok{to =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1999-12-31"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"day"}\NormalTok{)}
+\CommentTok{# Keep non-zero rainfall, exclude 1999 observations}
+\NormalTok{nzrain <-}\StringTok{ }\NormalTok{maiquetia[}\KeywordTok{substr}\NormalTok{(day, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{) }\OperatorTok{<}\StringTok{ }\DecValTok{99} \OperatorTok{&}\StringTok{ }\NormalTok{maiquetia }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{]}
+\NormalTok{thcan <-}\StringTok{ }\KeywordTok{quantile}\NormalTok{(nzrain, }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.8}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\DataTypeTok{length.out =} \DecValTok{25}\NormalTok{))}
+\KeywordTok{tstab.gpd}\NormalTok{(}\DataTypeTok{dat =}\NormalTok{ nzrain, }\DataTypeTok{thresh =}\NormalTok{ thcan, }\DataTypeTok{method =} \StringTok{"profile"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tstab.egp}\NormalTok{(}\DataTypeTok{xdat =}\NormalTok{ nzrain, }\DataTypeTok{thresh =}\NormalTok{ thcan, }\DataTypeTok{model =} \StringTok{"egp2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-5-2.pdf}
+
+What do you notice on the parameter stability plots?
+
+We can plot simultaneous parameter statibility plots for the shape, as well as the white-noise sequence. The \texttt{W.diag} function, which implements the tests of \citet{Wadsworth:2016}, returns the white noise process and calculates by simulation the null distribution, selecting the lowest threshold at which the hypothesis of changepoint is not rejected for all higher thresholds. For the Maiquetia rainfall, a threshold around 15.15mm is returned.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fWdiag <-}\StringTok{ }\KeywordTok{W.diag}\NormalTok{(}\DataTypeTok{xdat =}\NormalTok{ nzrain, }\DataTypeTok{model =} \StringTok{"nhpp"}\NormalTok{, }\DataTypeTok{u =}\NormalTok{ thcan, }\DataTypeTok{plots =} \KeywordTok{c}\NormalTok{(}\StringTok{"WN"}\NormalTok{, }\StringTok{"PS"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Another option is the \citet{Northrop:2014} penultimate test, which considers a sequence of threshold and tests whether a single shape fits the data against the alternative where the shape parameter differs at each candidate threshold following a step function. The \texttt{NC.diag} function plots the \(p\)-value path against the candidate thresholds; the top axis also displays the number of threshold exceedances. The extended generalized Pareto distribution can also be used to produce threshold stability plot with 95\% confidence intervals. The parameter \(\kappa=1\) if the model is generalized Pareto. Although there are three potential families, the family \texttt{egp2} exhibits the fastest converence for
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fNCdiag <-}\StringTok{ }\KeywordTok{NC.diag}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ nzrain, }\DataTypeTok{u =}\NormalTok{ thcan)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{your-turn-1}{%
+\section{Your turn}\label{your-turn-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Try using the threshold diagnostic tests on your favourite data. For example, you can use the infamous \texttt{nidd} river data. Which threshold would you choose based on the conclusions of the test?
+\item
+  Compare the inference obtained by using the different threshold (by comparing, for example, return levels or quantiles of a distribution of interest). Are your results sensitive to the choice of threshold?
+\end{enumerate}
+
 \hypertarget{penultimate-approximation}{%
 \chapter{Penultimate approximation}\label{penultimate-approximation}}
 
 The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of \(T \in \mathbb{N}\) is the same up to a location-scale transform: if \(F \sim \mathsf{GEV}\), then there exist location and scale constants \(b \in \mathbb{R}\) and \(a>0\) such that \(F^T(ax+b) = F(x)\). The parameters of the new distribution are easily derived: if \(X_i \stackrel{\mathrm{iid}}{\sim}\mathsf{GEV}(\mu,\sigma, \xi)\), then \(\max\{X_1, \ldots, X_T\} \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)\) with \(\mu_T = \mu - \sigma(1-T^\xi)/\xi\) and \(\sigma_T = \sigma T^\xi\) for \(\xi \neq 0\), or \(\mu_T = \mu +\sigma \log(T)\) and \(\sigma_T = \sigma\) if \(\xi=0\).
 
-In practice, the GEV is fitted to data that are partitioned into \(k\) blocks of (potentially random) sizes \(m_i\). We shall assume that the block sizes are all the same, so that \(m_i=m\) for \(i=1,\ldots, k\) and \(n = km\). The quality of the generalized extreme value approximation increases with the block size \(m\). For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.
+In practice, the GEV is fitted to data that are partitioned into \(k\) blocks of sizes \(m\), assumed eequal for simplicity, so that \(n = km\). The quality of the generalized extreme value approximation increases with the block size \(m\). For fixed block sizes, the estimated shape parameter generally differs from its asymptotic counterpart and this discrepancy usually introduces bias if one extrapolates far beyond the range of the observed data.
 
 Let \(F(x)\) denote a thrice-differentiable distribution function with endpoint \(x^*\) and density \(f(x)\) and define \(s(x)=-F(x)\log\{F(x)\}/f(x)\). The existence of the limit \(\xi_{\infty} = \lim_{n \to \infty} s'\{b_n\}\) is necessary and sufficient for convergence to an extreme value distribution \(G\),
 \begin{align*}
@@ -548,7 +701,7 @@ We illustrate the previous discussion by looking at block maximum from a log-nor
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-8-1.pdf}
 
 The left panel illustrates how maximum likelihood estimates of the parameters for repeated samples from a log-normal distribution are closer to the penultimate approximation than to the limiting tail index \(\xi_{\infty}=0\). Using max-stability, we could get an estimate of the distribution of the maximum of \(Nn_y\) observations. In this case, the penultimate shape for \(m=1000\) is approximately \(\xi_{1000}=0.215\), compared to \(\xi_{30} \approx 0.284\), which is far from the limiting value \(\xi_{\infty}=0\). The extrapolated density estimate is based on \(F_1^{1000/30}\), the generalized extreme value density associated to the distribution function of the penultimate approximation \(F_1^{1000/30}\), with \(F_1 \sim\mathsf{GEV}(a_{30}, b_{30}, \xi_{30})\). The penultimate approximation \(F_2\) is more accurate than the ultimate approximation \(\mathsf{GEV}(a_{30}, b_{30}, \xi_\infty)\), which is too short tailed.
 
@@ -564,96 +717,220 @@ The following plot illustrates the penultimate shape parameter for the normal di
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-9-1.pdf}
 
-\hypertarget{threshold-selection}{%
-\chapter{Threshold selection}\label{threshold-selection}}
+While the above discussion has been restricted to block maxima and the generalized extreme value distribution, similar results exists for peaks over threshold using a generalized Pareto distribution.
+For threshold exceedances, we start with the reciprocal hazard \(r(x) = \{1-F(x)\}/f(x)\) in place of \(s(x)\). The normalizing constants are \((u, r(u))\) and the penultimate shape parameter for the generalized Pareto distribution is \(r'(u)\).
 
-The generalized Pareto (GP) distribution with scale \(\sigma \in \mathbb{R}_{+}\) and shape \(\xi \in \mathbb{R}\) is
-\begin{align*}
-  G(x)  = \begin{cases}
-1-\left\{1+\xi \left(\frac{x}{\sigma}\right)\right\}_{+}^{-1/\xi}, &  \xi \neq 0,
-\\ 1-\exp \left(-{x}{\sigma}\right),&  \xi = 0.
-\end{cases}
- \end{align*}
-The range of the generalized Pareto distribution is \([0, -\sigma/\xi)\) if \(\xi < 0\) and \(\mathbb{R}_{+}\) otherwise.
+We can relate threshold exceedances to the distribution of maxima as follows: suppose a generalized Pareto distribution \(F\) is fitted to threshold exceedances above a threshold \(u\), with parameters \((\zeta_u, \sigma_u, \xi)\), where \(\zeta_u\) denotes the unknown proportion of points above the threshold \(u\). If there are \(n_y\) observations per year on average, then the \(T\)-year return level is \(z_{1/T}=u+\sigma_u/\xi\{(Tn_y\zeta_u)^\xi-1\}\). We take \(F^{\zeta_uTn_y}\) as the approximation to the \(T\)-year maxima distribution, conditional on exceeding \(u\).
 
-Why is the generalized Pareto distribution so central to peaks-over-threshold analysis? The conditional distribution of exceedances over a threshold \(u < x^*\) converges to a generalized Pareto distribution as \(u\) converges to the endpoint of the distribution,
-\begin{align*}
-\lim_{u \to x^*} \frac{1-F(xa_u+u)}{1-F(u)} = 1-H(x),
-\end{align*}
-where \(H(x)\) is the distribution function of \(\mathsf{GP}(1, \xi)\).
+\hypertarget{your-turn-2}{%
+\section{Your turn}\label{your-turn-2}}
 
-If \(X \sim \mathsf{GP}(\sigma, \xi)\), straightforward calculations show that \(X-u \mid X>u \sim \mathsf{GP}(\sigma + \xi u, \xi)\) for any \(u \in \mathbb{R}\) such that \(\sigma+\xi u>0\), meaning that conditional exceedances above a threshold \(u\) also follow a generalized Pareto distribution. This property is termed threshold-stability.
-
-The limiting distribution of threshold exceedances is generalized Pareto as \(u \to x^*\) but, in practice, we must choose a finite threshold in order to have enough exceedances to draw inference. Since the scaling constant \(a_u\) is unknown, we have \(X \mid X > u \stackrel{\cdot}{\sim} \mathsf{GP}(\sigma_u, \xi)\). The term \(1-F(u)\) in the denominator is the fraction of points exceeding the threshold, which has a binomial distribution.
-
-Threshold selection is subtle and it is common to select a high percentile of the data, say the
-95\% value, as the threshold, even if this is asymptotically incorrect, as in this case \(k/n \nrightarrow 0\) as \(n \to \infty\). Most approaches for threshold selection rely on properties of the
-generalized Pareto distribution (moments, threshold-stability) to determine a region within which the asymptotic distribution fits the data well and the parameter estimates are stable.
-
-Below, we focus on recent graphical selection tools for likelihood based inference; mixture models are reviewed in \citet{Scarrott:2012} and are available in the package \texttt{evmix}.
-
-\hypertarget{robust-selection}{%
-\section{Robust selection}\label{robust-selection}}
-
-The extreme value distributions have unbounded influence functions and outliers can strongly affect the estimate of the shape. \citet{Dupuis:1999} proposes an optimal \(B\)-robust estimator of the generalized Pareto parameters. Points that are outlying or for which the fit is poor are downweighted; if the weights for the largest observations are very low, this suggests that the threshold is too low. While there is no guarantee that observations that were simulated from a generalized Pareto distributed would not be downweighted, systematic downweighting of the largest exceedances may be indicative of poor fit.
-
-\hypertarget{threshold-stability-plots}{%
-\section{Threshold stability plots}\label{threshold-stability-plots}}
-
-Consider a sequence of ordered candidate thresholds \(u_1 < \cdots < u_k\); one of the most widely used tools for threshold selection is the threshold-stability plots of \citet{Davison:1990}. These show the point estimates of the shape \(\xi\) and the modified scale \(\sigma_{u_i}-\xi u_i\), which should be constant for any threshold \(u_{j} >u_i\) assuming that the generalized Pareto above \(u_i\) holds exactly. In addition to the point estimates, the asymptotic pointwise 95\% Wald confidence intervals are displayed; the standard errors are obtained from the observed information matrix. While these are displayed by many packages, notably \texttt{extRemes}, \texttt{ismev} and \texttt{evd} , \texttt{mev} allows you to use profile likelihood based confidence intervals, which typically offer better coverage and capture some of the asymmetry of the distribution. The \texttt{mev} package functions for producing threshold stability plots are \texttt{tstab.gpd} and \texttt{tstab.pp} for respectively the generalized Pareto and Poisson process likelihoods.
-
-Parameter stability plots can be difficult to interpret because the confidence intervals are pointwise rather than simultaneous (each fit likewise uses an overlapping portion of the data). The plots also ignore changes in the estimated parameters due to the penultimate approximation.
-
-\hypertarget{wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots}{%
-\section{Wadsworth's diagnostics: white noise process and simultaneous threshold stability plots}\label{wadsworths-diagnostics-white-noise-process-and-simultaneous-threshold-stability-plots}}
-
-The problem with the threshold stability plots lies in the point-wise nature of the estimate. Assuming a superposition of \(k\) Poisson processes, \citet{Wadsworth:2016} derives the limiting distribution of the maximum likelihood estimators from the Poisson process for overlapping windows as the number of windows \(k \to \infty\) and \(n_k \to \infty\). The joint asymptotic Gaussian distribution allows \citet{Wadsworth:2016} to propose two additional diagnostics: a white noise sequence of differences in estimates of the shape, standardized to have unit variance. The variables \(\xi^*_i=(\hat{\xi}_{u_{i+1}}-\hat{\xi}_{u_i})/\{(I^{-1}_{u_{i+1}}-I^{-1}_{u_{i}})_{\xi,\xi}^{1/2}\}\), where \(I_{u_{i}}\) is the Fisher information of the Poisson process likelihood for exceedances above \(u_i\), should form a white-noise sequence of independent variables centered around the origin; systematic deviations are indicative of inadequacy. To formally test the hypothesis, a likelihood ratio test can be used assuming a simple alternative, namely a single change point at threshold \(u_j\). The null hypothesis is \(\mathrm{H}_0: \xi_i^* \stackrel{\mathrm{iid}}{\sim}\textsf{No}(0,1)\) for \(i=1, \ldots, k-1\) against the alternative \(\mathrm{H}_a: \xi^*_i \sim \textsf{No}(\beta, \sigma) (i=1, \ldots, j-1)\) and \(\xi^*_i \sim \textsf{No}(0,1)\) for \(j, \ldots, k-1\). This alternative is motivated by results on model misspecification \citep{White:1982}, which suggest that the asymptotic distribution may still be Gaussian, but with a different mean and variance. This can be used to automate threshold selection, by picking the smallest threshold for which the \(P\)-value is above the level \(\alpha\). The function \texttt{W.diag} returns diagnostics plots (for the likelihood ratio statistic path, the white noise process and threshold stability along with asymptotic simultaneous confidence intervals) for non-homogeneous Poisson process model and for the bivariate exponential and the over a sequence of thresholds, specified using \texttt{q1}, \texttt{q2} and \texttt{k}. The argument \texttt{M} is a tuning parameter that can be chosen in a way such that the parameters of the non-homogeneous Poisson process likelihood coincide with those of the generalized extreme value distribution for blocks of size \(m\); see \citet{Coles:2001} to this effect.
-
-A main criticism of the proposals of \citet{Wadsworth:2016} is their lack of robustness. For the asymptotic result to be approximately valid, the number of thresholds must be large, which implicitly requires large samples for each superposed point process. Moreover, the estimated difference in Fisher information matrices often fails to be positive definite in practice. The procedure is highly sensitive to the choice of \(k\). Changing the set of thresholds \(\boldsymbol{u}\) under consideration leads to potentially completely different parameter estimates being chosen by the automated procedure.
-
-\hypertarget{changepoint-tests-based-on-penultimate-approximation}{%
-\section{Changepoint tests based on penultimate approximation}\label{changepoint-tests-based-on-penultimate-approximation}}
-
-Let \(F(x)\) denote a thrice-differentiable distribution function with endpoint \(x^*\) and density \(f(x)\). Define the reciprocal hazard function \(r(x) = \{1-F(x)\}/f(x)\).
-The existence of the limit \(\xi_{\infty} = \lim_{n \to \infty} s'\{b_n\}\) is necessary and sufficient for convergence to an extreme value distribution and \citet{Smith:1987} shows that there exists \(y\) such that
-\begin{align*}
- \frac{1-F\{u+xr(u)\}}{1-F(u)} = \left\{1+xr'(y)\right\}_{+}^{-1/r'(y)}, \qquad u < y < u+xr(u),
-\end{align*}
-unless \(r'(x)\) is constant. The penultimate shape parameter for the generalized Pareto distribution is \(r'(u)\), but the true shape parameter lies between \(r'(u)\) and \(\xi_{\infty}\).
-
-When we fit the limiting parametric models to finite samples, maximum likelihood estimates of the shape parameter will be closer to their penultimate counterparts than to the limiting value and we can expect them to vary as we increase the threshold.
-
-\citet{Northrop:2014} adapt the idea of \citet{Wadsworth:2012} and fit a generalized Pareto model with piecewise constant shape to \(k\) different thresholds; continuity constraints at the thresholds impose \(k-1\) restrictions on scale parameters, so the model only has \(k+1\) parameters. A score test can be used to test the hypothesis of equal shape and it only requires evaluation of the model under the null hypothesis that a generalized Pareto distribution is valid above all thresholds. A diagnostic plot is obtained by plotting \(P\)-values against threshold. One can then choose to take, e.g., (a) the lowest threshold at which the \(P\)-value is non-significant, or (b) the lowest threshold at which the \(P\)-values for all higher thresholds are non-significant: under the null hypothesis, there is an \(\alpha\%\) probability of rejection at any given threshold. The function \texttt{NC.diag} computes the \(P\)-value of the score test as a function of the threshold.
-
-\hypertarget{extended-generalized-pareto}{%
-\section{Extended generalized Pareto}\label{extended-generalized-pareto}}
-
-\citet{Papastathopoulos:2013} propose three extended generalized Pareto distributions: for example, the third extended generalized Pareto model has distribution function \(\{1-(1+\xi x/\sigma)^{-1/\xi}_{+}\}^{\kappa}\) for \(x >0\) and \(\kappa > 0\). Each family reduces to the generalized Pareto when the additional parameter \(\kappa=1\) and share the same tail index \(\xi\), the extended generalized Pareto provide more flexibility for modelling departures from the limiting form. Standard parameter stability plots can be used to find a region in which \(\kappa \approx 1\) and the shape parameter stabilizes. The additional parameter gives flexibility for modelling departures from the limiting distribution and the hope is one can fit to exceedances over lower threshold and increase the number of points to which the distribution is fitted. The stability plots, obtained through \texttt{tstab.egp}, suffer from the same caveats as classical diagnostics.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Sample observations from the standard Gaussian distribution \(\mathsf{No}(0,1)\) for \(m = 25, 50, 100, 1000\) and \(k=1000\) replications.
+\item
+  Fit a generalized extreme value distribution to block maxima of size \(m\). Obtain an estimate of the distribution of \(m = 1000000\) observations from a standard Gaussian using max-stability (the functions \texttt{fit.gev} and \texttt{gev.mle} can be useful).
+\item
+  Plot the density of the resulting approximations and compare them to the density of the true distribution \(N\phi(x)\Phi^{N-1}(x)\).
+\item
+  Superpose the density of the penultimate approximation for \(m = 1000000\) obtained using the Smith penultimate approximation (\texttt{smith.penult}).
+\end{enumerate}
 
 \hypertarget{simulation}{%
 \chapter{Simulation}\label{simulation}}
 
-The original goal of the \texttt{mev} package was to implement the algorithm of \citet{Dombry:2016} in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard \(R\)-Pareto processes and generalized \(R\)-Pareto processes have been implemented. These are based on accept-reject method or composition sampling.
+\hypertarget{max-stable-processes}{%
+\section{Max-stable processes}\label{max-stable-processes}}
 
-Let's start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.
+Let \(\mathcal{S}\) be a compact subset of \(\mathbb{R}^d\)
+The de Haan spectral representation of simple max-stable processes is
+\[Z(\boldsymbol{s}) = \max_{i \in \mathbb{N}} \zeta_i W_i(\boldsymbol{s}), \qquad \boldsymbol{s} \in \mathcal{S},\]
+where \(\boldsymbol{W}\) is a stochastic process satisfying \(\mathrm{E}\{W(\boldsymbol{s})_{+}\}=1\) for any \(\boldsymbol{s} \in \mathcal{S}\) and \(\{\zeta_i\}_{i \in \mathbb{N}}\) is a Poisson point process with intensity function \(\zeta^{-2} \mathrm{d} \zeta\). Max-stable processes arise as the pointwise maximum of an infinite collection of random functions \(\varphi_i = \zeta_i \boldsymbol{W}_i\).
+
+The distribution function of a \(D\)-dimensional max-stable vector can be defined in terms of a measure \(\Lambda\), termed exponent measure, defined on \(\mathbb{R}^D \setminus\{\boldsymbol{0}_D\}\) viz.
+\[\Pr(\boldsymbol{Z} \leq \boldsymbol{z}) = \exp\{\Lambda([-\boldsymbol{\infty}, \boldsymbol{z}]^\mathrm{c})\}, \boldsymbol{z} > \boldsymbol{0}_D.\]
+It follows from max-stability that the exponent measure is homogeneous of order \(-1\).
+
+\hypertarget{mathcalr-pareto-processes-and-generalizations}{%
+\section{\texorpdfstring{\(\mathcal{R}\)-Pareto processes and generalizations}{\textbackslash mathcal\{R\}-Pareto processes and generalizations}}\label{mathcalr-pareto-processes-and-generalizations}}
+
+Let \(\mathcal{F}^+\) denote the set of continuous non-negative non-null functions. A risk functional \(\mathcal{R}:\mathcal{F}^+ \to [0, \infty)\) is a continuous functional which is homogeneous of order \(1\), i.e., \(\mathcal{R}(tf) = t\mathcal{R}(f)\) for \(f \in \mathcal{F}^+\) and \(t>0\). A \(\mathcal{R}\)-Pareto process admits the stochastic representation \citep[\citet{Dombry/Ribatet:2015}]{Ferreira:2014}
+\begin{align}
+  \mathsf{X} = P \frac{\mathsf{S}}{\mathcal{R}(\mathsf{S})},
+ \end{align}
+for \(P\) a unit Pareto random variable with survival function \(\Pr(P>x) = x^{-\alpha}\) for \(x \geq 1\) and a stochastic process \(\mathsf{S}\), independent of \(P\), with sample paths in \(\mathbb{S}_{\mathrm{ang}} = \{f \in \mathcal{F}^+ \setminus \mathcal{C}_{\mathcal{R}}: \|f\|_{\mathrm{ang}} = 1\}\) and where \(\mathcal{C}_{\mathcal{R}} = \{g \in \mathcal{F}^+: \mathcal{R}(x)=0\}\) and \(\|\cdot\|_{\mathrm{ang}}\) is a norm. \(\mathcal{R}\)-Pareto processes come about when looking at the limit distribution of \(\mathcal{R}\)-exceedances, i.e.~\(\{f: \mathcal{R}(f) >u\}\) for a large threshold \(u\), assuming unit Frechet margins. This can be achieved in practice by standardizing the margins, but with the drawback that the exceedances are defined on the transformed scale.
+
+\citet{deFondeville:thesis} lifts this assumption and define generalized \(\mathcal{R}\)-Pareto processes, allowing for different location and scale marginal parameters (but with a common shape parameter).
+The risk region in which extreme observations lie is
+\begin{align*}
+\mathcal{A}_u= 
+\left\{f \in \mathcal{F}^+ \setminus \mathcal{C}_{\mathcal{R}}: \mathcal{R}\left( \boldsymbol{\tau} \frac{f^\xi-1}{\xi}+\boldsymbol{\eta}\right) \geq u\right\},
+\end{align*}
+where \(\boldsymbol{\eta}\) is a location function and \(\boldsymbol{\tau}\) is a scale function.
+The probability measure of \(\mathsf{Z}^*\) over \(\mathcal{A}_u\) is \(\Lambda(\cdot)/\Lambda\{\mathcal{A}_u\}\).
+The stochastic representation of the generalized \(\mathcal{R}\)-Pareto vector is
+\begin{align}
+    Z(\boldsymbol{s}) = \tau(\boldsymbol{s}) \frac{X(\boldsymbol{s})^{\xi}-1}{\xi}+ \eta(\boldsymbol{s}), 
+\end{align}
+where \(X(\boldsymbol{s})\) is a \(\mathcal{R}\)-Pareto process. When \(\mathcal{R}\) is \(\max\), the finite-dimensional distributions are multivariate generalized Pareto \citep{Rootzen:2017}.
+
+\hypertarget{algorithms}{%
+\section{Algorithms}\label{algorithms}}
+
+The original goal of the \texttt{mev} package was to implement the algorithm of \citet{Dombry:2016}, in order to perform exact simulation from max-stable vectors by sampling each extremal function in turn. Since then, other algorithms for simulating from standard \(\mathcal{R}\)-Pareto processes and generalized \(\mathcal{R}\)-Pareto processes have been added to the package. These are based on accept-reject method or composition sampling and can be slow in high dimensions. Note that packages such as \texttt{RandomFields} and \texttt{SpatialExtremes} are tailored for spatial processes and include more efficient algorithms to sample the (log-)Gaussian components appearing in the Brown--Resnick and extremal Student models, which makes them typically faster. The vignette provides details about the parametrization of the models implemented in \texttt{mev}.
+
+The various functions of interest for simulation include
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{rmev}, which is the workshorse for simulating max-stable random vectors;
+\item
+  \texttt{rmevspec} returns samples from the angular distribution defined with respect to the \(l_1\) norm;
+\item
+  \texttt{rparp} for simulating \(\mathcal{R}\)-Pareto processes through accept-reject;
+\item
+  \texttt{rparpcs} for simulating \(\mathcal{R}\)-Pareto processes using composition sampling, e.g.~\citet{Ho/Dombry:2019}
+\item
+  \texttt{rgparp} for simulating generalized \(\mathcal{R}\)-Pareto processes using accept-reject.
+\end{itemize}
+
+This approach is only available for Brown--Resnick and extremal Student processes and is more computationally intensive since it requires computing numerically mixture weights. However, these need only be computed once and this approach is more efficient for simlating large samples, particularly in cases where the acceptance rate is very low (notably if \(R(\boldsymbol{X})=\min_{j=1}^DX_j\)).
+
+Let's start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample. The parameter estimates are correct, and a probability-probability plot shows that the .
+
+If \(\boldsymbol{Z}\) is a max-stable vector of size \(D\) with standard Gumbel margins, with distribution function \(G(\boldsymbol{z}) = \exp[-V\{\exp(\boldsymbol{z})\}]\), then for any subset of size \(J \subseteq\{1, \ldots, D\}\), the variable \(Z_J=\max_{j \in J} Z(\boldsymbol{s}_j)\) has distribution function \(H_J(z) = \exp\{-\exp(z-\mu_{J})\}\), where \(\mu_J=\log\{V_J(\boldsymbol{1})_{|J|})\}\) and \(0 \leq \mu_J \leq \log(|J|)\). This follows from the homogeneity of the exponent measure. \citet{Gabda:2012} propose a probability-probability plot based on fitting \(\mu_J\) through maximum likelihood with the parameter constraints for each set of \(|J|\) stations. The data are obtained by pooling replications of the max-stable field and selecting all subsets of size \(|J|\) if \(\binom{D}{|J|}\) is small, or else a limited number of stations among those that display the higher dependence so as to maximize the power of the test (independence being a special case of max-stability). Uncertainty quantification is performed using a nonparametric bootstrap. The function \texttt{maxstabtest} implements this for the special case \(J=D\).
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(mev)}
-\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{0}\NormalTok{)}
 \NormalTok{samp <-}\StringTok{ }\KeywordTok{rmev}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{d =} \DecValTok{5}\NormalTok{, }\DataTypeTok{param =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{model =} \StringTok{"neglog"}\NormalTok{) }
-\KeywordTok{fit.gev}\NormalTok{(}\KeywordTok{c}\NormalTok{(samp), }\DataTypeTok{show =} \OtherTok{FALSE}\NormalTok{)}\OperatorTok{$}\NormalTok{estimate}
+\NormalTok{fgev <-}\StringTok{ }\KeywordTok{fit.gev}\NormalTok{(}\KeywordTok{c}\NormalTok{(samp), }\DataTypeTok{show =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{fgev}\OperatorTok{$}\NormalTok{estimate}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      loc    scale    shape 
-## 0.994592 1.001284 1.035500
+##       loc     scale     shape 
+## 0.9954939 0.9919429 0.9867670
 \end{verbatim}
 
-We simulate a spatial generalized \(R\)-Pareto process.
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\CommentTok{# Test of max-stability}
+\KeywordTok{maxstabtest}\NormalTok{(}\DataTypeTok{dat =}\NormalTok{ samp)}
+\CommentTok{# Probability-probability plot}
+\KeywordTok{plot}\NormalTok{(fgev, }\DataTypeTok{which =} \DecValTok{1}\NormalTok{, }\DataTypeTok{main =} \StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+The likelihood of max-stable processes is untractable, so inference is typically performed using composite likelihood. The package \texttt{evd} includes routines for doing this in the bivariate setting (see \texttt{fbvpot}).
+
+Consider a collection of independent and identically distributed vectors \(\boldsymbol{X}\) with continuous marginal distributions that are in the max-domain of attraction of a max-stable distribution with limit measure \(\Lambda\). One can transform the observations \(\boldsymbol{X}_i\) into pseudo-uniform samples using the empirical distribution function or else the semi-parametric estimator,
+\begin{align}
+ \check{F}_j(x) =
+\begin{cases}
+\mathrm{I}\{i: y_{ij} \leq x\}/(n+1), &  x \leq u_j,\\
+1-\{1-\tilde{F}_j(u_j)\}\left\{1+\hat{\xi}\left(\frac{x-u_j}{\hat{\tau}_j}\right)\right\}^{-1/\hat{\xi}_j}_{+}, & x >u_j.
+\end{cases}
+\end{align}
+(see \texttt{spunif}). We can back-transform the pseudo-uniform samples \(u_{ij} = \check{F}_j(y_{ij})\) to unit Pareto using the quantile transform,
+\(z_{ij}^{\mathrm{p}} = 1/1-(u_{ij})\). If we map the random vector \(\boldsymbol{Z}^{\mathrm{p}}\) to pseudo-polar coordinates, \(\boldsymbol{Z}^{\mathrm{p}} \mapsto (R, \boldsymbol{\Omega})\) from \(\mathbb{R}^D_{+} \to (0, \infty) \times \mathbb{S}_1\), where \(\mathbb{S}_1=\{ \boldsymbol{\omega} \in \mathbb{R}^D_{+}: \|\boldsymbol{\omega}\|_1=1\}\) is the \(\ell_1\)-simplex. The measure \(\Lambda\) factorizes as a product measure \(\Lambda(\mathrm{d}\boldsymbol{z}) = D \zeta^{-2}\mathrm{d}\zeta \rho_1(\mathrm{d}\boldsymbol{\omega})\) with angular measure \(\rho_1\), a probability measure satisfying the moment constraint \(D\int_{\mathbb{S}_1} \omega_j \rho_1(\mathrm{d}\boldsymbol{\omega})=1\) for \(j=1, \ldots, D\); this moment constraint holds for any \(\rho_1\), whereas it will be measure dependent if the radial measure is not \(\|\cdot \|_1\) \citep{Einmahl:2009}.
+We can thus create an approximate sample \(\boldsymbol{\omega}\) from the angular measure \(\rho_1\) and estimate its distribution non-parametrically as
+\[\hat{H}(w) = \sum_{i=1}^N \hat{p}_i\mathrm{I}\{\omega_i \leq w\},\]
+where the weights \(\hat{p}_i\) are obtained as the solution of either the empirical or Euclidean likelihood problems with a mean constraint \citep[\citet{Einmahl:2009}]{deCarvalho:2013}.
+Since the resulting
+spectral distribution is discrete (which is problematic in simulations), \citet{deCarvalho:2013} suggest fitting a Dirichlet kernel to
+observations, with parameters \(\nu \boldsymbol{w}_i (i=1, \ldots, D)\) subject to the constraint \(\|\nu\boldsymbol{w}_{i}\|_1=1\). The'bandwidth' tuning parameter \(\nu\) is chosen via cross-validation. The function \texttt{angmeasdir} fits Euclidean likelihood and returns a list with the weights vector \texttt{wts}, the cross-validation parameter \texttt{nu} and a \(n \times D\) matrix of parameters for the Dirichlet distribution.
+
+Alternatively, we can estimate the limiting spectral measure
+from the pseudo-observations enforcing the mean constraint using empirical likelihood, as proposed by \citet{Einmahl:2009}. The function \texttt{angmeas} computes the weights associated to each observations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{samp <-}\StringTok{ }\KeywordTok{rmev}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{d =} \DecValTok{3}\NormalTok{, }\DataTypeTok{param =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.4}\NormalTok{,}\FloatTok{0.6}\NormalTok{,}\FloatTok{2.9}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{model =} \StringTok{"sdir"}\NormalTok{) }
+\KeywordTok{taildep}\NormalTok{(samp, }\DataTypeTok{method =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{eta =} \StringTok{"betacop"}\NormalTok{, }\DataTypeTok{chi =} \StringTok{"betacop"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/angdensplot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nparangmeas <-}\StringTok{ }\KeywordTok{angmeas}\NormalTok{(samp, }\DataTypeTok{th =} \FloatTok{0.5}\NormalTok{)}
+\CommentTok{# Plot the probability weights and compute the column mean}
+\KeywordTok{plot}\NormalTok{(nparangmeas}\OperatorTok{$}\NormalTok{wts, }\DataTypeTok{ylab =} \StringTok{"Weights"}\NormalTok{); }\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h =} \DecValTok{1}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(nparangmeas}\OperatorTok{$}\NormalTok{ang))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/angdensplot-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colSums}\NormalTok{(nparangmeas}\OperatorTok{$}\NormalTok{wts }\OperatorTok{*}\StringTok{ }\NormalTok{nparangmeas}\OperatorTok{$}\NormalTok{ang)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3333333 0.3333333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dirangmeas <-}\StringTok{ }\KeywordTok{angmeasdir}\NormalTok{(samp, }\DataTypeTok{th =} \FloatTok{0.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{extremal-coefficient}{%
+\section{Extremal coefficient}\label{extremal-coefficient}}
+
+As in \texttt{SpatialExtremes}, we can use the nonparametric estimates of the extremal coefficient as goodness-of-fit diagnostic. The following code samples data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{coord <-}\StringTok{ }\DecValTok{10}\OperatorTok{*}\KeywordTok{cbind}\NormalTok{(}\KeywordTok{runif}\NormalTok{(}\DecValTok{50}\NormalTok{), }\KeywordTok{runif}\NormalTok{(}\DecValTok{50}\NormalTok{))}
+\NormalTok{di <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{dist}\NormalTok{(coord))}
+\NormalTok{dat <-}\StringTok{ }\KeywordTok{rmev}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{d =} \DecValTok{100}\NormalTok{, }\DataTypeTok{param =} \DecValTok{3}\NormalTok{, }\DataTypeTok{sigma =} \KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{di}\OperatorTok{/}\DecValTok{2}\NormalTok{), }\DataTypeTok{model =} \StringTok{'xstud'}\NormalTok{)}
+\NormalTok{res <-}\StringTok{ }\KeywordTok{extcoef}\NormalTok{(}\DataTypeTok{dat =}\NormalTok{ dat, }\DataTypeTok{coord =}\NormalTok{ coord)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Extremal Student extremal coefficient function}
+\NormalTok{XT.extcoeffun <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(h, nu, corrfun, ...)\{}
+  \ControlFlowTok{if}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.function}\NormalTok{(corrfun))\{}
+    \KeywordTok{stop}\NormalTok{(}\StringTok{'Invalid function `corrfun`.'}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  h <-}\StringTok{ }\KeywordTok{unique}\NormalTok{(}\KeywordTok{as.vector}\NormalTok{(h))}
+\NormalTok{  rhoh <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(h, corrfun, ...)}
+  \KeywordTok{cbind}\NormalTok{(}\DataTypeTok{h =}\NormalTok{ h, }\DataTypeTok{extcoef =} \DecValTok{2}\OperatorTok{*}\KeywordTok{pt}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{((nu}\OperatorTok{+}\DecValTok{1}\NormalTok{)}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{rhoh)}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{+}\NormalTok{rhoh)), nu}\OperatorTok{+}\DecValTok{1}\NormalTok{))}
+\NormalTok{\}}
+\CommentTok{#This time, only one graph with theoretical extremal coef}
+\KeywordTok{plot}\NormalTok{(res}\OperatorTok{$}\NormalTok{dist, res}\OperatorTok{$}\NormalTok{extcoef, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{pch =} \DecValTok{20}\NormalTok{,}
+     \DataTypeTok{ylab =} \StringTok{"extremal coefficient"}\NormalTok{, }\DataTypeTok{xlab =} \StringTok{"distance"}\NormalTok{)}
+\NormalTok{extcoefxt <-}\StringTok{ }\KeywordTok{XT.extcoeffun}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\KeywordTok{max}\NormalTok{(res}\OperatorTok{$}\NormalTok{dist), }\DataTypeTok{by =} \FloatTok{0.1}\NormalTok{), }\DataTypeTok{nu =} \DecValTok{3}\NormalTok{,}
+                            \DataTypeTok{corrfun =} \ControlFlowTok{function}\NormalTok{(x)\{}\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{x}\OperatorTok{/}\DecValTok{2}\NormalTok{)\})}
+\KeywordTok{lines}\NormalTok{(extcoefxt[,}\StringTok{'h'}\NormalTok{], extcoefxt[,}\StringTok{'extcoef'}\NormalTok{], }\DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }\DataTypeTok{col =} \StringTok{'blue'}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-11-2.pdf}
+
+\hypertarget{generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances}{%
+\section{\texorpdfstring{Generalized \(\mathcal{R}\)-Pareto processes for functional threshold exceedances}{Generalized \textbackslash mathcal\{R\}-Pareto processes for functional threshold exceedances}}\label{generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances}}
+
+We simulate a spatial generalized \(\mathcal{R}\)-Pareto process.
 
 \begin{Shaded}
 \begin{Highlighting}[]

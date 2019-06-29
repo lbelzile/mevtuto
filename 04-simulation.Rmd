@@ -1,17 +1,137 @@
 # Simulation
 
-The original goal of the `mev` package was to implement the algorithm of @Dombry:2016 in order to perform exact simulation from max-stable vectors. Since then, other algorithms for simulating from standard $R$-Pareto processes and generalized $R$-Pareto processes have been implemented. These are based on accept-reject method or composition sampling. 
 
-Let's start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample.
+## Max-stable processes
 
-```{r}
+Let $\mathcal{S}$ be a compact subset of $\R^d$
+The de Haan spectral representation of simple max-stable processes is 
+\[Z(\bs{s}) = \max_{i \in \N} \zeta_i W_i(\bs{s}), \qquad \bs{s} \in \mathcal{S},\]
+where $\bs{W}$ is a stochastic process satisfying $\mathrm{E}\{W(\bs{s})_{+}\}=1$ for any $\bs{s} \in \mathcal{S}$ and $\{\zeta_i\}_{i \in \N}$ is a Poisson point process with intensity function $\zeta^{-2} \mathrm{d} \zeta$. Max-stable processes arise as the pointwise maximum of an infinite collection of random functions $\varphi_i = \zeta_i \bs{W}_i$. 
+
+The distribution function of a $D$-dimensional max-stable vector can be defined in terms of a measure $\Lambda$, termed exponent measure, defined on $\R^D \setminus\{\bs{0}_D\}$ viz.
+\[\Pr(\bs{Z} \leq \bs{z}) = \exp\{\Lambda([-\bs{\infty}, \bs{z}]^\mathrm{c})\}, \bs{z} > \bs{0}_D.\]
+It follows from max-stability that the exponent measure is homogeneous of order $-1$. 
+
+## $\Ri$-Pareto processes and generalizations 
+
+
+Let $\mathcal{F}^+$ denote the set of continuous non-negative non-null functions. A risk functional $\Ri:\mathcal{F}^+ \to [0, \infty)$ is a continuous functional which is homogeneous of order $1$, i.e., $\Ri(tf) = t\Ri(f)$ for $f \in \mathcal{F}^+$ and $t>0$.  A $\Ri$-Pareto process admits the stochastic representation [@Ferreira:2014, @Dombry/Ribatet:2015]
+ \begin{align}
+  \mathsf{X} = P \frac{\mathsf{S}}{\Ri(\mathsf{S})},
+ \end{align}
+for $P$ a unit Pareto random variable with survival function $\Pr(P>x) = x^{-\alpha}$ for $x \geq 1$ and a stochastic process $\mathsf{S}$, independent of $P$,  with sample paths in $\mathbb{S}_{\ang} = \{f \in \mathcal{F}^+ \setminus \cone_{\Ri}: \|f\|_{\ang} = 1\}$ and where $\cone_{\Ri} = \{g \in \mathcal{F}^+: \Ri(x)=0\}$ and $\|\cdot\|_{\ang}$ is a norm. $\Ri$-Pareto processes come about when looking at the limit distribution of $\Ri$-exceedances, i.e. $\{f: \Ri(f) >u\}$ for a large threshold $u$, assuming unit Frechet margins. This can be achieved in practice by standardizing the margins, but with the drawback that the exceedances are defined on the transformed scale.
+
+@deFondeville:thesis lifts this assumption and define generalized $\Ri$-Pareto processes, allowing for different location and scale marginal parameters (but with a common shape parameter). 
+The risk region in which extreme observations lie is
+\begin{align*}
+\mathcal{A}_u= 
+\left\{f \in \mathcal{F}^+ \setminus \mathcal{C}_{\Ri}: \Ri \left( \bs{\tau} \frac{f^\xi-1}{\xi}+\bs{\eta}\right) \geq u\right\},
+\end{align*}
+where $\bs{\eta}$ is a location function and $\bs{\tau}$ is a scale function. 
+The probability measure of $\mathsf{Z}^*$ over $\mathcal{A}_u$ is  $\Lambda(\cdot)/\Lambda\{\mathcal{A}_u\}$.
+The stochastic representation of the generalized $\Ri$-Pareto vector is 
+\begin{align}
+	Z(\bs{s}) = \tau(\bs{s}) \frac{X(\bs{s})^{\xi}-1}{\xi}+ \eta(\bs{s}), 
+\end{align}
+where $X(\bs{s})$ is a $\Ri$-Pareto process. When $\Ri$ is $\max$, the finite-dimensional distributions are multivariate generalized Pareto [@Rootzen:2017].
+
+## Algorithms
+
+The original goal of the `mev` package was to implement the algorithm of @Dombry:2016,  in order to perform exact simulation from max-stable vectors by sampling each extremal function in turn. Since then, other algorithms for simulating from standard $\Ri$-Pareto processes and generalized $\Ri$-Pareto processes have been added to the package. These are based on accept-reject method or composition sampling and can be slow in high dimensions. Note that packages such as `RandomFields` and `SpatialExtremes` are tailored for spatial processes and include more efficient algorithms to sample the (log-)Gaussian components appearing in the Brown--Resnick and extremal Student models, which makes them typically faster. The vignette provides details about the parametrization of the models implemented in `mev`.
+
+The various functions of interest for simulation include
+
+- `rmev`, which is the workshorse for simulating max-stable random vectors;
+- `rmevspec` returns samples from the angular distribution defined with respect to the $l_1$ norm;
+- `rparp` for simulating $\Ri$-Pareto processes through accept-reject;
+- `rparpcs` for simulating $\Ri$-Pareto processes using composition sampling, e.g. @Ho/Dombry:2019
+- `rgparp` for simulating generalized $\Ri$-Pareto processes using accept-reject. 
+
+This approach is only available for Brown--Resnick and extremal Student processes and is more computationally intensive since it requires computing numerically mixture weights. However, these need only be computed once and this approach is more efficient for simlating large samples, particularly in cases where the acceptance rate is very low (notably if $R(\bs{X})=\min_{j=1}^DX_j$).
+
+
+Let's start by simulating from a simple max-stable random vector from the negative logistic model. The margins are unit Frechet, and we can verify this by pooling the observations and fitting a generalized extreme value distribution to the sample. The parameter estimates are correct, and a probability-probability plot shows that the .
+
+ If $\bs{Z}$ is a max-stable vector of size $D$ with standard Gumbel margins, with distribution function $G(\bs{z}) = \exp[-V\{\exp(\bs{z})\}]$, then for any subset of size $J \subseteq\{1, \ldots, D\}$, the variable $Z_J=\max_{j \in J} Z(\bs{s}_j)$ has distribution function $H_J(z) = \exp\{-\exp(z-\mu_{J})\}$, where $\mu_J=\log\{V_J(\bs{1})_{|J|})\}$ and $0 \leq \mu_J \leq \log(|J|)$. This follows from the homogeneity of the exponent measure. @Gabda:2012 propose a probability-probability plot based on fitting $\mu_J$ through maximum likelihood with the parameter  constraints for each set of $|J|$ stations. The data are obtained by pooling replications of the max-stable field and selecting all subsets of size $|J|$ if $\binom{D}{|J|}$ is small, or else a limited number of stations among those that display the higher dependence so as to maximize the power of the test (independence being a special case of max-stability). Uncertainty quantification is performed using a nonparametric bootstrap. The function `maxstabtest` implements this for the special case $J=D$.
+
+```{r, cache = TRUE}
 library(mev)
-set.seed(1234)
+set.seed(0)
 samp <- rmev(n = 1000, d = 5, param = 0.1, model = "neglog") 
-fit.gev(c(samp), show = FALSE)$estimate
+fgev <- fit.gev(c(samp), show = FALSE)
+fgev$estimate
+par(mfrow = c(1, 2))
+# Test of max-stability
+maxstabtest(dat = samp)
+# Probability-probability plot
+plot(fgev, which = 1, main = "")
 ```
 
-We simulate a spatial generalized $R$-Pareto process.
+The likelihood of max-stable processes is untractable, so inference is typically performed using composite likelihood. The package `evd` includes routines for doing this in the bivariate setting (see `fbvpot`).
+
+Consider a collection of independent and identically distributed vectors $\boldsymbol{X}$ with continuous marginal distributions that are in the max-domain of attraction of a max-stable distribution with limit measure $\Lambda$. One can transform the observations $\boldsymbol{X}_i$ into pseudo-uniform samples using the empirical distribution function or else the semi-parametric estimator, 
+\begin{align}
+ \check{F}_j(x) =
+\begin{cases}
+\mathrm{I}\{i: y_{ij} \leq x\}/(n+1), &  x \leq u_j,\\
+1-\{1-\tilde{F}_j(u_j)\}\left\{1+\hat{\xi}\left(\frac{x-u_j}{\hat{\tau}_j}\right)\right\}^{-1/\hat{\xi}_j}_{+}, & x >u_j.
+\end{cases}
+\end{align}
+ (see `spunif`). We can back-transform the pseudo-uniform samples $u_{ij} = \check{F}_j(y_{ij})$ to unit Pareto using the quantile transform,
+ $z_{ij}^{\mathrm{p}} = 1/1-(u_{ij})$. If we map the  random vector $\boldsymbol{Z}^{\mathrm{p}}$ to pseudo-polar coordinates,  $\bs{Z}^{\mathrm{p}} \mapsto (R, \bs{\Omega})$ from $\R^D_{+} \to (0, \infty) \times \mathbb{S}_1$, where $\mathbb{S}_1=\{ \bs{\omega} \in \R^D_{+}: \|\bs{\omega}\|_1=1\}$ is the $\ell_1$-simplex. The measure $\Lambda$ factorizes as a product measure $\Lambda(\d \bs{z}) = D \zeta^{-2}\d \zeta \rho_1(\d \bs{\omega})$ with angular measure $\rho_1$, a probability measure satisfying the moment constraint  $D\int_{\mathbb{S}_1} \omega_j \rho_1(\d \bs{\omega})=1$ for $j=1, \ldots, D$;  this moment constraint holds for any $\rho_1$, whereas it will be measure dependent if the radial measure is not $\|\cdot \|_1$  [@Einmahl:2009].
+ We can thus create an approximate sample $\bs{\omega}$ from the angular measure $\rho_1$ and estimate its distribution non-parametrically as 
+ \[\hat{H}(w) = \sum_{i=1}^N \hat{p}_i\mathrm{I}\{\omega_i \leq w\},\]
+ where the weights $\hat{p}_i$ are obtained as the solution of either the empirical or Euclidean likelihood problems with a mean constraint [@deCarvalho:2013, @Einmahl:2009].
+Since the resulting 
+spectral distribution is discrete (which is problematic in simulations), @deCarvalho:2013 suggest fitting a Dirichlet kernel to 
+observations, with parameters $\nu \boldsymbol{w}_i (i=1, \ldots, D)$ subject to the constraint $\|\nu\bs{w}_{i}\|_1=1$. The'bandwidth' tuning parameter $\nu$ is chosen via cross-validation. The function `angmeasdir` fits Euclidean likelihood and returns a list with the weights vector `wts`, the cross-validation parameter `nu` and a $n \times D$ matrix of parameters for the Dirichlet distribution.
+
+
+Alternatively, we can estimate the limiting spectral measure 
+from the pseudo-observations enforcing the mean constraint using empirical likelihood, as proposed by @Einmahl:2009. The function `angmeas` computes the weights associated to each observations.
+
+```{r angdensplot, cache = TRUE}
+samp <- rmev(n = 1000, d = 3, param = c(0.4,0.6,2.9, 0.1), model = "sdir") 
+taildep(samp, method = list(eta = "betacop", chi = "betacop"))
+
+nparangmeas <- angmeas(samp, th = 0.5)
+# Plot the probability weights and compute the column mean
+plot(nparangmeas$wts, ylab = "Weights"); abline(h = 1/nrow(nparangmeas$ang))
+colSums(nparangmeas$wts * nparangmeas$ang)
+dirangmeas <- angmeasdir(samp, th = 0.5)
+```
+
+## Extremal coefficient
+
+As in `SpatialExtremes`, we can use the nonparametric estimates of the extremal coefficient as goodness-of-fit diagnostic. The following code samples data 
+
+```{r, cache= TRUE}
+coord <- 10*cbind(runif(50), runif(50))
+di <- as.matrix(dist(coord))
+dat <- rmev(n = 1000, d = 100, param = 3, sigma = exp(-di/2), model = 'xstud')
+res <- extcoef(dat = dat, coord = coord)
+# Extremal Student extremal coefficient function
+XT.extcoeffun <- function(h, nu, corrfun, ...){
+  if(!is.function(corrfun)){
+    stop('Invalid function `corrfun`.')
+  }
+  h <- unique(as.vector(h))
+  rhoh <- sapply(h, corrfun, ...)
+  cbind(h = h, extcoef = 2*pt(sqrt((nu+1)*(1-rhoh)/(1+rhoh)), nu+1))
+}
+#This time, only one graph with theoretical extremal coef
+plot(res$dist, res$extcoef, ylim = c(1,2), pch = 20,
+     ylab = "extremal coefficient", xlab = "distance")
+extcoefxt <- XT.extcoeffun(seq(0, max(res$dist), by = 0.1), nu = 3,
+                            corrfun = function(x){exp(-x/2)})
+lines(extcoefxt[,'h'], extcoefxt[,'extcoef'], type = 'l', col = 'blue', lwd = 2)
+
+```
+
+## Generalized $\Ri$-Pareto processes for functional threshold exceedances
+
+
+We simulate a spatial generalized $\Ri$-Pareto process.
 
 ```{r simuRgpareto, cache = TRUE} 
  lon <- seq(650, 720, length = 50)

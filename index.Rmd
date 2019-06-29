@@ -11,7 +11,8 @@ output:
       in_header: preamble.tex
 documentclass: book
 header-includes:
-  - \usepackage{amsmath,amssymb,mathtools,enumerate,booktabs}
+  - \usepackage{amsmath,amssymb,mathtools,enumerate,booktabs,geometry}
+  - 
 bibliography: [biblio.bib]
 biblio-style: apalike2
 link-citations: yes
@@ -22,7 +23,7 @@ description: "This is a short tutorial on the use of the `mev` R package."
 # Preliminary remarks {-}
 
 The `mev` package bundles routine for 
-- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and $r$-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many recent threshold selection diagnostics that have appeared in the literature are implemented. 
+- likelihood-based inference for univariate extremes (including distributions, densities, score, information matrix and higher order asymptotics). The four basic likelihood (generalized extreme value, generalized Pareto, non-homogeneous Poisson process and $r$-largest) are implemented. For the first two distributions, additional higher order inference tools are available, including profile likelihoods in most parametrizations of interest. Many threshold selection diagnostics that have recently been proposed in the literature are implemented. 
 
 The second includes multivariate goodness-of-fit diagnostics and tests (max-stability test, information matrix test, coefficient of tail dependence, extremal coefficient, estimators of the extremal index, extremogram, nonparametric estimation of the angular measure, etc.) Pairwise composite likelihood for general models will be included in a future update.
 
@@ -35,7 +36,8 @@ You can install the latest version of the package (`v.1.12`) directly from CRAN 
 install.packages("mev")
 ```
 
-
+These notes are copyright by the author: you may not reuse them without permission.
+  
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\Hmat}{\mathbf{H}}
 \newcommand{\Mmat}{\mathbf{M}}
@@ -59,3 +61,9 @@ install.packages("mev")
 \newcommand{\simiid}{\stackrel{\mathrm{iid}}{\sim}}
 \newcommand{\bigO}{\mathrm{O}}
 \newcommand{\rp}{\mathrm{p}}
+\newcommand{\Hy}{\mathrm{H}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\sphere}{\mathbb{S}}
+\newcommand{\ang}{\mathrm{ang}}
+\newcommand{\Ri}{\mathcal{R}}
+\newcommand{\cone}{\mathcal{C}}
