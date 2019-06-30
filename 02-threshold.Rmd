@@ -87,5 +87,5 @@ fNCdiag <- NC.diag(x = nzrain, u = thcan)
 
 ## Your turn
 
-1. Try using the threshold diagnostic tests on your favourite data. For example, you can use the infamous `nidd` river data. Which threshold would you choose based on the conclusions of the test?
+1. Try using the threshold diagnostic tests on the `nidd` river flow data. Which threshold would you choose based on the conclusions of the test? Repeat the analysis on your favorite dataset. 
 2. Compare the inference obtained by using the different threshold (by comparing, for example, return levels or quantiles of a distribution of interest). Are your results sensitive to the choice of threshold?

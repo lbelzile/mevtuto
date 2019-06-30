@@ -146,7 +146,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.6" data-path="threshold-selection.html"><a href="threshold-selection.html#your-turn-1"><i class="fa fa-check"></i><b>2.6</b> Your turn</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html"><i class="fa fa-check"></i><b>3</b> Penultimate approximation</a><ul>
-<li class="chapter" data-level="3.1" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#your-turn-2"><i class="fa fa-check"></i><b>3.1</b> Your turn</a></li>
+<li class="chapter" data-level="3.1" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#theory"><i class="fa fa-check"></i><b>3.1</b> Theory</a></li>
+<li class="chapter" data-level="3.2" data-path="penultimate-approximation.html"><a href="penultimate-approximation.html#your-turn-2"><i class="fa fa-check"></i><b>3.2</b> Your turn</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>4</b> Simulation</a><ul>
 <li class="chapter" data-level="4.1" data-path="simulation.html"><a href="simulation.html#max-stable-processes"><i class="fa fa-check"></i><b>4.1</b> Max-stable processes</a></li>
@@ -154,6 +155,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="simulation.html"><a href="simulation.html#algorithms"><i class="fa fa-check"></i><b>4.3</b> Algorithms</a></li>
 <li class="chapter" data-level="4.4" data-path="simulation.html"><a href="simulation.html#extremal-coefficient"><i class="fa fa-check"></i><b>4.4</b> Extremal coefficient</a></li>
 <li class="chapter" data-level="4.5" data-path="simulation.html"><a href="simulation.html#generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances"><i class="fa fa-check"></i><b>4.5</b> Generalized <span class="math inline">\(\mathcal{R}\)</span>-Pareto processes for functional threshold exceedances</a></li>
+<li class="chapter" data-level="4.6" data-path="simulation.html"><a href="simulation.html#your-turn-3"><i class="fa fa-check"></i><b>4.6</b> Your turn</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -394,6 +396,22 @@ simu2[<span class="dv">1225</span>]</code></pre>
  <span class="kw">lines</span>(<span class="dt">x =</span> (distvec &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">200</span>, <span class="dt">length =</span> <span class="dv">1000</span>)), <span class="dt">col =</span> <span class="dv">2</span>, <span class="dt">lwd =</span> <span class="dv">2</span>,
        <span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">sqrt</span>(<span class="kw">power.vario</span>(distvec, <span class="dt">alpha =</span> opt<span class="op">$</span>par[<span class="dv">1</span>], <span class="dt">scale =</span> opt<span class="op">$</span>par[<span class="dv">2</span>])<span class="op">/</span><span class="dv">2</span>))))</code></pre>
 <p><img src="mevtuto_files/figure-html/fitvariocloud-2.png" width="672" /></p>
+</div>
+<div id="your-turn-3" class="section level2">
+<h2><span class="header-section-number">4.6</span> Your turn</h2>
+<ol style="list-style-type: decimal">
+<li>Simulate Gaussian random vector (using e.g. the function <code>mvrnorm</code> or through the package <code>RandomFields</code>) with independent observations and vectors with covariance matrix <span class="math inline">\(\alpha \boldsymbol{1}_D\boldsymbol{1}_D^\top + (1-\alpha)\mathrm{diag}(\boldsymbol{1}_D)\)</span> for <span class="math inline">\(\alpha \in \{0,0.25,0.5,0.75\}\)</span>. Use <code>maxstabtest</code> on your simulated data and comment on the diagnostic plots.</li>
+<li>Simulate 100 realizaions from a <span class="math inline">\(\mathcal{R}\)</span>-Pareto process with risk function <span class="math inline">\(\max\)</span> and <span class="math inline">\(\min\)</span> for the Brown–Resnick model with power variogram function <code>power.vario</code> with shape <code>alpha = 1</code> and <code>scale = 2</code> on a grid <span class="math inline">\(\{1,2,\ldots, 4\}^2\)</span> using <code>rparp</code> and <code>rparpcs</code>. Benchmark the two methods: which is fastest and what is the acceptance rate of the accept-reject?
+Some sample code for doing this is found below</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">grid &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">expand.grid</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))
+depmat &lt;-<span class="st"> </span><span class="kw">power.vario</span>(<span class="dt">h =</span> <span class="kw">distg</span>(grid, <span class="dt">scale =</span> <span class="dv">1</span>, <span class="dt">rho =</span> <span class="dv">0</span>), <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">scale =</span> <span class="dv">2</span>)<span class="op">/</span><span class="dv">4</span>
+<span class="co"># This is where composition sampling shines!</span>
+samp &lt;-<span class="st"> </span><span class="kw">rparpcs</span>(<span class="dt">n =</span> <span class="dv">1000</span>, <span class="dt">shape =</span> <span class="fl">0.1</span>, <span class="dt">riskf =</span> <span class="st">&quot;min&quot;</span>,
+      <span class="dt">Lambda =</span> depmat, <span class="dt">model =</span> <span class="st">&quot;br&quot;</span>)
+<span class="co">#rparp is computationally intensive with &quot;min&quot; - only for </span>
+samp2 &lt;-<span class="st"> </span><span class="kw">rparp</span>(<span class="dt">n =</span> <span class="dv">1000</span>, <span class="dt">shape =</span> <span class="fl">0.1</span>, <span class="dt">riskf =</span> <span class="st">&quot;max&quot;</span>,  
+      <span class="dt">sigma =</span> depmat, <span class="dt">model =</span> <span class="st">&quot;hr&quot;</span>)</code></pre>
 
 </div>
 </div>

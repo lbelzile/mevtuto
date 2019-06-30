@@ -6,7 +6,7 @@ site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
     highlight: tango
-    split_bib: no
+    split_bib: no 
   bookdown::pdf_book:
     fig_crop: false
     includes:

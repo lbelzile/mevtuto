@@ -1,5 +1,7 @@
 # Penultimate approximation
 
+## Theory 
+
 The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of $T \in \N$ is the same up to a location-scale transform: if $F \sim \mathsf{GEV}$, then there exist location and scale constants $b \in \R$ and $a>0$ such that $F^T(ax+b) = F(x)$. The parameters of the new distribution are easily derived: if $X_i \simiid \mathsf{GEV}(\mu,\sigma, \xi)$, then $\max\{X_1, \ldots, X_T\}  \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)$ with $\mu_T = \mu - \sigma(1-T^\xi)/\xi$ and $\sigma_T = \sigma T^\xi$ for $\xi \neq 0$, or $\mu_T = \mu +\sigma \log(T)$ and $\sigma_T = \sigma$ if $\xi=0$.
 
 

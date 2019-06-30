@@ -618,13 +618,16 @@ Another option is the \citet{Northrop:2014} penultimate test, which considers a 
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Try using the threshold diagnostic tests on your favourite data. For example, you can use the infamous \texttt{nidd} river data. Which threshold would you choose based on the conclusions of the test?
+  Try using the threshold diagnostic tests on the \texttt{nidd} river flow data. Which threshold would you choose based on the conclusions of the test? Repeat the analysis on your favorite dataset.
 \item
   Compare the inference obtained by using the different threshold (by comparing, for example, return levels or quantiles of a distribution of interest). Are your results sensitive to the choice of threshold?
 \end{enumerate}
 
 \hypertarget{penultimate-approximation}{%
 \chapter{Penultimate approximation}\label{penultimate-approximation}}
+
+\hypertarget{theory}{%
+\section{Theory}\label{theory}}
 
 The generalized extreme value (GEV) distribution arises as the non-degenerate limiting distribution of maxima. A key property of the generalized extreme value distribution is max-stability, meaning that the distribution of maxima of \(T \in \mathbb{N}\) is the same up to a location-scale transform: if \(F \sim \mathsf{GEV}\), then there exist location and scale constants \(b \in \mathbb{R}\) and \(a>0\) such that \(F^T(ax+b) = F(x)\). The parameters of the new distribution are easily derived: if \(X_i \stackrel{\mathrm{iid}}{\sim}\mathsf{GEV}(\mu,\sigma, \xi)\), then \(\max\{X_1, \ldots, X_T\} \sim \mathsf{GEV}(\mu_T, \sigma_T, \xi)\) with \(\mu_T = \mu - \sigma(1-T^\xi)/\xi\) and \(\sigma_T = \sigma T^\xi\) for \(\xi \neq 0\), or \(\mu_T = \mu +\sigma \log(T)\) and \(\sigma_T = \sigma\) if \(\xi=0\).
 
@@ -1066,6 +1069,32 @@ The code snippet below fits a Brown--Resnick model with power variogram to simul
 \end{Shaded}
 
 \includegraphics{mevtuto_files/figure-latex/fitvariocloud-2.pdf}
+
+\hypertarget{your-turn-3}{%
+\section{Your turn}\label{your-turn-3}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Simulate Gaussian random vector (using e.g.~the function \texttt{mvrnorm} or through the package \texttt{RandomFields}) with independent observations and vectors with covariance matrix \(\alpha \boldsymbol{1}_D\boldsymbol{1}_D^\top + (1-\alpha)\mathrm{diag}(\boldsymbol{1}_D)\) for \(\alpha \in \{0,0.25,0.5,0.75\}\). Use \texttt{maxstabtest} on your simulated data and comment on the diagnostic plots.
+\item
+  Simulate 100 realizaions from a \(\mathcal{R}\)-Pareto process with risk function \(\max\) and \(\min\) for the Brown--Resnick model with power variogram function \texttt{power.vario} with shape \texttt{alpha\ =\ 1} and \texttt{scale\ =\ 2} on a grid \(\{1,2,\ldots, 4\}^2\) using \texttt{rparp} and \texttt{rparpcs}. Benchmark the two methods: which is fastest and what is the acceptance rate of the accept-reject?
+  Some sample code for doing this is found below
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(}\KeywordTok{expand.grid}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{))}
+\NormalTok{depmat <-}\StringTok{ }\KeywordTok{power.vario}\NormalTok{(}\DataTypeTok{h =} \KeywordTok{distg}\NormalTok{(grid, }\DataTypeTok{scale =} \DecValTok{1}\NormalTok{, }\DataTypeTok{rho =} \DecValTok{0}\NormalTok{), }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{, }\DataTypeTok{scale =} \DecValTok{2}\NormalTok{)}\OperatorTok{/}\DecValTok{4}
+\CommentTok{# This is where composition sampling shines!}
+\NormalTok{samp <-}\StringTok{ }\KeywordTok{rparpcs}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{shape =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{riskf =} \StringTok{"min"}\NormalTok{,}
+      \DataTypeTok{Lambda =}\NormalTok{ depmat, }\DataTypeTok{model =} \StringTok{"br"}\NormalTok{)}
+\CommentTok{#rparp is computationally intensive with "min" - only for }
+\NormalTok{samp2 <-}\StringTok{ }\KeywordTok{rparp}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{shape =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{riskf =} \StringTok{"max"}\NormalTok{,  }
+      \DataTypeTok{sigma =}\NormalTok{ depmat, }\DataTypeTok{model =} \StringTok{"hr"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \bibliography{biblio.bib}
 
