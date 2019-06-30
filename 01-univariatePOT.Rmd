@@ -104,7 +104,7 @@ where $\kappa_{\xi}=T^\xi\Gamma(1-\xi)$ for $\mathfrak{e}_T$, $\kappa_{\xi}=T^\x
 This example illustrates some of the functions used in peaks-over-threshold analysis based on fitting a generalized Pareto distribution to threshold exceedances. We use the Venezuelian rainfall data, a time series of daily rainfall precipitations at Maiquetia airport in Venezuela, for the purpose of illustration.
 
 
-```{r "thresholdstab"}
+```{r "prelimfitmaiquetia"}
 library(mev)
 data("maiquetia", package = "mev")
 day <- seq.Date(from = as.Date("1961-01-01"), 
@@ -122,7 +122,7 @@ The first step in our analysis is to choose a threshold. For the time being, we 
 The default optimization routine for the generalized Pareto distribution is
 Grimshaw's method, which profiles out the likelihood. The method has theoretical convergence guaranteesfor convergence. Because of non-regularity, the maximum likelihood estimator for $\xi < -1$ does not solve the score equation and leads to infinite log-likelihood, hence the maximum returned lies on the boundary of the parameter space. The standard errors are based on the inverse observed information matrix and provided only if $\xi>-1/2$. We can verify that our maximum likelihood estimate is indeed a maximum by checking if it solves the score equation  if $\hat{\xi}>-1$.
 
-```{r}
+```{r checkscore}
 isTRUE(all.equal(
   gpd.score(gpdf$estimate, dat = gpdf$exceedances),
   c(0,0), tolerance = 1e-5))
@@ -136,7 +136,7 @@ implicit equation
 The point estimate $\bs{\tilde{\theta}}$ is obtained numerically as the root of this nonlinear system of 
 equations. In the present case, the sample size is large and hence the first-order correction, derived through asymptotic arguments from the generalized Pareto distribution likelihood, is small. Note that the bias correction requires $\xi > -1/3$, since it is based on third-order cumulants of the distribution.
 
-```{r}
+```{r biascor}
 gpdbcor <- gpd.bcor(dat = gpdf$exceedances, par = gpdf$estimate)
 #print the differences between MLE and bias-corrected estimates
 gpdf$estimate - gpdbcor
@@ -144,7 +144,7 @@ gpdf$estimate - gpdbcor
 
 The package includes some default diagnostic plots (probability-probability plots and quantile-quantile plots), which include approximate confidence intervals based on order statistics. We can also get profile likelihood and profile-based confidence intervals for most quantities of interest (parameters of the generalized Pareto distribution, excepted shortfall, return levels, $N$-observation maxima mean and quantiles). The example below gives the estimated profile for the median of the centenial maximum distribution conditional on exceeding 15, along with 95% confidence intervals.
 
-```{r}
+```{r profileandconfint}
 plot(gpdf, which = 2) #Q-Q plot
 # Profile of median of maxima of 100 years
 profile <- gpd.pll(param = "Nquant", dat = nzrain, threshold = 15, 

@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-29}
+    \date{2019-06-30}
 
 \usepackage{geometry}
 \geometry{left = 1in, right = 1in}
@@ -248,8 +248,6 @@ You can install the latest version of the package (\texttt{v.1.12}) directly fro
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"mev"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-These notes are copyright by the author: you may not reuse them without permission.
 
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\Hmat}{\mathbf{H}}
@@ -464,19 +462,24 @@ The package includes some default diagnostic plots (probability-probability plot
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/profileandconfint-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# Profile of median of maxima of 100 years}
 \NormalTok{profile <-}\StringTok{ }\KeywordTok{gpd.pll}\NormalTok{(}\DataTypeTok{param =} \StringTok{"Nquant"}\NormalTok{, }\DataTypeTok{dat =}\NormalTok{ nzrain, }\DataTypeTok{threshold =} \DecValTok{15}\NormalTok{, }
         \DataTypeTok{N =} \KeywordTok{length}\NormalTok{(nzrain)}\OperatorTok{/}\NormalTok{(}\DecValTok{1998-1961}\NormalTok{)}\OperatorTok{*}\DecValTok{100}\NormalTok{, }\DataTypeTok{q =} \FloatTok{0.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{mevtuto_files/figure-latex/profileandconfint-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{# 95% confidence intervals}
 \NormalTok{conf <-}\StringTok{ }\KeywordTok{confint}\NormalTok{(profile, }\DataTypeTok{print =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-4-2.pdf}
 
 \begin{verbatim}
 ## Point estimate for the parameter of interest psi:
@@ -569,9 +572,6 @@ We are now ready to go back to the Maiquetia data and try to select a reasonable
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{data}\NormalTok{(}\StringTok{"maiquetia"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"mev"}\NormalTok{)}
-\NormalTok{day <-}\StringTok{ }\KeywordTok{seq.Date}\NormalTok{(}\DataTypeTok{from =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1961-01-01"}\NormalTok{), }
-                \DataTypeTok{to =} \KeywordTok{as.Date}\NormalTok{(}\StringTok{"1999-12-31"}\NormalTok{), }\DataTypeTok{by =} \StringTok{"day"}\NormalTok{)}
 \CommentTok{# Keep non-zero rainfall, exclude 1999 observations}
 \NormalTok{nzrain <-}\StringTok{ }\NormalTok{maiquetia[}\KeywordTok{substr}\NormalTok{(day, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{) }\OperatorTok{<}\StringTok{ }\DecValTok{99} \OperatorTok{&}\StringTok{ }\NormalTok{maiquetia }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{]}
 \NormalTok{thcan <-}\StringTok{ }\KeywordTok{quantile}\NormalTok{(nzrain, }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.8}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\DataTypeTok{length.out =} \DecValTok{25}\NormalTok{))}
@@ -579,7 +579,7 @@ We are now ready to go back to the Maiquetia data and try to select a reasonable
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-5-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/tstabplots-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -587,7 +587,7 @@ We are now ready to go back to the Maiquetia data and try to select a reasonable
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-5-2.pdf}
+\includegraphics{mevtuto_files/figure-latex/tstabplots-2.pdf}
 
 What do you notice on the parameter stability plots?
 
@@ -599,7 +599,7 @@ We can plot simultaneous parameter statibility plots for the shape, as well as t
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/Wdiag-1.pdf}
 
 Another option is the \citet{Northrop:2014} penultimate test, which considers a sequence of threshold and tests whether a single shape fits the data against the alternative where the shape parameter differs at each candidate threshold following a step function. The \texttt{NC.diag} function plots the \(p\)-value path against the candidate thresholds; the top axis also displays the number of threshold exceedances. The extended generalized Pareto distribution can also be used to produce threshold stability plot with 95\% confidence intervals. The parameter \(\kappa=1\) if the model is generalized Pareto. Although there are three potential families, the family \texttt{egp2} exhibits the fastest converence for
 
@@ -609,7 +609,7 @@ Another option is the \citet{Northrop:2014} penultimate test, which considers a 
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-7-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/NCdiag-1.pdf}
 
 \hypertarget{your-turn-1}{%
 \section{Your turn}\label{your-turn-1}}
@@ -701,7 +701,7 @@ We illustrate the previous discussion by looking at block maximum from a log-nor
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/penult-1.pdf}
 
 The left panel illustrates how maximum likelihood estimates of the parameters for repeated samples from a log-normal distribution are closer to the penultimate approximation than to the limiting tail index \(\xi_{\infty}=0\). Using max-stability, we could get an estimate of the distribution of the maximum of \(Nn_y\) observations. In this case, the penultimate shape for \(m=1000\) is approximately \(\xi_{1000}=0.215\), compared to \(\xi_{30} \approx 0.284\), which is far from the limiting value \(\xi_{\infty}=0\). The extrapolated density estimate is based on \(F_1^{1000/30}\), the generalized extreme value density associated to the distribution function of the penultimate approximation \(F_1^{1000/30}\), with \(F_1 \sim\mathsf{GEV}(a_{30}, b_{30}, \xi_{30})\). The penultimate approximation \(F_2\) is more accurate than the ultimate approximation \(\mathsf{GEV}(a_{30}, b_{30}, \xi_\infty)\), which is too short tailed.
 
@@ -717,7 +717,7 @@ The following plot illustrates the penultimate shape parameter for the normal di
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/penultimateshape-1.pdf}
 
 While the above discussion has been restricted to block maxima and the generalized extreme value distribution, similar results exists for peaks over threshold using a generalized Pareto distribution.
 For threshold exceedances, we start with the reciprocal hazard \(r(x) = \{1-F(x)\}/f(x)\) in place of \(s(x)\). The normalizing constants are \((u, r(u))\) and the penultimate shape parameter for the generalized Pareto distribution is \(r'(u)\).
@@ -746,19 +746,20 @@ We can relate threshold exceedances to the distribution of maxima as follows: su
 \hypertarget{max-stable-processes}{%
 \section{Max-stable processes}\label{max-stable-processes}}
 
-Let \(\mathcal{S}\) be a compact subset of \(\mathbb{R}^d\)
-The de Haan spectral representation of simple max-stable processes is
+Let \(\mathcal{S}\) be a compact subset of \(\mathbb{R}^d\).
+The de Haan spectral representation \citep{deHaan:1984} of simple max-stable processes is \citep{Schlather:2003}
 \[Z(\boldsymbol{s}) = \max_{i \in \mathbb{N}} \zeta_i W_i(\boldsymbol{s}), \qquad \boldsymbol{s} \in \mathcal{S},\]
 where \(\boldsymbol{W}\) is a stochastic process satisfying \(\mathrm{E}\{W(\boldsymbol{s})_{+}\}=1\) for any \(\boldsymbol{s} \in \mathcal{S}\) and \(\{\zeta_i\}_{i \in \mathbb{N}}\) is a Poisson point process with intensity function \(\zeta^{-2} \mathrm{d} \zeta\). Max-stable processes arise as the pointwise maximum of an infinite collection of random functions \(\varphi_i = \zeta_i \boldsymbol{W}_i\).
 
 The distribution function of a \(D\)-dimensional max-stable vector can be defined in terms of a measure \(\Lambda\), termed exponent measure, defined on \(\mathbb{R}^D \setminus\{\boldsymbol{0}_D\}\) viz.
-\[\Pr(\boldsymbol{Z} \leq \boldsymbol{z}) = \exp\{\Lambda([-\boldsymbol{\infty}, \boldsymbol{z}]^\mathrm{c})\}, \boldsymbol{z} > \boldsymbol{0}_D.\]
+\[\Pr(\boldsymbol{Z} \leq \boldsymbol{z}) = \exp\{\Lambda([-\boldsymbol{\infty}, \boldsymbol{z}]^\mathrm{c})\}, \quad \boldsymbol{z} > \boldsymbol{0}_D.\]
 It follows from max-stability that the exponent measure is homogeneous of order \(-1\).
 
 \hypertarget{mathcalr-pareto-processes-and-generalizations}{%
 \section{\texorpdfstring{\(\mathcal{R}\)-Pareto processes and generalizations}{\textbackslash mathcal\{R\}-Pareto processes and generalizations}}\label{mathcalr-pareto-processes-and-generalizations}}
 
-Let \(\mathcal{F}^+\) denote the set of continuous non-negative non-null functions. A risk functional \(\mathcal{R}:\mathcal{F}^+ \to [0, \infty)\) is a continuous functional which is homogeneous of order \(1\), i.e., \(\mathcal{R}(tf) = t\mathcal{R}(f)\) for \(f \in \mathcal{F}^+\) and \(t>0\). A \(\mathcal{R}\)-Pareto process admits the stochastic representation \citep[\citet{Dombry/Ribatet:2015}]{Ferreira:2014}
+Let \(\mathcal{F}^+\) denote the set of continuous non-negative non-null functions. A risk functional \(\mathcal{R}:\mathcal{F}^+ \to [0, \infty)\) is a continuous functional which is homogeneous of order \(1\), i.e., \(\mathcal{R}(tf) = t\mathcal{R}(f)\) for \(f \in \mathcal{F}^+\) and \(t>0\). Examples include maxima, \(\mathcal{R}(f) = \max_{j=1}^D f(\boldsymbol{s}_j)\), minima, \(\mathcal{R}(f) = \min_{j=1}^D f(\boldsymbol{s}_j)\), sums
+\(\mathcal{R}(f) = \sum_{j=1}^D f(\boldsymbol{s}_j)\) and projections \(\mathcal{R}(f) = X(\boldsymbol{s}_j)\). A \(\mathcal{R}\)-Pareto process admits the stochastic representation \citep{Ferreira:2014}\citep{Dombry/Ribatet:2015}
 \begin{align}
   \mathsf{X} = P \frac{\mathsf{S}}{\mathcal{R}(\mathsf{S})},
  \end{align}
@@ -830,7 +831,7 @@ If \(\boldsymbol{Z}\) is a max-stable vector of size \(D\) with standard Gumbel 
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-10-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/maxstabtest-1.pdf}
 
 The likelihood of max-stable processes is untractable, so inference is typically performed using composite likelihood. The package \texttt{evd} includes routines for doing this in the bivariate setting (see \texttt{fbvpot}).
 
@@ -903,7 +904,7 @@ As in \texttt{SpatialExtremes}, we can use the nonparametric estimates of the ex
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{mevtuto_files/figure-latex/extcoef-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -925,7 +926,7 @@ As in \texttt{SpatialExtremes}, we can use the nonparametric estimates of the ex
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{mevtuto_files/figure-latex/unnamed-chunk-11-2.pdf}
+\includegraphics{mevtuto_files/figure-latex/extcoef-2.pdf}
 
 \hypertarget{generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances}{%
 \section{\texorpdfstring{Generalized \(\mathcal{R}\)-Pareto processes for functional threshold exceedances}{Generalized \textbackslash mathcal\{R\}-Pareto processes for functional threshold exceedances}}\label{generalized-mathcalr-pareto-processes-for-functional-threshold-exceedances}}

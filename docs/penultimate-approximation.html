@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-29" />
+<meta name="date" content="2019-06-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,7 +184,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[\begin{align*}
  \lim_{n \to \infty} F^n(a_nx+b_n) = \exp\left\{-(1+\xi_\infty x)^{-1/\xi_\infty}\right\}=G(x).
 \end{align*}\]</span></p>
-<p><span class="citation">Smith (<a href="#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> shows that, for any <span class="math inline">\(x \in \{y:1+\xi_\infty y &gt;0\}\)</span>, there exists <span class="math inline">\(z\)</span> such that
+<p><span class="citation">Smith (<a href="references.html#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> shows that, for any <span class="math inline">\(x \in \{y:1+\xi_\infty y &gt;0\}\)</span>, there exists <span class="math inline">\(z\)</span> such that
 <span class="math display">\[\begin{align*}
    \frac{-\log[F\{v+xs(v)\}]}{-\log\{F(v)\}} = \left\{1+xs&#39;(z)\right\}^{-1/s&#39;(z)}, \qquad v &lt; z &lt; v+xs(v).
 \end{align*}\]</span>
@@ -192,7 +192,7 @@ For each <span class="math inline">\(n \geq 1\)</span>, setting <span class="mat
 <span class="math display">\[\begin{align*}
    F^n(a_nx+b_n)=\exp\left[-\left\{1+s&#39;(z)x\right\}^{-1/s&#39;(z)}\right] + \mathrm{O}(n^{-1})
 \end{align*}\]</span>
-for <span class="math inline">\(z \in [\min(a_nx+b_n, b_n), \max(a_nx+b_n, b_n)]\)</span>, depending on the support of <span class="math inline">\(F\)</span>. The ultimate approximation replaces <span class="math inline">\(s&#39;(z)\)</span> by <span class="math inline">\(s&#39;(x^*)=\xi_{\infty}\)</span>, whereas <span class="citation">Smith (<a href="#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> suggests instead suggests taking <span class="math inline">\(s&#39;(b_n)\)</span>, which is closer to <span class="math inline">\(s&#39;(a_nx+b_n)\)</span> than is <span class="math inline">\(s&#39;(x^*)\)</span>.</p>
+for <span class="math inline">\(z \in [\min(a_nx+b_n, b_n), \max(a_nx+b_n, b_n)]\)</span>, depending on the support of <span class="math inline">\(F\)</span>. The ultimate approximation replaces <span class="math inline">\(s&#39;(z)\)</span> by <span class="math inline">\(s&#39;(x^*)=\xi_{\infty}\)</span>, whereas <span class="citation">Smith (<a href="references.html#ref-Smith:1987" role="doc-biblioref">1987</a>)</span> suggests instead suggests taking <span class="math inline">\(s&#39;(b_n)\)</span>, which is closer to <span class="math inline">\(s&#39;(a_nx+b_n)\)</span> than is <span class="math inline">\(s&#39;(x^*)\)</span>.</p>
 <p>The maximum likelihood estimate of the shape should change as the threshold or the block size increases. Consider for simplicity yearly maxima arising from blocking <span class="math inline">\(m=n_y\)</span> observations per year. We are interested in the distribution of the maximum of <span class="math inline">\(N\)</span> years and thus the target has roughly shape <span class="math inline">\(\xi_{Nn_y}\)</span>, but our estimates will instead give approximately <span class="math inline">\(\xi_{n_y}\)</span>; an extrapolation error arises from this mismatch between the shape values, which would be constant if the observations were truly max-stable. The curvature of <span class="math inline">\(s&#39;\)</span> determines how stable the estimates of <span class="math inline">\(\xi_t\)</span> are when the extrapolation window increases.</p>
 <p>We illustrate the previous discussion by looking at block maximum from a log-normal distribution.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mev)
@@ -242,14 +242,14 @@ p30l &lt;-<span class="st"> </span><span class="kw">maxstabp</span>(<span class=
        <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>), 
        <span class="dt">lwd =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, 
        <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>))</code></pre>
-<p><img src="mevtuto_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="mevtuto_files/figure-html/penult-1.png" width="672" /></p>
 <p>The left panel illustrates how maximum likelihood estimates of the parameters for repeated samples from a log-normal distribution are closer to the penultimate approximation than to the limiting tail index <span class="math inline">\(\xi_{\infty}=0\)</span>. Using max-stability, we could get an estimate of the distribution of the maximum of <span class="math inline">\(Nn_y\)</span> observations. In this case, the penultimate shape for <span class="math inline">\(m=1000\)</span> is approximately <span class="math inline">\(\xi_{1000}=0.215\)</span>, compared to <span class="math inline">\(\xi_{30} \approx 0.284\)</span>, which is far from the limiting value <span class="math inline">\(\xi_{\infty}=0\)</span>. The extrapolated density estimate is based on <span class="math inline">\(F_1^{1000/30}\)</span>, the generalized extreme value density associated to the distribution function of the penultimate approximation <span class="math inline">\(F_1^{1000/30}\)</span>, with <span class="math inline">\(F_1 \sim\mathsf{GEV}(a_{30}, b_{30}, \xi_{30})\)</span>. The penultimate approximation <span class="math inline">\(F_2\)</span> is more accurate than the ultimate approximation <span class="math inline">\(\mathsf{GEV}(a_{30}, b_{30}, \xi_\infty)\)</span>, which is too short tailed.</p>
 <p>The function <code>smith.penult</code> computes the penultimate approximation for parameter models in <strong>R</strong> for the distribution assuming a model <code>family</code> with arguments <code>dfamily</code>, <code>qfamily</code> and <code>pfamily</code> exist. It returns the penultimate parameters for a given block size or quantile in case of threshold models. These functions are particularly useful for simulation studies in which one wants to obtain an approximation for <span class="math inline">\(F^N\)</span> for large <span class="math inline">\(N\)</span>, to get an approximation to the asymptotic distribution of a test statistic for finite <span class="math inline">\(N\)</span>; the <span class="math inline">\(\mathsf{GEV}\)</span> penultimate approximation is more numerically stable for certain models and its moments and cumulants are easily derived.</p>
 <p>The following plot illustrates the penultimate shape parameter for the normal distribution based on threshold exceedances. In finite samples, the upper tail is bounded, but the quality of the approximation by the Gumbel distribution increases as <span class="math inline">\(u \to \infty\)</span>, albeit very slowly.</p>
 <pre class="sourceCode r"><code class="sourceCode r">penult &lt;-<span class="st"> </span><span class="kw">smith.penult</span>(<span class="dt">family =</span> <span class="st">&quot;norm&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;pot&quot;</span>, 
                        <span class="dt">u =</span> <span class="kw">qnorm</span>(u &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.8</span>, <span class="fl">0.9999</span>, <span class="dt">by =</span> <span class="fl">0.0001</span>))) 
 <span class="kw">plot</span>(u, penult<span class="op">$</span>shape, <span class="dt">bty =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">xlab=</span><span class="st">&#39;Quantile&#39;</span>, <span class="dt">ylab=</span><span class="st">&#39;Penultimate shape&#39;</span>)</code></pre>
-<p><img src="mevtuto_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="mevtuto_files/figure-html/penultimateshape-1.png" width="672" /></p>
 <p>While the above discussion has been restricted to block maxima and the generalized extreme value distribution, similar results exists for peaks over threshold using a generalized Pareto distribution.
 For threshold exceedances, we start with the reciprocal hazard <span class="math inline">\(r(x) = \{1-F(x)\}/f(x)\)</span> in place of <span class="math inline">\(s(x)\)</span>. The normalizing constants are <span class="math inline">\((u, r(u))\)</span> and the penultimate shape parameter for the generalized Pareto distribution is <span class="math inline">\(r&#39;(u)\)</span>.</p>
 <p>We can relate threshold exceedances to the distribution of maxima as follows: suppose a generalized Pareto distribution <span class="math inline">\(F\)</span> is fitted to threshold exceedances above a threshold <span class="math inline">\(u\)</span>, with parameters <span class="math inline">\((\zeta_u, \sigma_u, \xi)\)</span>, where <span class="math inline">\(\zeta_u\)</span> denotes the unknown proportion of points above the threshold <span class="math inline">\(u\)</span>. If there are <span class="math inline">\(n_y\)</span> observations per year on average, then the <span class="math inline">\(T\)</span>-year return level is <span class="math inline">\(z_{1/T}=u+\sigma_u/\xi\{(Tn_y\zeta_u)^\xi-1\}\)</span>. We take <span class="math inline">\(F^{\zeta_uTn_y}\)</span> as the approximation to the <span class="math inline">\(T\)</span>-year maxima distribution, conditional on exceeding <span class="math inline">\(u\)</span>.</p>
@@ -262,12 +262,6 @@ For threshold exceedances, we start with the reciprocal hazard <span class="math
 <li>Superpose the density of the penultimate approximation for <span class="math inline">\(m = 1000000\)</span> obtained using the Smith penultimate approximation (<code>smith.penult</code>).</li>
 </ol>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-Smith:1987">
-<p>Smith, Richard L. 1987. “Approximations in Extreme Value Theory.” Edited by University of North Carolina Chapel Hill Center for Stochastic Processes. <a href="https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0">https://www.dropbox.com/s/4t0cnuy3g9ny14u/Smith-1987-Approximations_in_extreme_value_theory.pdf?dl=0</a>.</p>
 </div>
 </div>
             </section>

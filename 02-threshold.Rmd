@@ -63,10 +63,7 @@ The extreme value distributions have unbounded influence functions and outliers 
 
 We are now ready to go back to the Maiquetia data and try to select a reasonable threshold. To this effect, we select a sequence of candidate thresholds and run the procedures described above. 
 
-```{r}
-data("maiquetia", package = "mev")
-day <- seq.Date(from = as.Date("1961-01-01"), 
-                to = as.Date("1999-12-31"), by = "day")
+```{r tstabplots}
 # Keep non-zero rainfall, exclude 1999 observations
 nzrain <- maiquetia[substr(day, 3, 4) < 99 & maiquetia > 0]
 thcan <- quantile(nzrain, seq(0.8, 0.99, length.out = 25))
@@ -78,13 +75,13 @@ What do you notice on the parameter stability plots?
 
 We can plot simultaneous parameter statibility plots for the shape, as well as the white-noise sequence. The `W.diag` function, which implements the tests of @Wadsworth:2016, returns the white noise process and calculates by simulation the null distribution, selecting the lowest threshold at which the hypothesis of changepoint is not rejected for all higher thresholds. For the Maiquetia rainfall, a threshold around 15.15mm is returned.
 
-```{r}
+```{r Wdiag}
 fWdiag <- W.diag(xdat = nzrain, model = "nhpp", u = thcan, plots = c("WN", "PS"))
 ```
 
 Another option is the @Northrop:2014 penultimate test, which considers a sequence of threshold and tests whether a single shape fits the data against the alternative where the shape parameter differs at each candidate threshold following a step function. The `NC.diag` function plots the $p$-value path against the candidate thresholds; the top axis also displays the number of threshold exceedances. The extended generalized Pareto distribution can also be used to produce threshold stability plot with 95% confidence intervals. The parameter $\kappa=1$ if the model is generalized Pareto. Although there are three potential families, the family `egp2` exhibits the fastest converence for
 
-```{r}
+```{r NCdiag}
 fNCdiag <- NC.diag(x = nzrain, u = thcan)
 ```
 

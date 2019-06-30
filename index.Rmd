@@ -6,13 +6,14 @@ site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
     highlight: tango
+    split_bib: no
   bookdown::pdf_book:
+    fig_crop: false
     includes:
       in_header: preamble.tex
 documentclass: book
 header-includes:
   - \usepackage{amsmath,amssymb,mathtools,enumerate,booktabs,geometry}
-  - 
 bibliography: [biblio.bib]
 biblio-style: apalike2
 link-citations: yes
@@ -36,8 +37,7 @@ You can install the latest version of the package (`v.1.12`) directly from CRAN 
 install.packages("mev")
 ```
 
-These notes are copyright by the author: you may not reuse them without permission.
-  
+
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\Hmat}{\mathbf{H}}
 \newcommand{\Mmat}{\mathbf{M}}

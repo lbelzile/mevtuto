@@ -3,19 +3,20 @@
 
 ## Max-stable processes
 
-Let $\mathcal{S}$ be a compact subset of $\R^d$
-The de Haan spectral representation of simple max-stable processes is 
+Let $\mathcal{S}$ be a compact subset of $\R^d$. 
+The de Haan spectral representation [@deHaan:1984] of simple max-stable processes is [@Schlather:2003]
 \[Z(\bs{s}) = \max_{i \in \N} \zeta_i W_i(\bs{s}), \qquad \bs{s} \in \mathcal{S},\]
 where $\bs{W}$ is a stochastic process satisfying $\mathrm{E}\{W(\bs{s})_{+}\}=1$ for any $\bs{s} \in \mathcal{S}$ and $\{\zeta_i\}_{i \in \N}$ is a Poisson point process with intensity function $\zeta^{-2} \mathrm{d} \zeta$. Max-stable processes arise as the pointwise maximum of an infinite collection of random functions $\varphi_i = \zeta_i \bs{W}_i$. 
 
 The distribution function of a $D$-dimensional max-stable vector can be defined in terms of a measure $\Lambda$, termed exponent measure, defined on $\R^D \setminus\{\bs{0}_D\}$ viz.
-\[\Pr(\bs{Z} \leq \bs{z}) = \exp\{\Lambda([-\bs{\infty}, \bs{z}]^\mathrm{c})\}, \bs{z} > \bs{0}_D.\]
+\[\Pr(\bs{Z} \leq \bs{z}) = \exp\{\Lambda([-\bs{\infty}, \bs{z}]^\mathrm{c})\}, \quad \bs{z} > \bs{0}_D.\]
 It follows from max-stability that the exponent measure is homogeneous of order $-1$. 
 
 ## $\Ri$-Pareto processes and generalizations 
 
 
-Let $\mathcal{F}^+$ denote the set of continuous non-negative non-null functions. A risk functional $\Ri:\mathcal{F}^+ \to [0, \infty)$ is a continuous functional which is homogeneous of order $1$, i.e., $\Ri(tf) = t\Ri(f)$ for $f \in \mathcal{F}^+$ and $t>0$.  A $\Ri$-Pareto process admits the stochastic representation [@Ferreira:2014, @Dombry/Ribatet:2015]
+Let $\mathcal{F}^+$ denote the set of continuous non-negative non-null functions. A risk functional $\Ri:\mathcal{F}^+ \to [0, \infty)$ is a continuous functional which is homogeneous of order $1$, i.e., $\Ri(tf) = t\Ri(f)$ for $f \in \mathcal{F}^+$ and $t>0$. Examples include maxima, $\Ri(f) = \max_{j=1}^D f(\bs{s}_j)$, minima, $\Ri(f) = \min_{j=1}^D f(\bs{s}_j)$, sums
+$\Ri(f) = \sum_{j=1}^D f(\bs{s}_j)$ and projections $\Ri(f) = X(\bs{s}_j)$. A $\Ri$-Pareto process admits the stochastic representation [@Ferreira:2014][@Dombry/Ribatet:2015]
  \begin{align}
   \mathsf{X} = P \frac{\mathsf{S}}{\Ri(\mathsf{S})},
  \end{align}
@@ -54,7 +55,7 @@ Let's start by simulating from a simple max-stable random vector from the negati
 
  If $\bs{Z}$ is a max-stable vector of size $D$ with standard Gumbel margins, with distribution function $G(\bs{z}) = \exp[-V\{\exp(\bs{z})\}]$, then for any subset of size $J \subseteq\{1, \ldots, D\}$, the variable $Z_J=\max_{j \in J} Z(\bs{s}_j)$ has distribution function $H_J(z) = \exp\{-\exp(z-\mu_{J})\}$, where $\mu_J=\log\{V_J(\bs{1})_{|J|})\}$ and $0 \leq \mu_J \leq \log(|J|)$. This follows from the homogeneity of the exponent measure. @Gabda:2012 propose a probability-probability plot based on fitting $\mu_J$ through maximum likelihood with the parameter  constraints for each set of $|J|$ stations. The data are obtained by pooling replications of the max-stable field and selecting all subsets of size $|J|$ if $\binom{D}{|J|}$ is small, or else a limited number of stations among those that display the higher dependence so as to maximize the power of the test (independence being a special case of max-stability). Uncertainty quantification is performed using a nonparametric bootstrap. The function `maxstabtest` implements this for the special case $J=D$.
 
-```{r, cache = TRUE}
+```{r maxstabtest, cache = TRUE}
 library(mev)
 set.seed(0)
 samp <- rmev(n = 1000, d = 5, param = 0.1, model = "neglog") 
@@ -105,7 +106,7 @@ dirangmeas <- angmeasdir(samp, th = 0.5)
 
 As in `SpatialExtremes`, we can use the nonparametric estimates of the extremal coefficient as goodness-of-fit diagnostic. The following code samples data 
 
-```{r, cache= TRUE}
+```{r extcoef, cache= TRUE}
 coord <- 10*cbind(runif(50), runif(50))
 di <- as.matrix(dist(coord))
 dat <- rmev(n = 1000, d = 100, param = 3, sigma = exp(-di/2), model = 'xstud')
