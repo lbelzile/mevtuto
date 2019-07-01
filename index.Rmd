@@ -8,7 +8,7 @@ output:
     highlight: tango
     split_bib: no 
   bookdown::pdf_book:
-    fig_crop: false
+    fig_crop: false 
     includes:
       in_header: preamble.tex
 documentclass: book

@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-30}
+    \date{2019-07-01}
 
 \usepackage{geometry}
 \geometry{left = 1in, right = 1in}
@@ -1018,7 +1018,7 @@ The code snippet below fits a Brown--Resnick model with power variogram to simul
 \NormalTok{ scale <-}\StringTok{ }\NormalTok{par[}\DecValTok{2}\NormalTok{]; }\ControlFlowTok{if}\NormalTok{(scale }\OperatorTok{<=}\StringTok{ }\DecValTok{0}\NormalTok{)\{}\KeywordTok{return}\NormalTok{(}\FloatTok{1e10}\NormalTok{)\}}
 \NormalTok{ a <-}\StringTok{ }\NormalTok{par[}\DecValTok{3}\NormalTok{]; }\ControlFlowTok{if}\NormalTok{(a}\OperatorTok{<}\DecValTok{1}\NormalTok{)\{}\KeywordTok{return}\NormalTok{(}\FloatTok{1e10}\NormalTok{)\}}
 \NormalTok{ rho <-}\StringTok{ }\NormalTok{par[}\DecValTok{4}\NormalTok{]; }\ControlFlowTok{if}\NormalTok{(}\KeywordTok{abs}\NormalTok{(rho) }\OperatorTok{>=}\StringTok{ }\NormalTok{pi}\OperatorTok{/}\DecValTok{2}\NormalTok{)\{}\KeywordTok{return}\NormalTok{(}\FloatTok{1e10}\NormalTok{)\}}
-\NormalTok{ semivariomat <-}\StringTok{ }\NormalTok{mgp}\OperatorTok{::}\KeywordTok{power.vario}\NormalTok{(}\KeywordTok{distg}\NormalTok{(coord, a, rho), }\DataTypeTok{alpha =}\NormalTok{ alpha, }\DataTypeTok{scale =}\NormalTok{ scale)}
+\NormalTok{ semivariomat <-}\StringTok{ }\KeywordTok{power.vario}\NormalTok{(}\KeywordTok{distg}\NormalTok{(coord, a, rho), }\DataTypeTok{alpha =}\NormalTok{ alpha, }\DataTypeTok{scale =}\NormalTok{ scale)}
    \KeywordTok{sum}\NormalTok{((}\DecValTok{2}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\KeywordTok{pnorm}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{(semivariomat[}\KeywordTok{lower.tri}\NormalTok{(semivariomat)]}\OperatorTok{/}\DecValTok{2}\NormalTok{))) }\OperatorTok{-}\StringTok{ }\NormalTok{emp)}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
 \NormalTok{ \}}
  \CommentTok{# constrained optimization for the parameters}

@@ -24,7 +24,7 @@
 <meta name="author" content="Léo Belzile" />
 
 
-<meta name="date" content="2019-06-30" />
+<meta name="date" content="2019-07-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -356,7 +356,7 @@ simu2[<span class="dv">1225</span>]</code></pre>
  scale &lt;-<span class="st"> </span>par[<span class="dv">2</span>]; <span class="cf">if</span>(scale <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
  a &lt;-<span class="st"> </span>par[<span class="dv">3</span>]; <span class="cf">if</span>(a<span class="op">&lt;</span><span class="dv">1</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
  rho &lt;-<span class="st"> </span>par[<span class="dv">4</span>]; <span class="cf">if</span>(<span class="kw">abs</span>(rho) <span class="op">&gt;=</span><span class="st"> </span>pi<span class="op">/</span><span class="dv">2</span>){<span class="kw">return</span>(<span class="fl">1e10</span>)}
- semivariomat &lt;-<span class="st"> </span>mgp<span class="op">::</span><span class="kw">power.vario</span>(<span class="kw">distg</span>(coord, a, rho), <span class="dt">alpha =</span> alpha, <span class="dt">scale =</span> scale)
+ semivariomat &lt;-<span class="st"> </span><span class="kw">power.vario</span>(<span class="kw">distg</span>(coord, a, rho), <span class="dt">alpha =</span> alpha, <span class="dt">scale =</span> scale)
    <span class="kw">sum</span>((<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">sqrt</span>(semivariomat[<span class="kw">lower.tri</span>(semivariomat)]<span class="op">/</span><span class="dv">2</span>))) <span class="op">-</span><span class="st"> </span>emp)<span class="op">^</span><span class="dv">2</span>)
  }
  <span class="co"># constrained optimization for the parameters</span>
